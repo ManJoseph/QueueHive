@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import styles from './BookToken.module.css';
 
-const BookToken = ({ tokenData, goToHome }) => {
+const BookToken = ({ tokenData, goToHome, lastMessage }) => {
+  const [updateNotification, setUpdateNotification] = useState('');
+
+  useEffect(() => {
+    // Check if the message is relevant to the current service and is not about our own token
+    if (lastMessage && tokenData && lastMessage.serviceId === tokenData.serviceId && lastMessage.tokenNumber !== tokenData.tokenNumber) {
+      setUpdateNotification(`A new token (#${lastMessage.tokenNumber}) has been issued for this service.`);
+      // Hide notification after a few seconds
+      const timer = setTimeout(() => setUpdateNotification(''), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [lastMessage, tokenData]);
+
   if (!tokenData) {
     return (
       <div className={styles.page}>
@@ -24,6 +36,7 @@ const BookToken = ({ tokenData, goToHome }) => {
       <Header />
       <main className={styles.mainContent}>
         <div className={styles.container}>
+          {updateNotification && <p className={styles.notification}>{updateNotification}</p>}
           <h1 className={styles.title}>Your Token</h1>
           <div className={styles.tokenDisplay}>
             <span className={styles.tokenNumber}>{tokenNumber}</span>
