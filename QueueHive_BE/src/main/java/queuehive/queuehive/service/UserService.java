@@ -9,4 +9,5 @@ public interface UserService {
     UserDto registerUser(CreateUserRequest request);
     Optional<UserDto> findUserById(Long id);
     Optional<UserDto> findUserByEmail(String email);
+    Optional<String> login(LoginRequest request);
 }

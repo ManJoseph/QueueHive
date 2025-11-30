@@ -7,4 +7,5 @@ import queuehive.queuehive.dto.TokenDto;
 public interface TokenService {
     TokenDto createToken(CreateTokenRequest request);
     QueuePositionDto getQueuePosition(Long tokenId);
+    Optional<TokenDto> getTokenById(Long tokenId);
 }

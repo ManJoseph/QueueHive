@@ -44,5 +44,17 @@ public class UserServiceImpl implements UserService {
     public Optional<UserDto> findUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .map(user -> new UserDto(user.getId(), user.getFullName(), user.getPhone(), user.getEmail(), user.getRole()));
+    @Override
+    public Optional<String> login(queuehive.queuehive.dto.LoginRequest request) {
+        Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+                // In a real application, you would generate a JWT here.
+                // For this task, we'll return a placeholder token.
+                return Optional.of("placeholder-jwt-token-for-" + user.getEmail());
+            }
+        }
+        return Optional.empty();
     }
 }

@@ -77,4 +77,9 @@ public class TokenServiceImpl implements TokenService {
                 token.getCreatedAt()
         );
     }
+
+    @Override
+    public java.util.Optional<TokenDto> getTokenById(Long tokenId) {
+        return tokenRepository.findById(tokenId).map(this::toDto);
+    }
 }
