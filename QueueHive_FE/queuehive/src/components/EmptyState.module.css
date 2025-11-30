@@ -1,0 +1,18 @@
+@import '../theme.css';
+
+.emptyStateContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: calc(var(--spacing-unit) * 4);
+  text-align: center;
+  min-height: 200px;
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius-large);
+  border: 1px dashed var(--color-surface-variant);
+}
+
+.emptyStateMessage {
+  color: var(--color-on-surface-variant);
+  font-size: var(--font-size-body);
+}

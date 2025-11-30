@@ -2,14 +2,23 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import styles from './BookToken.module.css';
 
+const EmptyTokenState = ({ goToHome }) => (
+  <main className={styles.mainContent}>
+    <div className={styles.container}>
+      <p>No token data available.</p>
+      <p>Please go back to select a service.</p>
+      <button className={styles.confirmButton} onClick={goToHome}>Go to Home</button>
+    </div>
+  </main>
+);
+
 const BookToken = ({ tokenData, goToHome, lastMessage }) => {
   const [updateNotification, setUpdateNotification] = useState('');
 
   useEffect(() => {
     // Check if the message is relevant to the current service and is not about our own token
     if (lastMessage && tokenData && lastMessage.serviceId === tokenData.serviceId && lastMessage.tokenNumber !== tokenData.tokenNumber) {
-      setUpdateNotification(`A new token (#${lastMessage.tokenNumber}) has been issued for this service.`);
-      // Hide notification after a few seconds
+      setUpdateNotification(`Queue updated: Token #${lastMessage.tokenNumber} was just issued.`);
       const timer = setTimeout(() => setUpdateNotification(''), 5000);
       return () => clearTimeout(timer);
     }
@@ -19,12 +28,7 @@ const BookToken = ({ tokenData, goToHome, lastMessage }) => {
     return (
       <div className={styles.page}>
         <Header />
-        <main className={styles.mainContent}>
-          <div className={styles.container}>
-            <p>No token data available. Please go back to select a service.</p>
-            <button className={styles.confirmButton} onClick={goToHome}>Go to Home</button>
-          </div>
-        </main>
+        <EmptyTokenState goToHome={goToHome} />
       </div>
     );
   }
@@ -37,12 +41,14 @@ const BookToken = ({ tokenData, goToHome, lastMessage }) => {
       <main className={styles.mainContent}>
         <div className={styles.container}>
           {updateNotification && <p className={styles.notification}>{updateNotification}</p>}
-          <h1 className={styles.title}>Your Token</h1>
+          <h1 className={styles.title}>Your Token is Ready</h1>
           <div className={styles.tokenDisplay}>
             <span className={styles.tokenNumber}>{tokenNumber}</span>
           </div>
-          <p className={styles.serviceInfo}>For "{serviceName}" at "{companyName}"</p>
-          <p className={styles.queuePosition}>You are number {queuePosition} in the queue.</p>
+          <p className={styles.serviceInfo}>For <strong>{serviceName}</strong> at <strong>{companyName}</strong></p>
+          <p className={styles.queuePosition}>
+            Your position in the queue: <strong>{queuePosition + 1}</strong>
+          </p>
           <button className={styles.confirmButton} onClick={goToHome}>Done</button>
         </div>
       </main>
@@ -51,3 +57,4 @@ const BookToken = ({ tokenData, goToHome, lastMessage }) => {
 };
 
 export default BookToken;
+
