@@ -1,7 +1,13 @@
 package queuehive.queuehive.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import queuehive.queuehive.domain.ServiceType;
 import queuehive.queuehive.domain.Token;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 public interface TokenRepository extends JpaRepository<Token, Long> {
+    long countByServiceTypeAndStatusInAndCreatedAtBefore(
+        ServiceType serviceType, List<String> statuses, LocalDateTime createdAt);
 }
