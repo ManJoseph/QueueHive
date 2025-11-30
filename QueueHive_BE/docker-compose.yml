@@ -5,8 +5,8 @@ services:
     image: postgres:15-alpine
     container_name: queuehive-postgres
     environment:
-      POSTGRES_USER: queuehive_user
-      POSTGRES_PASSWORD: queuehive_pass
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Joseph123
       POSTGRES_DB: queuehive_db
     ports:
       - "5432:5432"
