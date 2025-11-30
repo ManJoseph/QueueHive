@@ -1,0 +1,51 @@
+@import '../theme.css';
+
+.card {
+  background-color: var(--color-background);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.imagePlaceholder {
+  height: 150px;
+  background-color: #e0e0e0;
+}
+
+.cardContent {
+  padding: calc(var(--spacing-unit) * 2);
+}
+
+.cardTitle {
+  margin: 0 0 calc(var(--spacing-unit) / 2) 0;
+  font-size: 20px;
+  color: var(--color-on-surface);
+}
+
+.cardCategory {
+  margin: 0 0 var(--spacing-unit) 0;
+  color: #757575;
+}
+
+.cardButton {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border: none;
+  border-radius: calc(var(--border-radius) / 2);
+  padding: var(--spacing-unit) calc(var(--spacing-unit) * 2);
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.cardButton:hover {
+  background-color: #3700B3; /* A darker shade of primary */
+}

@@ -1,0 +1,42 @@
+@import '../theme.css';
+
+.page {
+  background-color: var(--color-surface);
+  min-height: 100vh;
+}
+
+.mainContent {
+  padding: calc(var(--spacing-unit) * 4);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.companyName {
+  font-size: 36px;
+  color: var(--color-on-surface);
+  margin-bottom: var(--spacing-unit);
+}
+
+.companyCategory {
+  font-size: 18px;
+  color: #757575;
+  margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid #e0e0e0;
+  margin: calc(var(--spacing-unit) * 3) 0;
+}
+
+.serviceList {
+  margin-top: calc(var(--spacing-unit) * 2);
+}
+
+.serviceItem {
+  background-color: var(--color-background);
+  padding: calc(var(--spacing-unit) * 2);
+  border-radius: calc(var(--border-radius) / 2);
+  margin-bottom: var(--spacing-unit);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
