@@ -10,9 +10,8 @@ import queuehive.queuehive.dto.CreateTokenRequest;
 import queuehive.queuehive.dto.QueuePositionDto;
 import queuehive.queuehive.dto.TokenDto;
 import queuehive.queuehive.repository.*;
-import queuehive.queuehive.service.TokenService;
-
-import java.util.List;
+import queuehive.queuehive.websocket.TokenEventPublisher;
+import queuehive.queuehive.dto.TokenUpdateEvent;
 
 @Service
 public class TokenServiceImpl implements TokenService {
@@ -21,12 +20,14 @@ public class TokenServiceImpl implements TokenService {
     private final UserRepository userRepository;
     private final ServiceTypeRepository serviceTypeRepository;
     private final QueueSequenceRepository queueSequenceRepository;
+    private final TokenEventPublisher tokenEventPublisher;
 
-    public TokenServiceImpl(TokenRepository tokenRepository, UserRepository userRepository, ServiceTypeRepository serviceTypeRepository, QueueSequenceRepository queueSequenceRepository) {
+    public TokenServiceImpl(TokenRepository tokenRepository, UserRepository userRepository, ServiceTypeRepository serviceTypeRepository, QueueSequenceRepository queueSequenceRepository, TokenEventPublisher tokenEventPublisher) {
         this.tokenRepository = tokenRepository;
         this.userRepository = userRepository;
         this.serviceTypeRepository = serviceTypeRepository;
         this.queueSequenceRepository = queueSequenceRepository;
+        this.tokenEventPublisher = tokenEventPublisher;
     }
 
     @Override
@@ -49,6 +50,8 @@ public class TokenServiceImpl implements TokenService {
 
         Token token = new Token(user, serviceType, tokenNumber, "PENDING");
         Token savedToken = tokenRepository.save(token);
+        
+        tokenEventPublisher.publishTokenUpdate(new TokenUpdateEvent(savedToken.getTokenNumber(), savedToken.getServiceType().getId()));
 
         return toDto(savedToken);
     }
