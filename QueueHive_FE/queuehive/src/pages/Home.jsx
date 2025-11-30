@@ -67,7 +67,8 @@ const Home = ({ goToBookToken }) => {
         tokenNumber: newToken.tokenNumber, 
         serviceName: services.find(s => s.id === serviceId)?.name,
         companyName: selectedCompany?.name,
-        queuePosition: queuePosition
+        queuePosition: queuePosition,
+        serviceId: serviceId
       });
     } catch (err) {
       setError("Failed to create token or get queue position.");
