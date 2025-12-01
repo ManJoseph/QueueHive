@@ -1,0 +1,144 @@
+/* src/pages/Signup.module.css */
+@import '../theme.css'; /* Import global theme variables */
+
+.authContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--bg-color); /* Updated to use theme variable */
+}
+
+.authCard {
+  background-color: var(--surface); /* Updated to use theme variable */
+  padding: 2.5rem 3rem;
+  border-radius: 12px; /* Using explicit value for now, can be var(--border-radius-large) if defined */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary); /* Updated to use theme variable */
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--secondary-color); /* Updated to use theme variable */
+  margin-bottom: 2rem;
+}
+
+.errorBanner {
+  background-color: #f8d7da; /* Keeping specific color for error feedback */
+  color: #721c24; /* Keeping specific color for error feedback */
+  padding: 1rem;
+  border-radius: 8px; /* Using explicit value for now */
+  margin-bottom: 1.5rem;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.inputGroup {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.inputGroup label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--secondary-color); /* Updated to use theme variable */
+}
+
+.inputGroup input,
+.inputGroup select,
+.inputGroup textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 8px; /* Using explicit value for now */
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #fff;
+}
+
+.inputGroup input:focus,
+.inputGroup select:focus,
+.inputGroup textarea:focus {
+  outline: none;
+  border-color: var(--primary-color); /* Updated to use theme variable */
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); /* Adjusted to match primary color */
+}
+
+.inputGroup textarea {
+  resize: vertical; /* Allow vertical resizing */
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.forgotLink {
+  font-size: 0.9rem;
+  color: var(--primary-color); /* Updated to use theme variable */
+  text-decoration: none;
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: none;
+  background-color: var(--primary-color); /* Updated to use theme variable */
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px; /* Using explicit value for now */
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #1d4ed8; /* Darker shade of primary-color */
+}
+
+.submitButton:disabled {
+  background-color: #93c5fd; /* Lighter shade of primary-color */
+  cursor: not-allowed;
+}
+
+.footer {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: var(--secondary-color); /* Updated to use theme variable */
+}
+
+.footer a {
+  color: var(--primary-color); /* Updated to use theme variable */
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.errorText {
+  color: #dc3545; /* A common red for error messages */
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  text-align: left;
+}

@@ -89,4 +89,39 @@ public class TokenServiceImpl implements TokenService {
     public java.util.Optional<TokenDto> getTokenById(Long tokenId) {
         return tokenRepository.findById(tokenId).map(this::toDto);
     }
+
+    @Override
+    public List<TokenDto> getActiveTokensByUserId(Long userId) {
+        List<String> activeStatuses = List.of("PENDING", "CALLING");
+        return tokenRepository.findByUserIdAndStatusIn(userId, activeStatuses)
+                .stream()
+                .map(this::toDto)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    public List<TokenDto> getActiveTokensByServiceId(Long serviceId) {
+        List<String> activeStatuses = List.of("PENDING", "CALLING"); // Tokens that are considered active in a queue
+        return tokenRepository.findByServiceTypeIdAndStatusInOrderByCreatedAtAsc(serviceId, activeStatuses)
+                .stream()
+                .map(this::toDto)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public TokenDto updateTokenStatus(Long tokenId, String status) {
+        Token token = tokenRepository.findById(tokenId)
+                .orElseThrow(() -> new RuntimeException("Token not found with ID: " + tokenId));
+
+        // Validate status if needed (e.g., must be one of "PENDING", "CALLING", "SERVED", "REJECTED")
+        // For now, we'll assume the provided status is valid.
+        token.setStatus(status);
+        Token updatedToken = tokenRepository.save(token);
+
+        // Publish update for WebSocket if necessary
+        tokenEventPublisher.publishTokenUpdate(new TokenUpdateEvent(updatedToken.getTokenNumber(), updatedToken.getServiceType().getId()));
+
+        return toDto(updatedToken);
+    }
 }

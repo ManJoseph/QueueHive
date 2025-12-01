@@ -21,11 +21,20 @@ public class Company {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column // description is now optional
+    private String description;
+
     @Column(nullable = false)
-    private String category;
+    private Long ownerId; // Foreign key to User id
 
     @Column(nullable = false)
     private Boolean approved;
+
+    @Column
+    private String location;
+
+    @Column
+    private String category;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -34,10 +43,13 @@ public class Company {
     public Company() {
     }
 
-    public Company(String name, String category, Boolean approved) {
+    public Company(String name, String description, Long ownerId, Boolean approved, String location, String category) {
         this.name = name;
-        this.category = category;
+        this.description = description;
+        this.ownerId = ownerId;
         this.approved = approved;
+        this.location = location;
+        this.category = category;
     }
 
     // Getters
@@ -49,8 +61,12 @@ public class Company {
         return name;
     }
 
-    public String getCategory() {
-        return category;
+    public String getDescription() {
+        return description;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
     }
 
     public Boolean getApproved() {
@@ -59,6 +75,14 @@ public class Company {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     // Setters
@@ -70,8 +94,12 @@ public class Company {
         this.name = name;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public void setApproved(Boolean approved) {
@@ -80,6 +108,14 @@ public class Company {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     @Override
@@ -100,8 +136,11 @@ public class Company {
         return "Company{"
                + "id=" + id + ", "
                + "name='" + name + "'" + ", "
-               + "category='" + category + "'" + ", "
+               + "description='" + description + "'" + ", "
+               + "ownerId=" + ownerId + ", "
                + "approved=" + approved + ", "
+               + "location='" + location + "'" + ", "
+               + "category='" + category + "'" + ", "
                + "createdAt=" + createdAt + 
                '}';
     }

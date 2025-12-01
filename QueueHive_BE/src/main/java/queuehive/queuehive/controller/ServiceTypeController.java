@@ -5,12 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import queuehive.queuehive.dto.CreateServiceTypeRequest;
 import queuehive.queuehive.dto.ServiceTypeDto;
+import queuehive.queuehive.dto.UpdateServiceTypeRequest; // Import UpdateServiceTypeRequest
 import queuehive.queuehive.service.ServiceTypeService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/companies/{companyId}/services")
+@RequestMapping("/api/services") // Changed base path
 public class ServiceTypeController {
 
     private final ServiceTypeService serviceTypeService;
@@ -20,16 +21,27 @@ public class ServiceTypeController {
     }
 
     @PostMapping
-    public ResponseEntity<ServiceTypeDto> addServiceToCompany(@PathVariable Long companyId, @Valid @RequestBody CreateServiceTypeRequest request) {
-        // Ensure the companyId in the path matches the one in the request body for consistency
-        request.setCompanyId(companyId);
+    public ResponseEntity<ServiceTypeDto> addServiceToCompany(@Valid @RequestBody CreateServiceTypeRequest request) {
+        // companyId will now come from the request body as per CreateServiceTypeRequest
         ServiceTypeDto newService = serviceTypeService.addServiceToCompany(request);
         return ResponseEntity.ok(newService);
     }
 
-    @GetMapping
+    @GetMapping("/company/{companyId}") // New endpoint for listing services by company
     public ResponseEntity<List<ServiceTypeDto>> listServicesForCompany(@PathVariable Long companyId) {
         List<ServiceTypeDto> services = serviceTypeService.listServices(companyId);
         return ResponseEntity.ok(services);
+    }
+
+    @PutMapping("/{serviceId}")
+    public ResponseEntity<ServiceTypeDto> updateServiceType(@PathVariable Long serviceId, @Valid @RequestBody UpdateServiceTypeRequest request) {
+        ServiceTypeDto updatedService = serviceTypeService.updateServiceType(serviceId, request);
+        return ResponseEntity.ok(updatedService);
+    }
+
+    @DeleteMapping("/{serviceId}")
+    public ResponseEntity<Void> deleteServiceType(@PathVariable Long serviceId) {
+        serviceTypeService.deleteServiceType(serviceId);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,18 +1,21 @@
-@import '../theme.css';
+/* src/components/EmptyState.module.css */
 
 .emptyStateContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: calc(var(--spacing-unit) * 4);
+  padding: var(--spacing-xl);
   text-align: center;
   min-height: 200px;
-  background-color: var(--color-surface);
-  border-radius: var(--border-radius-large);
-  border: 1px dashed var(--color-surface-variant);
+  background-color: var(--surface);
+  border-radius: var(--border-radius-lg);
+  border: 1px dashed var(--border-color);
+  box-shadow: var(--shadow-sm);
+  gap: var(--spacing-md);
 }
 
 .emptyStateMessage {
-  color: var(--color-on-surface-variant);
-  font-size: var(--font-size-body);
+  color: var(--text-secondary);
+  font-size: 1.1rem;
 }

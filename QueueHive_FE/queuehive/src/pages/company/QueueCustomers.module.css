@@ -1,0 +1,129 @@
+/* src/pages/company/QueueCustomers.module.css */
+
+.queueCustomersContainer {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-md) var(--spacing-xl);
+    background-color: var(--bg-color);
+    min-height: 100vh;
+}
+
+.header {
+    padding: var(--spacing-md) 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+}
+
+.mainTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.customerList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.customerItem {
+    background-color: var(--surface);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    transition: var(--transition-ease-in-out);
+}
+
+.customerItem:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+}
+
+.customerItem p {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.customerItem strong {
+    color: var(--text-primary);
+}
+
+.actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.callButton, .serveButton, .rejectButton {
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    color: white;
+    transition: var(--transition-ease-in-out);
+    box-shadow: var(--shadow-sm);
+}
+
+.callButton {
+    background-color: var(--primary-color);
+}
+.callButton:hover:not(:disabled) {
+    background-color: var(--primary-color-dark);
+    box-shadow: var(--shadow-md);
+}
+
+.serveButton {
+    background-color: #28a745; /* Green */
+}
+.serveButton:hover:not(:disabled) {
+    background-color: #218838; /* Darker Green */
+    box-shadow: var(--shadow-md);
+}
+
+.rejectButton {
+    background-color: #dc3545; /* Red */
+}
+.rejectButton:hover:not(:disabled) {
+    background-color: #c82333; /* Darker Red */
+    box-shadow: var(--shadow-md);
+}
+
+.callButton:disabled, .serveButton:disabled, .rejectButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.error {
+    color: #dc3545;
+    text-align: center;
+    padding: var(--spacing-md);
+    background-color: #f8d7da;
+    border-radius: var(--border-radius-md);
+    margin-top: var(--spacing-md);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .queueCustomersContainer {
+        padding: var(--spacing-sm);
+    }
+    .mainTitle {
+        font-size: 1.8rem;
+    }
+    .actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    .actions button {
+        width: 100%;
+    }
+}

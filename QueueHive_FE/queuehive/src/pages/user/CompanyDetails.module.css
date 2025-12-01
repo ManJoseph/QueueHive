@@ -1,4 +1,4 @@
-@import '../theme.css';
+@import '../../theme.css';
 
 .page {
   background-color: var(--color-surface);

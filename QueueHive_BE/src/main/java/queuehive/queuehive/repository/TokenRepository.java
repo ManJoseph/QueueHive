@@ -10,4 +10,8 @@ import java.util.List;
 public interface TokenRepository extends JpaRepository<Token, Long> {
     long countByServiceTypeAndStatusInAndCreatedAtBefore(
         ServiceType serviceType, List<String> statuses, LocalDateTime createdAt);
+    
+    List<Token> findByUserIdAndStatusIn(Long userId, List<String> statuses);
+
+    List<Token> findByServiceTypeIdAndStatusInOrderByCreatedAtAsc(Long serviceTypeId, List<String> statuses); // New method
 }

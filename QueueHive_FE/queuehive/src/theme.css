@@ -1,39 +1,43 @@
-/* Material Design 3 Inspired Theme */
 :root {
-  /* Color Palette */
-  --color-primary: #445E91;
-  --color-on-primary: #FFFFFF;
-  --color-secondary: #5A73A8;
-  --color-on-secondary: #FFFFFF;
-  --color-tertiary: #748BC3;
-  --color-background: #F8F9FD;
-  --color-surface: #FFFFFF;
-  --color-on-surface: #1A1C1E;
-  --color-surface-variant: #E0E2EC;
-  --color-on-surface-variant: #44474E;
-  --color-outline: #74777F;
-  --color-error: #B3261E;
-
-  /* Typography */
-  --font-family: 'Roboto', sans-serif;
-  --font-size-display: 57px;
-  --font-size-headline: 32px;
-  --font-size-title: 22px;
-  --font-size-body: 16px;
-  --font-size-label: 14px;
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-bold: 700;
-
-  /* Shape & Spacing */
-  --spacing-unit: 8px;
-  --border-radius-small: 4px;
-  --border-radius-medium: 8px;
-  --border-radius-large: 16px;
-  --border-radius-full: 999px;
+  /* Colors */
+  --primary-color: #4F46E5; /* Indigo 600 */
+  --primary-color-light: #818CF8; /* Indigo 400 */
+  --primary-color-dark: #4338CA; /* Indigo 700 */
   
-  /* Effects */
-  --shadow-1: 0 1px 2px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
-  --shadow-2: 0 4px 8px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.08);
-  --transition-short: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --secondary-color: #64748b; /* Slate 500 */
+  --secondary-color-light: #94A3B8; /* Slate 400 */
+  --secondary-color-dark: #475569; /* Slate 700 */
+
+  --bg-color: #F8FAFC; /* Light gray for background */
+  --background-color-light: #FFFFFF; /* White for cards/sections */
+  --surface: #FFFFFF; /* White, often used for card backgrounds */
+  
+  --text-primary: #0F172A; /* Dark blue-gray */
+  --text-secondary: #475569; /* Medium blue-gray */
+  --text-tertiary: #94A3B8; /* Light blue-gray */
+
+  --border-color: #E2E8F0; /* Light border */
+
+  /* Spacing */
+  --spacing-xxs: 0.25rem; /* 4px */
+  --spacing-xs: 0.5rem;   /* 8px */
+  --spacing-sm: 0.75rem;  /* 12px */
+  --spacing-md: 1rem;     /* 16px */
+  --spacing-lg: 1.5rem;   /* 24px */
+  --spacing-xl: 2rem;     /* 32px */
+  --spacing-xxl: 3rem;    /* 48px */
+
+  /* Border Radii */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-full: 9999px;
+
+  /* Shadows (Material-like) */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+  /* Transitions */
+  --transition-ease-in-out: all 0.2s ease-in-out;
 }

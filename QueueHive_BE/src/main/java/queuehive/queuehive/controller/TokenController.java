@@ -8,6 +8,8 @@ import queuehive.queuehive.dto.QueuePositionDto;
 import queuehive.queuehive.dto.TokenDto;
 import queuehive.queuehive.service.TokenService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/tokens")
 public class TokenController {
@@ -36,5 +38,23 @@ public class TokenController {
         // This endpoint requires the token to exist, otherwise the service will throw an exception
         QueuePositionDto position = tokenService.getQueuePosition(id);
         return ResponseEntity.ok(position);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<TokenDto>> getActiveTokensByUserId(@PathVariable Long userId) {
+        List<TokenDto> tokens = tokenService.getActiveTokensByUserId(userId);
+        return ResponseEntity.ok(tokens);
+    }
+
+    @GetMapping("/service/{serviceId}/active")
+    public ResponseEntity<List<TokenDto>> getActiveTokensByServiceId(@PathVariable Long serviceId) {
+        List<TokenDto> tokens = tokenService.getActiveTokensByServiceId(serviceId);
+        return ResponseEntity.ok(tokens);
+    }
+
+    @PutMapping("/{tokenId}/status")
+    public ResponseEntity<TokenDto> updateTokenStatus(@PathVariable Long tokenId, @RequestParam String status) {
+        TokenDto updatedToken = tokenService.updateTokenStatus(tokenId, status);
+        return ResponseEntity.ok(updatedToken);
     }
 }

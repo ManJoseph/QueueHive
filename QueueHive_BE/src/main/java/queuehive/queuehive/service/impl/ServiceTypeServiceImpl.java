@@ -5,6 +5,7 @@ import queuehive.queuehive.domain.Company;
 import queuehive.queuehive.domain.ServiceType;
 import queuehive.queuehive.dto.CreateServiceTypeRequest;
 import queuehive.queuehive.dto.ServiceTypeDto;
+import queuehive.queuehive.dto.UpdateServiceTypeRequest; // Import UpdateServiceTypeRequest
 import queuehive.queuehive.repository.CompanyRepository;
 import queuehive.queuehive.repository.ServiceTypeRepository;
 import queuehive.queuehive.service.ServiceTypeService;
@@ -42,6 +43,27 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public ServiceTypeDto updateServiceType(Long serviceId, UpdateServiceTypeRequest request) {
+        ServiceType serviceType = serviceTypeRepository.findById(serviceId)
+                .orElseThrow(() -> new RuntimeException("Service Type not found with ID: " + serviceId));
+
+        serviceType.setName(request.getName());
+        serviceType.setAverageServiceTime(request.getAverageServiceTime());
+
+        ServiceType updatedServiceType = serviceTypeRepository.save(serviceType);
+        return toDto(updatedServiceType);
+    }
+
+    @Override
+    public void deleteServiceType(Long serviceId) {
+        if (!serviceTypeRepository.existsById(serviceId)) {
+            throw new RuntimeException("Service Type not found with ID: " + serviceId);
+        }
+        serviceTypeRepository.deleteById(serviceId);
+    }
+
 
     private ServiceTypeDto toDto(ServiceType serviceType) {
         return new ServiceTypeDto(

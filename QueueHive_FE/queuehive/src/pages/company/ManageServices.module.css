@@ -1,0 +1,150 @@
+/* src/pages/company/ManageServices.module.css */
+
+.manageServicesContainer {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md) var(--spacing-xl);
+  background-color: var(--bg-color);
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: var(--spacing-xl);
+}
+
+.mainTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.addServiceButton {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: var(--transition-ease-in-out);
+  box-shadow: var(--shadow-sm);
+}
+
+.addServiceButton:hover {
+  background-color: var(--primary-color-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.serviceList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.serviceItem {
+  background-color: var(--surface);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  transition: var(--transition-ease-in-out);
+}
+
+.serviceItem:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+}
+
+.serviceDetails {
+  flex-grow: 1;
+}
+
+.serviceName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.serviceAvgTime {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.serviceId {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  margin-top: var(--spacing-sm);
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+.editButton, .deleteButton {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-ease-in-out);
+  border: none;
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.editButton {
+  background-color: var(--secondary-color);
+}
+
+.editButton:hover {
+  background-color: var(--secondary-color-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.deleteButton {
+  background-color: #dc3545; /* Red for delete */
+}
+
+.deleteButton:hover {
+  background-color: #c82333; /* Darker red */
+  box-shadow: var(--shadow-md);
+}
+
+.error {
+  color: #dc3545;
+  text-align: center;
+  padding: var(--spacing-md);
+  background-color: #f8d7da;
+  border-radius: var(--border-radius-md);
+  margin-top: var(--spacing-md);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  .mainTitle {
+    font-size: 1.8rem;
+  }
+  .addServiceButton {
+    width: 100%;
+    text-align: center;
+  }
+  .serviceList {
+    grid-template-columns: 1fr; /* Stack cards on mobile */
+  }
+}

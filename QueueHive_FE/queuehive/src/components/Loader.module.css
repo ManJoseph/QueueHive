@@ -1,29 +1,29 @@
-@import '../theme.css';
+/* src/components/Loader.module.css */
 
 .loaderOverlay {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: calc(var(--spacing-unit) * 4);
+  padding: var(--spacing-xl);
   min-height: 200px;
 }
 
 .spinner {
   width: 48px;
   height: 48px;
-  border: 5px solid var(--color-surface-variant);
-  border-bottom-color: var(--color-primary);
-  border-radius: 50%;
+  border: 5px solid var(--border-color);
+  border-bottom-color: var(--primary-color);
+  border-radius: var(--border-radius-full);
   display: inline-block;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
 }
 
 .loaderText {
-  margin-top: var(--spacing-unit);
-  color: var(--color-on-surface-variant);
-  font-weight: var(--font-weight-medium);
+  margin-top: var(--spacing-md);
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 @keyframes rotation {

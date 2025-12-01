@@ -5,14 +5,16 @@ import java.time.LocalDateTime;
 public class CompanyDto {
     private Long id;
     private String name;
-    private String category;
+    private String description; // Changed from category
+    private Long ownerId;       // New field
     private Boolean approved;
     private LocalDateTime createdAt;
 
-    public CompanyDto(Long id, String name, String category, Boolean approved, LocalDateTime createdAt) {
+    public CompanyDto(Long id, String name, String description, Long ownerId, Boolean approved, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
-        this.category = category;
+        this.description = description;
+        this.ownerId = ownerId;
         this.approved = approved;
         this.createdAt = createdAt;
     }
@@ -34,12 +36,20 @@ public class CompanyDto {
         this.name = name;
     }
 
-    public String getCategory() {
-        return category;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public Boolean getApproved() {

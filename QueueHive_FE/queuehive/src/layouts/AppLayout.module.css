@@ -1,0 +1,23 @@
+/* src/layouts/AppLayout.module.css */
+
+.appLayoutContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+}
+
+.appContent {
+  flex-grow: 1; /* Allows content to take up available space */
+  padding: var(--spacing-md);
+  max-width: 1200px; /* Optional: constrain max width for large screens */
+  margin: 0 auto; /* Center content */
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .appContent {
+    padding: var(--spacing-sm);
+  }
+}

@@ -1,0 +1,10 @@
+/* src/layouts/AuthLayout.module.css */
+
+.authLayoutContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  padding: var(--spacing-md); /* Add some padding for responsiveness */
+}
