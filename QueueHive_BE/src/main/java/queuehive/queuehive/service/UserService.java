@@ -1,6 +1,7 @@
 package queuehive.queuehive.service;
 
 import queuehive.queuehive.dto.CreateUserRequest;
+import queuehive.queuehive.dto.LoginRequest;
 import queuehive.queuehive.dto.UserDto;
 
 import java.util.Optional;

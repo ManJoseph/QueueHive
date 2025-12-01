@@ -44,6 +44,8 @@ public class UserServiceImpl implements UserService {
     public Optional<UserDto> findUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .map(user -> new UserDto(user.getId(), user.getFullName(), user.getPhone(), user.getEmail(), user.getRole()));
+    }
+
     @Override
     public Optional<String> login(queuehive.queuehive.dto.LoginRequest request) {
         Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
