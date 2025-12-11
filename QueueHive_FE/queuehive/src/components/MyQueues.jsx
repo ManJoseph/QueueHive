@@ -1,46 +1,74 @@
-import React, { useEffect, useState } from 'react';
-import tokenService from '../api/tokenService'; // Corrected path
-import Loader from './Loader'; // Adjust path as needed
-import styles from './MyQueues.module.css'; // Create this CSS module
+import React, { useEffect, useState, useCallback } from 'react';
+import tokenService from '../api/tokenService';
+import Loader from './Loader';
+import EmptyState from './EmptyState';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from './toast/useToast'; // Import useToast
+import websocketService from '../api/websocketService'; // Import websocketService
+import styles from './MyQueues.module.css';
 
 const MyQueues = () => {
   const [activeTokens, setActiveTokens] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const userId = localStorage.getItem('userId'); // Get userId from localStorage
+  const { user } = useAuth();
+  const { showToast } = useToast();
 
-  useEffect(() => {
-    if (!userId) {
-      setError('User not logged in or userId not found.');
+  const fetchActiveTokens = useCallback(async () => {
+    if (!user || !user.userId) {
       setIsLoading(false);
       return;
     }
 
-    const fetchActiveTokens = async () => {
-      try {
-        setIsLoading(true);
-        const response = await tokenService.getTokensByUserId(userId);
-        setActiveTokens(response.data); // Assuming response.data is an array of tokens
-      } catch (err) {
-        setError(err.message || 'Failed to fetch active queues.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    try {
+      setIsLoading(true);
+      const response = await tokenService.getTokensByUserId(user.userId);
+      
+      const tokensWithPositions = await Promise.all(
+        response.data.map(async (token) => {
+          try {
+            const positionResponse = await tokenService.getQueuePosition(token.id);
+            return { ...token, queuePosition: positionResponse.data.position };
+          } catch (posErr) {
+            console.error(`Failed to get queue position for token ${token.id}:`, posErr);
+            return { ...token, queuePosition: 'N/A' };
+          }
+        })
+      );
+      setActiveTokens(tokensWithPositions);
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Failed to fetch active queues.';
+      showToast(msg, 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user, showToast]);
 
+  useEffect(() => {
     fetchActiveTokens();
-  }, [userId]);
+
+    // WebSocket connection for real-time updates
+    if (user && user.userId) {
+      const stompClient = websocketService.connect(() => {
+        // Subscribe to a general user-specific topic, or all relevant service topics
+        // For simplicity, we'll just re-fetch all active tokens on any update for now
+        stompClient.subscribe('/topic/tokenUpdates/*', (message) => { // Wildcard for all service updates
+            showToast('Queue status updated!', 'info', 2000);
+            fetchActiveTokens();
+        });
+      });
+
+      return () => {
+        websocketService.disconnect(stompClient);
+      };
+    }
+  }, [user, fetchActiveTokens, showToast]);
 
   if (isLoading) {
     return <Loader />;
   }
 
-  if (error) {
-    return <div className={styles.error}>{error}</div>;
-  }
-
   if (activeTokens.length === 0) {
-    return <div className={styles.emptyState}>You have no active queues.</div>;
+    return <EmptyState message="You have no active queues." />;
   }
 
   return (
@@ -48,11 +76,12 @@ const MyQueues = () => {
       <h2 className={styles.title}>My Active Queues</h2>
       {activeTokens.map((token) => (
         <div key={token.id} className={styles.queueItem}>
-          <p className={styles.companyName}>Company ID: {token.serviceType.company.id}</p> {/* Assuming serviceType has company object */}
-          <p className={styles.serviceName}>Service: {token.serviceType.name}</p>
-          <p className={styles.tokenNumber}>Your Token Number: {token.tokenNumber}</p>
-          <p className={styles.status}>Status: {token.status}</p>
-          {/* Add more token details as needed */}
+          <p className={styles.companyName}><strong>Company:</strong> {token.serviceType?.company?.name || 'N/A'}</p> 
+          <p className={styles.serviceName}><strong>Service:</strong> {token.serviceType?.name || 'Unknown Service'}</p>
+          <p className={styles.tokenNumber}><strong>Token:</strong> #{token.tokenNumber}</p>
+          <p className={styles.status}><strong>Status:</strong> <span className={styles[token.status.toLowerCase()]}>{token.status}</span></p>
+          <p className={styles.position}><strong>Your Position:</strong> {token.queuePosition}</p>
+          <p className={styles.time}><strong>Joined:</strong> {new Date(token.createdAt).toLocaleTimeString()}</p>
         </div>
       ))}
     </div>

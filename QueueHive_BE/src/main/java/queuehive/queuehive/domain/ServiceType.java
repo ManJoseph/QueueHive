@@ -24,15 +24,19 @@ public class ServiceType {
     @Column(nullable = false)
     private String name;
 
+    @Column
+    private String description;
+
     @Column(nullable = false)
     private Integer averageServiceTime; // in minutes
 
     public ServiceType() {
     }
 
-    public ServiceType(Company company, String name, Integer averageServiceTime) {
+    public ServiceType(Company company, String name, String description, Integer averageServiceTime) {
         this.company = company;
         this.name = name;
+        this.description = description;
         this.averageServiceTime = averageServiceTime;
     }
 
@@ -47,6 +51,10 @@ public class ServiceType {
 
     public String getName() {
         return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public Integer getAverageServiceTime() {
@@ -65,6 +73,11 @@ public class ServiceType {
     public void setName(String name) {
         this.name = name;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 
     public void setAverageServiceTime(Integer averageServiceTime) {
         this.averageServiceTime = averageServiceTime;

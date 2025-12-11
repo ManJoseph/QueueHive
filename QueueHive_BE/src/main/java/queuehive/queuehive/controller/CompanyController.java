@@ -32,10 +32,28 @@ public class CompanyController {
         return ResponseEntity.ok(approvedCompany);
     }
 
+    @DeleteMapping("/{id}/reject")
+    public ResponseEntity<Void> rejectCompany(@PathVariable Long id) {
+        companyService.rejectCompany(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public ResponseEntity<List<CompanyDto>> listApprovedCompanies() {
         List<CompanyDto> companies = companyService.listApprovedCompanies();
         return ResponseEntity.ok(companies);
+    }
+
+    @GetMapping("/pending")
+    public ResponseEntity<List<CompanyDto>> listPendingCompanies() {
+        List<CompanyDto> companies = companyService.listPendingCompanies();
+        return ResponseEntity.ok(companies);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CompanyDto> getCompanyById(@PathVariable Long id) {
+        CompanyDto company = companyService.getCompanyById(id);
+        return ResponseEntity.ok(company);
     }
 
     @PutMapping("/{companyId}/update")

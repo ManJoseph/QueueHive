@@ -3,22 +3,21 @@
 .manageServicesContainer {
   display: flex;
   flex-direction: column;
-  padding: var(--spacing-md) var(--spacing-xl);
-  background-color: var(--bg-color);
-  min-height: 100vh;
+  /* Removed min-height and padding, as AppLayout handles overall layout */
+  /* background-color: var(--bg-color); implicitly inherited from AppLayout */
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-md) 0;
-  border-bottom: 1px solid var(--border-color);
+  padding: var(--spacing-lg) 0;
   margin-bottom: var(--spacing-xl);
+  border-bottom: 1px solid var(--divider-color); /* Subtle divider */
 }
 
 .mainTitle {
-  font-size: 2rem;
+  font-size: var(--font-size-xxl); /* Consistent with other main titles */
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
@@ -26,43 +25,46 @@
 
 .addServiceButton {
   background-color: var(--primary-color);
-  color: white;
+  color: var(--text-primary); /* Use primary text color for contrast */
   border: none;
-  padding: var(--spacing-xs) var(--spacing-md);
-  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm); /* Smaller border-radius for buttons */
   cursor: pointer;
-  font-size: 1rem;
+  font-size: var(--font-size-md);
   text-decoration: none;
-  transition: var(--transition-ease-in-out);
-  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+  transition: all var(--transition-short);
+  box-shadow: none; /* No shadow by default */
 }
 
 .addServiceButton:hover {
   background-color: var(--primary-color-dark);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
 }
 
 .serviceList {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive grid */
   gap: var(--spacing-lg);
+  margin-top: var(--spacing-xl);
 }
 
 .serviceItem {
-  background-color: var(--surface);
+  background-color: var(--background-color-light); /* Slightly lighter surface */
   padding: var(--spacing-lg);
   border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color); /* Subtle border */
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  transition: var(--transition-ease-in-out);
+  transition: all var(--transition-short);
 }
 
 .serviceItem:hover {
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
 }
 
 .serviceDetails {
@@ -70,19 +72,19 @@
 }
 
 .serviceName {
-  font-size: 1.5rem;
+  font-size: var(--font-size-xl);
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: var(--spacing-xs);
 }
 
 .serviceAvgTime {
-  font-size: 1rem;
+  font-size: var(--font-size-md);
   color: var(--text-secondary);
 }
 
 .serviceId {
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm);
   color: var(--text-tertiary);
   margin-top: var(--spacing-sm);
 }
@@ -91,45 +93,41 @@
   display: flex;
   gap: var(--spacing-sm);
   margin-top: var(--spacing-md);
+  justify-content: flex-end; /* Align buttons to the right */
 }
 
 .editButton, .deleteButton {
   padding: var(--spacing-xs) var(--spacing-md);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--border-radius-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: var(--transition-ease-in-out);
+  transition: all var(--transition-short);
   border: none;
-  color: white;
-  box-shadow: var(--shadow-sm);
+  color: var(--text-primary); /* Light text for buttons */
+  box-shadow: none; /* No shadow by default */
 }
 
 .editButton {
-  background-color: var(--secondary-color);
+  background-color: var(--secondary-color); /* Muted color for edit */
 }
 
 .editButton:hover {
   background-color: var(--secondary-color-dark);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
 }
 
 .deleteButton {
-  background-color: #dc3545; /* Red for delete */
+  background-color: var(--color-error); /* Error color for delete */
 }
 
 .deleteButton:hover {
-  background-color: #c82333; /* Darker red */
-  box-shadow: var(--shadow-md);
+  background-color: var(--color-error-dark); /* Darker error color */
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
 }
 
-.error {
-  color: #dc3545;
-  text-align: center;
-  padding: var(--spacing-md);
-  background-color: #f8d7da;
-  border-radius: var(--border-radius-md);
-  margin-top: var(--spacing-md);
-}
+/* Removed .error as it will be replaced by the EmptyState component in JSX */
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -138,7 +136,7 @@
     gap: var(--spacing-md);
   }
   .mainTitle {
-    font-size: 1.8rem;
+    font-size: var(--font-size-xl);
   }
   .addServiceButton {
     width: 100%;
@@ -146,5 +144,8 @@
   }
   .serviceList {
     grid-template-columns: 1fr; /* Stack cards on mobile */
+  }
+  .serviceItem {
+    padding: var(--spacing-md);
   }
 }

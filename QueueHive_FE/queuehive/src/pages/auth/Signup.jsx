@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import authService from '../../api/authService';
 import styles from './Signup.module.css';
 import Loader from '../../components/Loader';
+import { useToast } from '../../components/toast/useToast'; // Import useToast
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -14,9 +15,9 @@ const Signup = () => {
     role: 'USER', // Default role
   });
   const [formErrors, setFormErrors] = useState({});
-  const [error, setError] = useState(null); // Re-added for server-side errors
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const validateField = (name, value, currentFormData) => {
     let error = null;
@@ -91,32 +92,27 @@ const Signup = () => {
     e.preventDefault();
     
     if (!validateFormOnSubmit()) {
+      showToast('Please correct the form errors.', 'error');
       return;
     }
 
     setIsLoading(true);
     try {
       const { fullName, email, phone, password, role } = formData;
-      const response = await authService.register({ fullName, email, phone, password, role });
       
-      // For Company Admins, redirect to a second step to enter company details.
-      // We'll pass the new user's ID to that page.
       if (role === 'COMPANY_ADMIN') {
-        const userId = response.data.id; // Assuming the backend returns the new user object
-        navigate('/signup/company-details', { state: { userId } });
+        navigate('/signup/company-admin', { state: { fullName, email, phone, password } });
       } else {
-        // For Users and Super Admins, redirect to login with a success message.
+        await authService.register({ fullName, email, phone, password, role });
+        showToast('Registration successful! Please log in.', 'success');
         navigate('/login?registered=true');
       }
 
     } catch (err) {
-      // 'err' now contains the standardized error object from http.js interceptor
-      const errorMessage = err.message || 'Registration failed. Please try again.';
-      setError(errorMessage);
+      const errorMessage = err.response?.data?.message || err.message || 'Registration failed. Please try again.';
+      showToast(errorMessage, 'error');
+    } finally {
       setIsLoading(false);
-      // Additionally, if there are field-specific errors from backend validation
-      // we might want to map them to formErrors here if they weren't caught client-side
-      // For now, we'll just display the main error message.
     }
   };
 
@@ -126,8 +122,6 @@ const Signup = () => {
         <h2 className={styles.title}>Create an Account</h2>
         <p className={styles.subtitle}>Join QueueHive today!</p>
         
-        {error && <div className={styles.errorBanner}>{error}</div>}
-
         <form onSubmit={handleSubmit} noValidate>
           <div className={styles.inputGroup}>
             <label htmlFor="fullName">Full Name</label>
@@ -196,11 +190,16 @@ const Signup = () => {
           </div>
           <div className={styles.inputGroup}>
             <label htmlFor="role">I am a...</label>
-            <select id="role" name="role" value={formData.role} onChange={handleChange} className={styles.select}>
-                <option value="USER">User (I want to get in queues)</option>
-                <option value="COMPANY_ADMIN">Company Admin (I want to manage queues)</option>
-                <option value="SUPER_ADMIN">Super Admin</option>
-            </select>
+              <select
+                id="role"
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                required
+              >
+                <option value="USER">User</option>
+                <option value="COMPANY_ADMIN">Company Admin</option>
+              </select>
           </div>
           <button type="submit" className={styles.submitButton} disabled={isLoading}>
             {isLoading ? <Loader text="" size="small" /> : 'Create Account'}

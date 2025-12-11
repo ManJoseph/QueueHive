@@ -1,0 +1,210 @@
+/* src/pages/home/Home.module.css */
+
+.homePage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg-color);
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  position: relative; /* Needed for the ::before pseudo-element */
+}
+
+.homePage::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 18% 20%, rgba(245, 96, 64, 0.05), transparent 35%),
+              radial-gradient(circle at 80% 10%, rgba(193, 53, 132, 0.06), transparent 30%),
+              linear-gradient(180deg, rgba(22, 22, 31, 0.85), rgba(13, 13, 15, 0.95));
+  z-index: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--surface-glass);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--divider-color);
+  position: sticky;
+  top: 0;
+  z-index: 99; /* Below modal overlay, above other content */
+  height: 68px;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: opacity var(--transition-short);
+  letter-spacing: -0.01em;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+.searchBar {
+  flex-grow: 1; /* Allows search bar to take available space */
+  max-width: 440px;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-full);
+  padding: var(--spacing-xs) var(--spacing-md);
+  margin: 0 var(--spacing-lg);
+  transition: all var(--transition-short), box-shadow var(--transition-short);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.searchBar:focus-within {
+  border-color: transparent;
+  box-shadow: 0 12px 32px rgba(245, 96, 64, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.searchIcon {
+  color: var(--text-secondary);
+  margin-right: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+}
+
+.searchBar input {
+  flex-grow: 1;
+  border: none;
+  background: none;
+  font-size: var(--font-size-md);
+  color: var(--text-primary);
+  padding: 0;
+}
+
+.searchBar input:focus {
+  outline: none;
+}
+
+.searchBar input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.navLinks {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.navLink {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 600;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius-full);
+  transition: background-color var(--transition-short), color var(--transition-short);
+}
+
+.navLink:hover {
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.signupButton {
+  background: var(--accent-gradient);
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius-full);
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform var(--transition-short), box-shadow var(--transition-short);
+  box-shadow: var(--shadow-sm);
+}
+
+.signupButton:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.mainContent {
+  flex-grow: 1;
+  padding: var(--spacing-xl);
+  max-width: 935px; /* Consistent with AppLayout content width */
+  margin: var(--spacing-xl) auto;
+  width: 100%;
+}
+
+.companyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsive grid */
+  gap: var(--spacing-lg);
+}
+
+.errorText {
+  color: var(--color-error);
+  text-align: center;
+  padding: var(--spacing-md);
+  background-color: var(--color-error-bg);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-md);
+  margin-top: var(--spacing-xl);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header {
+    flex-wrap: wrap; /* Allow items to wrap */
+    height: auto;
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .searchBar {
+    order: 3; /* Move search bar to the bottom on mobile */
+    flex-basis: 100%; /* Take full width */
+    margin: var(--spacing-sm) 0;
+  }
+
+  .navLinks {
+    gap: var(--spacing-sm);
+  }
+
+  .mainContent {
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-md);
+  }
+
+  .companyGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--spacing-sm) var(--spacing-xs);
+  }
+
+  .navLinks {
+    width: 100%;
+    justify-content: space-around;
+    margin-top: var(--spacing-sm);
+    border-top: 1px solid var(--divider-color);
+    padding-top: var(--spacing-sm);
+  }
+
+  .mainContent {
+    padding: var(--spacing-xs);
+  }
+
+  .companyGrid {
+    grid-template-columns: 1fr; /* Single column on very small screens */
+  }
+}

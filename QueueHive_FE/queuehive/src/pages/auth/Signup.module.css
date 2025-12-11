@@ -1,0 +1,120 @@
+.authContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px); /* Adjust based on AuthLayout header height */
+    background-color: #f0f2f5;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.authCard {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.title {
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.inputGroup {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.inputGroup label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.inputGroup input[type="text"],
+.inputGroup input[type="email"],
+.inputGroup input[type="password"],
+.inputGroup input[type="tel"],
+.inputGroup select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputGroup input:focus,
+.inputGroup select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.errorText {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    text-align: left;
+}
+
+.submitButton {
+    width: 100%;
+    padding: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 20px;
+}
+
+.submitButton:hover:not(:disabled) {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.submitButton:disabled {
+    background-color: #a0c9ed;
+    cursor: not-allowed;
+}
+
+.footer {
+    margin-top: 30px;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.footer a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* Specific styles for Company Admin Signup if needed */
+.formSeparator {
+    border: none;
+    border-top: 1px dashed #e0e0e0;
+    margin: 30px 0;
+}

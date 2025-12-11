@@ -3,8 +3,9 @@ package queuehive.queuehive.service;
 import queuehive.queuehive.dto.CreateUserRequest;
 import queuehive.queuehive.dto.LoginRequest;
 import queuehive.queuehive.dto.LoginResponse;
-import queuehive.queuehive.dto.RegisterCompanyRequest; // Import RegisterCompanyRequest
+import queuehive.queuehive.dto.RegisterCompanyRequest;
 import queuehive.queuehive.dto.UpdateUserRequest;
+import queuehive.queuehive.dto.UpdatePasswordRequest;
 import queuehive.queuehive.dto.UserDto;
 
 import java.util.Optional;
@@ -19,4 +20,5 @@ public interface UserService {
     // New methods for user profile
     UserDto getCurrentUser(Long userId);
     UserDto updateUser(Long userId, UpdateUserRequest request);
+    UserDto updateUserPassword(Long userId, UpdatePasswordRequest request); // New method
 }

@@ -9,6 +9,7 @@ import queuehive.queuehive.domain.Company;
 import queuehive.queuehive.dto.CompanyDto;
 import queuehive.queuehive.dto.CreateCompanyRequest;
 import queuehive.queuehive.repository.CompanyRepository;
+import queuehive.queuehive.repository.TokenRepository;
 import queuehive.queuehive.service.impl.CompanyServiceImpl;
 
 import java.util.Optional;
@@ -24,6 +25,9 @@ class CompanyServiceImplTest {
     @Mock
     private CompanyRepository companyRepository;
 
+    @Mock
+    private TokenRepository tokenRepository;
+
     @InjectMocks
     private CompanyServiceImpl companyService;
 
@@ -34,8 +38,8 @@ class CompanyServiceImplTest {
         request.setName("Test Company");
         request.setCategory("Tech");
 
-        Company companyToSave = new Company(request.getName(), request.getCategory(), false);
-        Company savedCompany = new Company(request.getName(), request.getCategory(), false);
+        Company companyToSave = new Company("Test Company", "Tech", 1L, false, "Location", "Category");
+        Company savedCompany = new Company("Test Company", "Tech", 1L, false, "Location", "Category");
         savedCompany.setId(1L);
 
         when(companyRepository.save(any(Company.class))).thenReturn(savedCompany);
@@ -54,7 +58,7 @@ class CompanyServiceImplTest {
     void shouldApproveCompany() {
         // Given
         Long companyId = 1L;
-        Company existingCompany = new Company("Test Company", "Tech", false);
+        Company existingCompany = new Company("Test Company", "Tech", 1L, false, "Location", "Category");
         existingCompany.setId(companyId);
 
         when(companyRepository.findById(companyId)).thenReturn(Optional.of(existingCompany));

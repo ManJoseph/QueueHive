@@ -1,52 +1,62 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import companyAdminService from '../../api/companyAdminService';
 import Loader from '../../components/Loader';
 import EmptyState from '../../components/EmptyState';
-import styles from './ManageServices.module.css'; // Create this CSS module
+import { useConfirmModal } from '../../components/confirmModal/useConfirmModal'; // Import useConfirmModal
+import { useToast } from '../../components/toast/useToast'; // Import useToast
+import styles from './ManageServices.module.css';
 
 const ManageServices = () => {
   const [services, setServices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { confirm } = useConfirmModal(); // Get the confirm function
+  const { showToast } = useToast();
 
   const companyId = localStorage.getItem('companyId');
 
-  useEffect(() => {
+  const fetchServices = useCallback(async () => {
     if (!companyId) {
-      setError('Company ID not found. Please log in as a Company Admin.');
-      setIsLoading(false);
-      return;
+        showToast('Company ID not found. Please log in as a Company Admin.', 'error');
+        setIsLoading(false);
+        return;
     }
 
-    fetchServices();
-  }, [companyId]);
-
-  const fetchServices = async () => {
     try {
       setIsLoading(true);
-      setError(null);
       const response = await companyAdminService.getCompanyServices(companyId);
       setServices(response.data);
     } catch (err) {
-      setError(err.message || 'Failed to fetch services.');
+      const msg = err.response?.data?.message || err.message || 'Failed to fetch services.';
+      showToast(msg, 'error');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [companyId, showToast]);
+
+  useEffect(() => {
+    fetchServices();
+  }, [fetchServices]);
 
   const handleDeleteService = async (serviceId) => {
-    if (!window.confirm('Are you sure you want to delete this service?')) {
+    const isConfirmed = await confirm(
+      'Confirm Deletion',
+      'Are you sure you want to delete this service? This action cannot be undone.'
+    );
+
+    if (!isConfirmed) {
       return;
     }
+
     try {
       setIsLoading(true);
       await companyAdminService.deleteService(serviceId);
+      showToast('Service deleted successfully!', 'success');
       await fetchServices(); // Refresh the list
-      alert('Service deleted successfully!');
     } catch (err) {
-      setError(err.message || 'Failed to delete service.');
+      const msg = err.response?.data?.message || err.message || 'Failed to delete service.';
+      showToast(msg, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -54,10 +64,6 @@ const ManageServices = () => {
 
   if (isLoading) {
     return <Loader />;
-  }
-
-  if (error) {
-    return <div className={styles.error}>{error}</div>;
   }
 
   return (
@@ -75,6 +81,7 @@ const ManageServices = () => {
             <div key={service.id} className={styles.serviceItem}>
               <div className={styles.serviceDetails}>
                 <h3 className={styles.serviceName}>{service.name}</h3>
+                {service.description && <p className={styles.serviceDescription}>{service.description}</p>}
                 <p className={styles.serviceAvgTime}>Avg. Time: {service.averageServiceTime} min</p>
                 <p className={styles.serviceId}>ID: {service.id}</p>
               </div>

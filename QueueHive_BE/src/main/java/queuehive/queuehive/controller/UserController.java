@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import queuehive.queuehive.dto.UpdateUserRequest;
+import queuehive.queuehive.dto.UpdatePasswordRequest;
 import queuehive.queuehive.dto.UserDto;
 import queuehive.queuehive.service.UserService;
 
@@ -74,6 +75,13 @@ public class UserController {
                                            .orElseThrow(() -> new RuntimeException("Authenticated user not found."));
 
         UserDto updatedUser = userService.updateUser(existingUser.getId(), request);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @PutMapping("/{userId}/update-password")
+    public ResponseEntity<UserDto> updateUserPassword(@PathVariable Long userId, @Valid @RequestBody UpdatePasswordRequest request) {
+        // You might want to add authentication/authorization checks here
+        UserDto updatedUser = userService.updateUserPassword(userId, request);
         return ResponseEntity.ok(updatedUser);
     }
 }

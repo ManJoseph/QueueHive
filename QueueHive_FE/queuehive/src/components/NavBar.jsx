@@ -18,27 +18,27 @@ const NavBar = () => {
 
   const getUserNavLinks = () => (
     <>
-      <li><Link to="/user/dashboard" className={styles.navLink}><MdOutlineDashboard className={styles.navIcon} /> Dashboard</Link></li>
-      <li><Link to="/user/profile" className={styles.navLink}><FaUser className={styles.navIcon} /> Profile</Link></li>
+      <li><Link to="/user/dashboard" className={styles.navLink}><MdOutlineDashboard className={styles.navIcon} /> <span>Dashboard</span></Link></li>
+      <li><Link to="/user/profile" className={styles.navLink}><FaUser className={styles.navIcon} /> <span>Profile</span></Link></li>
     </>
   );
 
   const getCompanyAdminNavLinks = () => (
     <>
-      <li><Link to="/company/dashboard" className={styles.navLink}><MdOutlineDashboard className={styles.navIcon} /> Dashboard</Link></li>
-      <li><Link to="/company/manage-services" className={styles.navLink}><FaCogs className={styles.navIcon} /> Services</Link></li>
-      <li><Link to="/company/analytics" className={styles.navLink}><FaChartBar className={styles.navIcon} /> Analytics</Link></li>
-      <li><Link to="/company/profile-settings" className={styles.navLink}><FaBuilding className={styles.navIcon} /> Company Profile</Link></li>
+      <li><Link to="/company/dashboard" className={styles.navLink}><MdOutlineDashboard className={styles.navIcon} /> <span>Dashboard</span></Link></li>
+      <li><Link to="/company/manage-services" className={styles.navLink}><FaCogs className={styles.navIcon} /> <span>Services</span></Link></li>
+      <li><Link to="/company/analytics" className={styles.navLink}><FaChartBar className={styles.navIcon} /> <span>Analytics</span></Link></li>
+      <li><Link to="/company/profile-settings" className={styles.navLink}><FaBuilding className={styles.navIcon} /> <span>Company Profile</span></Link></li>
       {/* Add queue management links, e.g., for specific services */}
     </>
   );
 
   const getPublicNavLinks = () => (
     <>
-      <li><Link to="/" className={styles.navLink}><FaHome className={styles.navIcon} /> Home</Link></li>
-      <li><Link to="/login" className={styles.navLink}><FaSignInAlt className={styles.navIcon} /> Login</Link></li>
-      <li><Link to="/signup" className={styles.navLink}><FaUserPlus className={styles.navIcon} /> Sign Up</Link></li>
-      <li><Link to="/company-admin-signup" className={styles.navLink}><FaBuilding className={styles.navIcon} /> Company Admin Sign Up</Link></li>
+      <li><Link to="/" className={styles.navLink}><FaHome className={styles.navIcon} /> <span>Home</span></Link></li>
+      <li><Link to="/login" className={styles.navLink}><FaSignInAlt className={styles.navIcon} /> <span>Login</span></Link></li>
+      <li><Link to="/signup" className={styles.navLink}><FaUserPlus className={styles.navIcon} /> <span>Sign Up</span></Link></li>
+      <li><Link to="/signup/company-admin" className={styles.navLink}><FaBuilding className={styles.navIcon} /> <span>Company Admin Sign Up</span></Link></li>
     </>
   );
 
@@ -52,10 +52,10 @@ const NavBar = () => {
           <>
             {role === 'USER' && getUserNavLinks()}
             {role === 'COMPANY_ADMIN' && getCompanyAdminNavLinks()}
-            {role === 'SUPER_ADMIN' && <li><Link to="/admin/dashboard" className={styles.navLink}><MdOutlineDashboard className={styles.navIcon} /> Admin Dashboard</Link></li>}
+            {role === 'SUPER_ADMIN' && <li><Link to="/admin/dashboard" className={styles.navLink}><MdOutlineDashboard className={styles.navIcon} /> <span>Admin Dashboard</span></Link></li>}
             <li>
               <button onClick={handleLogout} className={styles.logoutButton}>
-                <FaSignOutAlt className={styles.navIcon} /> Logout
+                <FaSignOutAlt className={styles.navIcon} /> <span>Logout</span>
               </button>
             </li>
           </>

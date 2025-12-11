@@ -5,7 +5,7 @@ const getApprovedCompanies = () => {
 };
 
 const getServicesForCompany = (companyId) => {
-  return http.get(`/companies/${companyId}/services`);
+  return http.get(`/services/company/${companyId}`);
 };
 
 const registerCompany = (companyData) => {
@@ -25,7 +25,11 @@ const approveCompany = (companyId) => {
 };
 
 const rejectCompany = (companyId) => {
-  return http.put(`/companies/${companyId}/reject`);
+  return http.delete(`/companies/${companyId}/reject`);
+};
+
+const getCompanyById = (companyId) => {
+  return http.get(`/companies/${companyId}`);
 };
 
 const companyService = {
@@ -36,6 +40,7 @@ const companyService = {
   getPendingCompanies,
   approveCompany,
   rejectCompany,
+  getCompanyById,
 };
 
 export default companyService;

@@ -75,13 +75,24 @@ public class TokenServiceImpl implements TokenService {
     }
 
     private TokenDto toDto(Token token) {
+        ServiceType serviceType = token.getServiceType();
+        queuehive.queuehive.dto.ServiceTypeDto serviceTypeDto = new queuehive.queuehive.dto.ServiceTypeDto(
+                serviceType.getId(),
+                serviceType.getCompany().getId(),
+                serviceType.getCompany().getName(),
+                serviceType.getName(),
+                serviceType.getDescription(), // Include description
+                serviceType.getAverageServiceTime()
+        );
+
         return new TokenDto(
                 token.getId(),
                 token.getUser().getId(),
                 token.getServiceType().getId(),
                 token.getTokenNumber(),
                 token.getStatus(),
-                token.getCreatedAt()
+                token.getCreatedAt(),
+                serviceTypeDto
         );
     }
 
@@ -115,13 +126,41 @@ public class TokenServiceImpl implements TokenService {
                 .orElseThrow(() -> new RuntimeException("Token not found with ID: " + tokenId));
 
         // Validate status if needed (e.g., must be one of "PENDING", "CALLING", "SERVED", "REJECTED")
-        // For now, we'll assume the provided status is valid.
         token.setStatus(status);
         Token updatedToken = tokenRepository.save(token);
 
-        // Publish update for WebSocket if necessary
         tokenEventPublisher.publishTokenUpdate(new TokenUpdateEvent(updatedToken.getTokenNumber(), updatedToken.getServiceType().getId()));
 
         return toDto(updatedToken);
+    }
+
+    @Override
+    @Transactional
+    public TokenDto callNextToken(Long serviceId) {
+        Token nextPendingToken = tokenRepository.findFirstByServiceTypeIdAndStatusOrderByCreatedAtAsc(serviceId, "PENDING")
+                .orElseThrow(() -> new RuntimeException("No pending tokens for service ID: " + serviceId));
+
+        nextPendingToken.setStatus("CALLING");
+        Token updatedToken = tokenRepository.save(nextPendingToken);
+        tokenEventPublisher.publishTokenUpdate(new TokenUpdateEvent(updatedToken.getTokenNumber(), updatedToken.getServiceType().getId()));
+        return toDto(updatedToken);
+    }
+
+    @Override
+    @Transactional
+    public TokenDto markTokenServed(Long tokenId) {
+        return updateTokenStatus(tokenId, "SERVED");
+    }
+
+    @Override
+    @Transactional
+    public TokenDto skipToken(Long tokenId) {
+        return updateTokenStatus(tokenId, "SKIPPED");
+    }
+
+    @Override
+    @Transactional
+    public TokenDto cancelToken(Long tokenId) {
+        return updateTokenStatus(tokenId, "CANCELLED");
     }
 }

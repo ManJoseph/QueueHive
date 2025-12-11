@@ -33,6 +33,12 @@ public class ServiceTypeController {
         return ResponseEntity.ok(services);
     }
 
+    @GetMapping("/{id}") // New endpoint for fetching a single service by ID
+    public ResponseEntity<ServiceTypeDto> getServiceTypeById(@PathVariable Long id) {
+        ServiceTypeDto service = serviceTypeService.getServiceTypeById(id);
+        return ResponseEntity.ok(service);
+    }
+
     @PutMapping("/{serviceId}")
     public ResponseEntity<ServiceTypeDto> updateServiceType(@PathVariable Long serviceId, @Valid @RequestBody UpdateServiceTypeRequest request) {
         ServiceTypeDto updatedService = serviceTypeService.updateServiceType(serviceId, request);

@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import companyAdminService from '../../api/companyAdminService';
-import { useAuth } from '../../context/AuthContext'; // Import useAuth
+import { useAuth } from '../../context/AuthContext';
 import Loader from '../../components/Loader';
+import EmptyState from '../../components/EmptyState';
+import { useToast } from '../../components/toast/useToast'; // Import useToast
 import styles from './CompanyDashboard.module.css';
 
 const CompanyDashboard = () => {
   const [companyProfile, setCompanyProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { logout, role } = useAuth(); // Get logout and role from AuthContext
+  const { logout, role } = useAuth();
+  const { showToast } = useToast();
 
-  const companyId = localStorage.getItem('companyId'); // Assuming companyId is stored on login for company admin
-  // const userId = localStorage.getItem('userId'); // No longer directly used here, rely on AuthContext for role
+  const companyId = localStorage.getItem('companyId');
 
   useEffect(() => {
-    if (!companyId || role !== 'COMPANY_ADMIN') { // Ensure companyId and role are correct
-      setError('Company ID not found or unauthorized. Please log in as a Company Admin.');
+    if (!companyId || role !== 'COMPANY_ADMIN') {
+      const msg = 'Company ID not found or unauthorized. Please log in as a Company Admin.';
+      showToast(msg, 'error');
       setIsLoading(false);
       if (role !== 'COMPANY_ADMIN') {
-          logout(); // Log out if role is incorrect
+          logout();
           navigate('/login');
       }
       return;
@@ -29,12 +31,12 @@ const CompanyDashboard = () => {
     const fetchCompanyProfile = async () => {
       try {
         setIsLoading(true);
-        setError(null);
         const response = await companyAdminService.getCompanyProfile(companyId);
         setCompanyProfile(response.data);
       } catch (err) {
-        setError(err.message || 'Failed to fetch company profile.');
-        if (err.statusCode === 401 || err.statusCode === 403) {
+        const msg = err.response?.data?.message || err.message || 'Failed to fetch company profile.';
+        showToast(msg, 'error');
+        if (err.response?.status === 401 || err.response?.status === 403) {
           logout();
           navigate('/login');
         }
@@ -44,30 +46,21 @@ const CompanyDashboard = () => {
     };
 
     fetchCompanyProfile();
-  }, [companyId, navigate, logout, role]);
+  }, [companyId, navigate, logout, role, showToast]);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
 
   if (isLoading) {
     return <Loader />;
   }
 
-  if (error) {
-    return <div className={styles.error}>{error}</div>;
-  }
-
   if (!companyProfile) {
-    return <div className={styles.emptyState}>No company profile data available.</div>;
+    return <EmptyState message="No company profile data available." />;
   }
 
   return (
     <div className={styles.dashboardContainer}>
       <header className={styles.header}>
         <h1 className={styles.mainTitle}>Welcome, {companyProfile.name} Admin!</h1>
-        <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
       </header>
 
       <section className={styles.section}>

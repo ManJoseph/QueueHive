@@ -1,16 +1,22 @@
 @import './theme.css';
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: var(--font-family);
-  background-color: var(--color-background);
-  color: var(--color-on-surface);
+  background: radial-gradient(circle at 20% 20%, rgba(245, 96, 64, 0.08), transparent 25%),
+              radial-gradient(circle at 80% 0%, rgba(193, 53, 132, 0.08), transparent 20%),
+              var(--bg-color);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  box-sizing: border-box;
+a {
+  color: inherit;
 }
 
 ul {
@@ -18,6 +24,18 @@ ul {
   list-style: none;
 }
 
-button, a {
+button,
+a {
   transition: all var(--transition-short);
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+::selection {
+  background: rgba(245, 96, 64, 0.25);
+  color: var(--text-primary);
 }

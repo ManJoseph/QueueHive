@@ -1,54 +1,41 @@
 import React, { useEffect, useState } from 'react';
+import EmptyState from '../../components/EmptyState.jsx';
 import { useNavigate } from 'react-router-dom';
-import userService from '../../api/userService';
-import { useAuth } from '../../context/AuthContext'; // Import useAuth
-import MyQueues from '../../components/MyQueues';
+import { useAuth } from '../../context/AuthContext';
 import Loader from '../../components/Loader';
-import styles from './Profile.module.css'; // Create this CSS module
+import { useToast } from '../../components/toast/useToast'; // Import useToast
+import userService from '../../api/userService'; // Import userService
+import styles from './Profile.module.css';
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
+  const { user, userId, logout, updateAuthUser } = useAuth(); // Also get updateAuthUser
   const [formData, setFormData] = useState({
     fullName: '',
+    email: '',
     phoneNumber: '',
     currentPassword: '',
     newPassword: '',
     confirmNewPassword: '',
   });
   const [formErrors, setFormErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const response = await userService.getUserProfile();
-        setUser(response.data);
-        setFormData({
-          fullName: response.data.fullName || '',
-          phoneNumber: response.data.phone || '',
-          currentPassword: '',
-          newPassword: '',
-          confirmNewPassword: '',
-        });
-      } catch (err) {
-        setError(err.message || 'Failed to fetch user profile.');
-        // Optionally redirect to login if unauthorized
-        if (err.statusCode === 401 || err.statusCode === 403) {
-          authService.logout();
-          navigate('/login');
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUserProfile();
-  }, [navigate]);
+    if (user) {
+        setFormData(prev => ({
+            ...prev,
+            fullName: user.fullName || '',
+            email: user.email || '',
+            phoneNumber: user.phone || '', // Assuming 'phone' is the field name in user object
+        }));
+    } else {
+        // Redirect to login if no user is authenticated
+        showToast('You need to be logged in to view your profile.', 'error');
+        navigate('/login');
+    }
+  }, [user, navigate, showToast]);
 
   const validateField = (name, value, currentFormData) => {
     let errorMessage = null;
@@ -85,60 +72,39 @@ const Profile = () => {
     setFormErrors((prevErrors) => ({ ...prevErrors, [name]: errorMessage }));
   };
 
-  const validateFormOnSubmit = () => {
-    let errors = {};
-    let isValid = true;
-    for (const key in formData) {
-      if (['fullName', 'phoneNumber'].includes(key) && !formData[key]) continue; // Allow these to be blank if not changed
-      const errorMessage = validateField(key, formData[key], formData);
-      if (errorMessage) {
-        errors[key] = errorMessage;
-        isValid = false;
-      }
-    }
-    setFormErrors(errors);
-    return isValid;
-  };
-
   const handleSubmitProfileUpdate = async (e) => {
     e.preventDefault();
-    setError(null);
-    setSuccessMessage(null);
 
-    // Only validate relevant fields for profile update, not password fields
     let profileErrors = {};
     let profileIsValid = true;
-    if (validateField('fullName', formData.fullName, formData)) {
-      profileErrors.fullName = validateField('fullName', formData.fullName, formData);
-      profileIsValid = false;
-    }
-    if (validateField('phoneNumber', formData.phoneNumber, formData)) {
-      profileErrors.phoneNumber = validateField('phoneNumber', formData.phoneNumber, formData);
-      profileIsValid = false;
-    }
-
-    // Only allow profile update if no password change is attempted
-    if (formData.currentPassword || formData.newPassword || formData.confirmNewPassword) {
-        profileIsValid = false; // Prevent profile update if password fields are touched, force password update
-        profileErrors.general = "Please use the 'Change Password' button for password modifications.";
-    }
+    
+    // Validate only profile fields. Password fields are handled by separate form.
+    const fieldsToValidate = ['fullName', 'phoneNumber'];
+    fieldsToValidate.forEach(field => {
+      const errorMessage = validateField(field, formData[field], formData);
+      if (errorMessage) {
+        profileErrors[field] = errorMessage;
+        profileIsValid = false;
+      }
+    });
 
     if (!profileIsValid) {
         setFormErrors(profileErrors);
+        showToast('Please correct the form errors.', 'error');
         return;
     }
 
     setIsLoading(true);
     try {
-      const updatePayload = {
+      const updatedUser = await userService.updateUserProfile(userId, {
         fullName: formData.fullName,
-        phoneNumber: formData.phoneNumber,
-      };
-      const response = await userService.updateUserProfile(updatePayload);
-      setUser(response.data); // Update local user state
-      setSuccessMessage('Profile updated successfully!');
+        phoneNumber: formData.phoneNumber
+      });
+      updateAuthUser({ fullName: updatedUser.fullName, phone: updatedUser.phoneNumber }); // Update AuthContext
+      showToast('Profile updated successfully!', 'success');
     } catch (err) {
-      setError(err.message || 'Failed to update profile.');
+      const msg = err.response?.data?.message || err.message || 'Failed to update profile.';
+      showToast(msg, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -146,92 +112,69 @@ const Profile = () => {
 
   const handleSubmitPasswordChange = async (e) => {
     e.preventDefault();
-    setError(null);
-    setSuccessMessage(null);
 
     let passwordErrors = {};
     let passwordIsValid = true;
 
-    if (validateField('currentPassword', formData.currentPassword, formData)) {
-        passwordErrors.currentPassword = validateField('currentPassword', formData.currentPassword, formData);
+    // Validate password fields
+    const passwordFields = ['currentPassword', 'newPassword', 'confirmNewPassword'];
+    passwordFields.forEach(field => {
+      const errorMessage = validateField(field, formData[field], formData);
+      if (errorMessage) {
+        passwordErrors[field] = errorMessage;
         passwordIsValid = false;
-    }
-    if (validateField('newPassword', formData.newPassword, formData)) {
-        passwordErrors.newPassword = validateField('newPassword', formData.newPassword, formData);
-        passwordIsValid = false;
-    }
-    if (validateField('confirmNewPassword', formData.confirmNewPassword, formData)) {
-        passwordErrors.confirmNewPassword = validateField('confirmNewPassword', formData.confirmNewPassword, formData);
-        passwordIsValid = false;
-    }
-    
-    // Ensure new password is provided and different if current is provided
-    if (formData.currentPassword && !formData.newPassword) {
-        passwordErrors.newPassword = 'New password is required.';
-        passwordIsValid = false;
-    }
+      }
+    });
+
     // Ensure new password is provided if current is provided and current is not blank
     if (formData.currentPassword && formData.currentPassword.length > 0 && !formData.newPassword) {
         passwordErrors.newPassword = 'New password is required to change password.';
         passwordIsValid = false;
     }
-
-
+    
     if (!passwordIsValid) {
         setFormErrors(passwordErrors);
+        showToast('Please correct the password errors.', 'error');
         return;
     }
     // If password fields are all blank, don't attempt to change password
     if (!formData.currentPassword && !formData.newPassword && !formData.confirmNewPassword) {
-        setError("No password change requested.");
+        showToast("No password change requested.", 'info');
         return;
     }
 
 
     setIsLoading(true);
     try {
-      const updatePayload = {
+      await userService.updateUserPassword(userId, {
         currentPassword: formData.currentPassword,
-        newPassword: formData.newPassword,
-      };
-      const response = await userService.updateUserProfile(updatePayload);
-      setUser(response.data); // Update local user state
-      setSuccessMessage('Password updated successfully!');
-      setFormData(prev => ({ ...prev, currentPassword: '', newPassword: '', confirmNewPassword: '' })); // Clear password fields
+        newPassword: formData.newPassword
+      });
+      showToast('Password changed successfully! Please log in again with your new password.', 'success');
+      logout(); // Force re-login after password change for security
+      navigate('/login');
     } catch (err) {
-      setError(err.message || 'Failed to change password.');
+      const msg = err.response?.data?.message || err.message || 'Failed to change password.';
+      showToast(msg, 'error');
     } finally {
       setIsLoading(false);
     }
   };
 
 
-  const handleLogout = () => {
-    logout(); // Use AuthContext's logout
-    navigate('/login');
-  };
-
   if (isLoading) {
     return <Loader />;
   }
 
-  if (error && !user) { // Only show global error if user data couldn't be fetched
-    return <div className={styles.error}>{error}</div>;
-  }
-
   if (!user) { // Fallback if no user data but no error
-    return <div className={styles.emptyState}>No user data available.</div>;
+    return <EmptyState message="No user data available." />;
   }
 
   return (
     <div className={styles.profileContainer}>
       <header className={styles.header}>
         <h1 className={styles.mainTitle}>My Profile</h1>
-        <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
       </header>
-
-      {error && <div className={styles.errorBanner}>{error}</div>}
-      {successMessage && <div className={`${styles.successBanner}`}>{successMessage}</div>}
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>User Information</h2>
@@ -303,7 +246,7 @@ const Profile = () => {
               value={formData.confirmNewPassword}
               onChange={handleChange}
             />
-            {formErrors.confirmNewPassword && <p className className={styles.errorText}>{formErrors.confirmNewPassword}</p>}
+            {formErrors.confirmNewPassword && <p className={styles.errorText}>{formErrors.confirmNewPassword}</p>}
           </div>
           <button type="submit" className={styles.submitButton} disabled={isLoading}>
             {isLoading ? <Loader text="" size="small" /> : 'Change Password'}
@@ -311,9 +254,7 @@ const Profile = () => {
         </form>
       </section>
 
-      <section className={styles.section}>
-        <MyQueues />
-      </section>
+
     </div>
   );
 };

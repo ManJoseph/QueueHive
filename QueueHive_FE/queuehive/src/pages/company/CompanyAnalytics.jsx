@@ -2,19 +2,20 @@ import React, { useEffect, useState } from 'react';
 import companyAdminService from '../../api/companyAdminService';
 import Loader from '../../components/Loader';
 import EmptyState from '../../components/EmptyState';
-import styles from './CompanyAnalytics.module.css'; // Create this CSS module
+import { useToast } from '../../components/toast/useToast'; // Import useToast
+import styles from './CompanyAnalytics.module.css';
 
 const CompanyAnalytics = () => {
   const [dailyVisitors, setDailyVisitors] = useState(null);
   const [queueStats, setQueueStats] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { showToast } = useToast();
 
   const companyId = localStorage.getItem('companyId');
 
   useEffect(() => {
     if (!companyId) {
-      setError('Company ID not found. Please log in as a Company Admin.');
+      showToast('Company ID not found. Please log in as a Company Admin.', 'error');
       setIsLoading(false);
       return;
     }
@@ -22,28 +23,28 @@ const CompanyAnalytics = () => {
     const fetchAnalytics = async () => {
       try {
         setIsLoading(true);
-        setError(null);
         const visitorsResponse = await companyAdminService.getDailyVisitors(companyId);
         setDailyVisitors(visitorsResponse.data);
 
         const statsResponse = await companyAdminService.getQueueStats(companyId);
         setQueueStats(statsResponse.data);
       } catch (err) {
-        setError(err.message || 'Failed to fetch analytics data.');
+        const msg = err.response?.data?.message || err.message || 'Failed to fetch analytics data.';
+        showToast(msg, 'error');
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchAnalytics();
-  }, [companyId]);
+  }, [companyId, showToast]);
 
   if (isLoading) {
     return <Loader />;
   }
 
-  if (error) {
-    return <div className={styles.error}>{error}</div>;
+  if (dailyVisitors === null && queueStats.length === 0) { // Check both to show EmptyState only if truly no data
+    return <EmptyState message="No analytics data available for today." />;
   }
 
   return (

@@ -3,52 +3,38 @@
 .dashboardContainer {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    background-color: var(--bg-color);
-    padding: var(--spacing-md) var(--spacing-xl);
+    /* Removed min-height and padding, as AppLayout now handles overall layout */
+    /* background-color: var(--bg-color); implicitly inherited from AppLayout */
 }
 
 .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Center the welcome message */
     align-items: center;
-    padding: var(--spacing-md) 0;
-    border-bottom: 1px solid var(--border-color);
-    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg) 0;
+    margin-bottom: var(--spacing-md);
 }
 
 .mainTitle {
-    font-size: 2rem;
+    font-size: var(--font-size-xxl); /* Consistent with other main titles */
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
 }
 
-.logoutButton {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: var(--spacing-xs) var(--spacing-md);
-    border-radius: var(--border-radius-md);
-    cursor: pointer;
-    font-size: 1rem;
-    transition: var(--transition-ease-in-out);
-}
-
-.logoutButton:hover {
-    background-color: var(--primary-color-dark);
-}
+/* Removed .logoutButton as it's now handled by the main NavBar */
 
 .section {
-    margin-bottom: var(--spacing-xl);
     background-color: var(--surface);
-    padding: var(--spacing-lg);
+    padding: var(--spacing-xl); /* Generous padding */
     border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm); /* Subtle shadow */
+    border: 1px solid var(--border-color); /* Subtle border */
+    margin-bottom: var(--spacing-xl); /* Consistent spacing */
 }
 
 .sectionTitle {
-    font-size: 1.8rem;
+    font-size: var(--font-size-xl); /* Consistent with other section titles */
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: var(--spacing-lg);
@@ -56,15 +42,18 @@
 }
 
 .overviewCard {
+    background-color: var(--background-color-light); /* Slightly lighter surface for card content */
     padding: var(--spacing-md);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--divider-color); /* Even subtler border */
     border-radius: var(--border-radius-md);
-    background-color: var(--background-color-light);
+    box-shadow: var(--shadow-xs); /* Very subtle shadow */
+    margin-bottom: var(--spacing-lg);
 }
 
 .overviewCard p {
     margin: var(--spacing-xs) 0;
     color: var(--text-secondary);
+    font-size: var(--font-size-md);
 }
 
 .overviewCard strong {
@@ -76,60 +65,51 @@
     flex-wrap: wrap;
     gap: var(--spacing-md);
     justify-content: center;
+    margin-top: var(--spacing-lg);
 }
 
 .navLink {
-    display: block;
+    display: flex; /* Use flex to center content */
+    align-items: center;
+    justify-content: center;
     padding: var(--spacing-md) var(--spacing-lg);
-    background-color: var(--secondary-color);
-    color: white;
+    background-color: var(--background-color-light); /* Lighter surface for links */
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
     text-decoration: none;
     font-weight: 600;
     text-align: center;
-    transition: var(--transition-ease-in-out);
+    transition: all var(--transition-short);
     min-width: 180px;
     box-shadow: var(--shadow-sm);
 }
 
 .navLink:hover {
-    background-color: var(--secondary-color-dark);
+    background-color: var(--surface); /* Highlight background on hover */
     box-shadow: var(--shadow-md);
     transform: translateY(-2px);
+    color: var(--primary-color); /* Highlight text with primary color */
 }
 
-.error, .emptyState {
-    color: #dc3545;
-    text-align: center;
-    padding: var(--spacing-md);
-    background-color: #f8d7da;
-    border-radius: var(--border-radius-md);
-    margin-top: var(--spacing-md);
-}
-
-.emptyState {
-    color: var(--text-secondary);
-    background-color: var(--background-color-light);
-    border: 1px dashed var(--border-color);
-}
+/* Removed .error, .emptyState as they will be replaced by the EmptyState component in JSX */
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .dashboardContainer {
-        padding: var(--spacing-sm);
-    }
-
     .header {
-        flex-direction: column;
-        gap: var(--spacing-md);
+        padding: var(--spacing-md) 0;
     }
 
     .mainTitle {
-        font-size: 1.8rem;
+        font-size: var(--font-size-xl);
     }
 
     .sectionTitle {
-        font-size: 1.5rem;
+        font-size: var(--font-size-lg);
+    }
+
+    .section {
+      padding: var(--spacing-lg);
     }
 
     .adminNav {

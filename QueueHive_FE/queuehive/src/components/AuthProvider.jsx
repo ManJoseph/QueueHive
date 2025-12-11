@@ -6,7 +6,7 @@ import Loader from './Loader'; // Adjust path for Loader component
 const AuthProvider = ({ children }) => {
   const [authState, setAuthState] = useState({
     token: null,
-    user: null, // Decoded JWT payload
+    user: null, // Decoded JWT payload + fullName
     role: null,
     userId: null,
     companyId: null, // For COMPANY_ADMIN
@@ -20,6 +20,7 @@ const AuthProvider = ({ children }) => {
     const storedUserRole = localStorage.getItem('userRole');
     const storedUserId = localStorage.getItem('userId');
     const storedCompanyId = localStorage.getItem('companyId');
+    const storedFullName = localStorage.getItem('fullName');
 
     if (storedToken) {
       try {
@@ -40,7 +41,7 @@ const AuthProvider = ({ children }) => {
         } else {
           setAuthState({
             token: storedToken,
-            user: decodedToken,
+            user: { ...decodedToken, fullName: storedFullName },
             role: storedUserRole,
             userId: storedUserId,
             companyId: storedCompanyId,
@@ -66,10 +67,13 @@ const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = (token, role, userId, companyId = null) => {
+  const login = (token, role, userId, companyId = null, fullName = null) => {
     localStorage.setItem('token', token);
     localStorage.setItem('userRole', role);
     localStorage.setItem('userId', userId);
+    if (fullName) {
+      localStorage.setItem('fullName', fullName);
+    }
     if (companyId) {
       localStorage.setItem('companyId', companyId);
     } else {
@@ -79,7 +83,7 @@ const AuthProvider = ({ children }) => {
     const decodedToken = jwtDecode(token);
     setAuthState({
       token,
-      user: decodedToken,
+      user: { ...decodedToken, fullName },
       role,
       userId,
       companyId,
@@ -101,11 +105,28 @@ const AuthProvider = ({ children }) => {
     });
   };
 
+  const updateAuthUser = (updatedFields) => {
+    setAuthState(prev => {
+        const newUser = { ...prev.user, ...updatedFields };
+        if (updatedFields.fullName) {
+            localStorage.setItem('fullName', updatedFields.fullName);
+        }
+        if (updatedFields.phone) {
+            localStorage.setItem('phone', updatedFields.phone); // Assuming 'phone' is the key in localStorage
+        }
+        return {
+            ...prev,
+            user: newUser
+        };
+    });
+  };
+
   // The value that will be supplied to any descendants of this AuthProvider
   const authContextValue = {
     ...authState,
     login,
     logout,
+    updateAuthUser,
   };
 
   if (authState.isLoading) {

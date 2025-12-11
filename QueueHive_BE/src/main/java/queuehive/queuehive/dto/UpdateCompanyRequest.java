@@ -12,10 +12,14 @@ public class UpdateCompanyRequest {
     @NotBlank(message = "Company location cannot be blank")
     private String location;
 
+    @NotBlank(message = "Company category cannot be blank")
+    private String category;
+
     // Getters and Setters
     public String getName() {
         return name;
     }
+
 
     public void setName(String name) {
         this.name = name;
@@ -35,5 +39,13 @@ public class UpdateCompanyRequest {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

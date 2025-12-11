@@ -31,6 +31,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
         ServiceType serviceType = new ServiceType(
                 company,
                 request.getName(),
+                request.getDescription(),
                 request.getAverageServiceTime()
         );
         ServiceType savedServiceType = serviceTypeRepository.save(serviceType);
@@ -45,11 +46,19 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
     }
 
     @Override
+    public ServiceTypeDto getServiceTypeById(Long serviceId) {
+        ServiceType serviceType = serviceTypeRepository.findById(serviceId)
+                .orElseThrow(() -> new RuntimeException("Service Type not found with ID: " + serviceId));
+        return toDto(serviceType);
+    }
+
+    @Override
     public ServiceTypeDto updateServiceType(Long serviceId, UpdateServiceTypeRequest request) {
         ServiceType serviceType = serviceTypeRepository.findById(serviceId)
                 .orElseThrow(() -> new RuntimeException("Service Type not found with ID: " + serviceId));
 
         serviceType.setName(request.getName());
+        serviceType.setDescription(request.getDescription());
         serviceType.setAverageServiceTime(request.getAverageServiceTime());
 
         ServiceType updatedServiceType = serviceTypeRepository.save(serviceType);
@@ -69,7 +78,9 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
         return new ServiceTypeDto(
                 serviceType.getId(),
                 serviceType.getCompany().getId(),
+                serviceType.getCompany().getName(), // Populate companyName
                 serviceType.getName(),
+                serviceType.getDescription(),
                 serviceType.getAverageServiceTime()
         );
     }

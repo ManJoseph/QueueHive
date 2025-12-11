@@ -1,94 +1,108 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import companyService from '../../api/companyService';
 import Loader from '../../components/Loader';
 import EmptyState from '../../components/EmptyState';
-// import styles from './AdminDashboard.module.css'; // Will create this if needed
+import { useConfirmModal } from '../../components/confirmModal/useConfirmModal';
+import { useToast } from '../../components/toast/useToast';
+import DashboardOverview from './DashboardOverview'; // Import DashboardOverview
+import styles from './AdminDashboard.module.css';
 
 const AdminDashboard = () => {
   const [pendingCompanies, setPendingCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
+  const { confirm } = useConfirmModal();
+  const { showToast } = useToast();
 
-  const fetchPendingCompanies = async () => {
-    setIsLoading(true);
-    setError(null);
+  const fetchPendingCompanies = useCallback(async () => {
     try {
       const response = await companyService.getPendingCompanies();
       setPendingCompanies(response.data);
     } catch (err) {
-      setError('Failed to load pending companies.');
-      console.error('Error fetching pending companies:', err);
+      const msg = err.response?.data?.message || err.message || 'Failed to load pending companies.';
+      showToast(msg, 'error');
+    }
+  }, [showToast]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchPendingCompanies().finally(() => setIsLoading(false));
+  }, [fetchPendingCompanies]);
+
+  const handleApprove = async (companyId, companyName) => {
+    const isConfirmed = await confirm(
+      'Approve Company',
+      `Are you sure you want to approve "${companyName}"?`
+    );
+    if (!isConfirmed) return;
+
+    try {
+      setIsLoading(true);
+      await companyService.approveCompany(companyId);
+      showToast(`Company "${companyName}" approved successfully!`, 'success');
+      fetchPendingCompanies();
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || `Failed to approve company "${companyName}".`;
+      showToast(msg, 'error');
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchPendingCompanies();
-  }, []);
+  const handleReject = async (companyId, companyName) => {
+    const isConfirmed = await confirm(
+      'Reject Company',
+      `Are you sure you want to reject "${companyName}"? This action cannot be undone.`
+    );
+    if (!isConfirmed) return;
 
-  const handleApprove = async (companyId) => {
-    setError(null);
-    setSuccessMessage(null);
     try {
-      await companyService.approveCompany(companyId);
-      setSuccessMessage(`Company ${companyId} approved successfully!`);
-      fetchPendingCompanies(); // Refresh the list
+      setIsLoading(true);
+      await companyService.rejectCompany(companyId); 
+      showToast(`Company "${companyName}" rejected.`, 'warning');
+      fetchPendingCompanies();
     } catch (err) {
-      setError(`Failed to approve company ${companyId}.`);
-      console.error('Error approving company:', err);
-    }
-  };
-
-  const handleReject = async (companyId) => {
-    setError(null);
-    setSuccessMessage(null);
-    try {
-      await companyService.rejectCompany(companyId);
-      setSuccessMessage(`Company ${companyId} rejected successfully!`);
-      fetchPendingCompanies(); // Refresh the list
-    } catch (err) {
-      setError(`Failed to reject company ${companyId}.`);
-      console.error('Error rejecting company:', err);
+      const msg = err.response?.data?.message || err.message || `Failed to reject company "${companyName}".`;
+      showToast(msg, 'error');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   if (isLoading) {
-    return <Loader text="Loading pending companies..." />;
+    return <Loader text="Loading Admin Dashboard..." />;
   }
 
   return (
-    <div /* className={styles.dashboardContainer} */>
-      <h1>Super Admin Dashboard</h1>
+    <div className={styles.dashboardContainer}>
+      <header className={styles.header}>
+        <h1 className={styles.mainTitle}>Super Admin Dashboard</h1>
+      </header>
 
-      {error && <EmptyState title="Error" message={error} />}
-      {successMessage && <p style={{ color: 'green', marginBottom: '1rem' }}>{successMessage}</p>}
+      <DashboardOverview />
 
-      <hr />
+      <hr className={styles.divider} />
 
-      <h2>Companies Awaiting Approval</h2>
-      {pendingCompanies.length > 0 ? (
-        <ul>
-          {pendingCompanies.map(company => (
-            <li key={company.id} style={{ marginBottom: '1rem', border: '1px solid #ccc', padding: '1rem', borderRadius: '8px' }}>
-              <h3>{company.name}</h3>
-              <p>{company.description}</p>
-              <p>Owner ID: {company.ownerId}</p>
-              <button onClick={() => handleApprove(company.id)} style={{ marginRight: '10px', backgroundColor: 'green', color: 'white', padding: '8px 12px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Approve</button>
-              <button onClick={() => handleReject(company.id)} style={{ backgroundColor: 'red', color: 'white', padding: '8px 12px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Reject</button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <EmptyState title="No Pending Companies" message="No companies are awaiting approval at the moment." />
-      )}
-
-      <hr />
-
-      <h2>System-Wide Statistics</h2>
-      {/* TODO: Add components for system-wide stats */}
-      <p>Overview of system performance and usage.</p>
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Companies Awaiting Approval</h2>
+        {pendingCompanies.length > 0 ? (
+          <ul className={styles.companyList}>
+            {pendingCompanies.map(company => (
+              <li key={company.id} className={styles.companyItem}>
+                <h3>{company.name}</h3>
+                <p>{company.description || 'No description provided.'}</p>
+                <p><strong>Location:</strong> {company.location || 'N/A'}</p>
+                <p><strong>Category:</strong> {company.category || 'N/A'}</p>
+                <div className={styles.actions}>
+                  <button onClick={() => handleApprove(company.id, company.name)} className={styles.approveButton}>Approve</button>
+                  <button onClick={() => handleReject(company.id, company.name)} className={styles.rejectButton}>Reject</button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <EmptyState message="No companies are awaiting approval at the moment." />
+        )}
+      </section>
     </div>
   );
 };

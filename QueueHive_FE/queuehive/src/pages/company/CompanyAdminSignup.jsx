@@ -119,7 +119,7 @@ const CompanyAdminSignup = () => {
         <p className={styles.subtitle}>Create your company's administration account.</p>
         
         {error && <div className={styles.errorBanner}>{error}</div>}
-        {successMessage && <div className={`${styles.errorBanner} ${styles.successBanner}`}>{successMessage}</div>} {/* Reusing errorBanner style, but adding a success class */}
+        {successMessage && <div className={styles.successBanner}>{successMessage}</div>} {/* Use the correct successBanner class */}
 
         <form onSubmit={handleSubmit} noValidate>
           <div className={styles.inputGroup}>

@@ -2,14 +2,17 @@ package queuehive.queuehive.service;
 
 import queuehive.queuehive.dto.CompanyDto;
 import queuehive.queuehive.dto.CreateCompanyRequest;
-import queuehive.queuehive.dto.UpdateCompanyRequest; // Import UpdateCompanyRequest
+import queuehive.queuehive.dto.UpdateCompanyRequest;
 
 import java.util.List;
 
 public interface CompanyService {
     CompanyDto registerCompany(CreateCompanyRequest request);
     CompanyDto approveCompany(Long companyId);
+    CompanyDto rejectCompany(Long companyId); // New method
     List<CompanyDto> listApprovedCompanies();
+    List<CompanyDto> listPendingCompanies(); // New method
+    CompanyDto getCompanyById(Long companyId); // New method
     CompanyDto updateCompany(Long companyId, UpdateCompanyRequest request);
     
     // New methods for analytics

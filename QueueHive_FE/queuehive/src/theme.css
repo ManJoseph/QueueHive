@@ -1,43 +1,77 @@
 :root {
-  /* Colors */
-  --primary-color: #4F46E5; /* Indigo 600 */
-  --primary-color-light: #818CF8; /* Indigo 400 */
-  --primary-color-dark: #4338CA; /* Indigo 700 */
-  
-  --secondary-color: #64748b; /* Slate 500 */
-  --secondary-color-light: #94A3B8; /* Slate 400 */
-  --secondary-color-dark: #475569; /* Slate 700 */
+  /* Core palette — Instagram-inspired with restrained gradients */
+  --primary-color: #f56040; /* Accent orange/pink for CTAs */
+  --primary-color-light: #ff8a5c;
+  --primary-color-dark: #d94c3b;
+  --secondary-color: #5c6f82; /* Muted slate for secondary text */
+  --secondary-color-light: #7f92a6;
+  --secondary-color-dark: #415064;
 
-  --bg-color: #F8FAFC; /* Light gray for background */
-  --background-color-light: #FFFFFF; /* White for cards/sections */
-  --surface: #FFFFFF; /* White, often used for card backgrounds */
-  
-  --text-primary: #0F172A; /* Dark blue-gray */
-  --text-secondary: #475569; /* Medium blue-gray */
-  --text-tertiary: #94A3B8; /* Light blue-gray */
+  /* Surfaces */
+  --bg-color: #0d0d0f; /* Deep charcoal */
+  --bg-muted: #111118; /* Slightly lifted background */
+  --surface: #16161f; /* Card surface */
+  --surface-strong: #1c1c26; /* Elevated surfaces */
+  --surface-glass: rgba(22, 22, 31, 0.7);
 
-  --border-color: #E2E8F0; /* Light border */
+  /* Text */
+  --text-primary: #f5f6f8;
+  --text-secondary: #b5b8c3;
+  --text-tertiary: #7a7d89;
+
+  /* Borders & dividers */
+  --border-color: #252734;
+  --divider-color: #1f212d;
+
+  /* Gradients & glows (used sparingly) */
+  --accent-gradient: linear-gradient(135deg, #f58529 0%, #f56040 50%, #c13584 100%);
+  --frosted-glow: 0 10px 40px rgba(0, 0, 0, 0.25);
 
   /* Spacing */
-  --spacing-xxs: 0.25rem; /* 4px */
-  --spacing-xs: 0.5rem;   /* 8px */
-  --spacing-sm: 0.75rem;  /* 12px */
-  --spacing-md: 1rem;     /* 16px */
-  --spacing-lg: 1.5rem;   /* 24px */
-  --spacing-xl: 2rem;     /* 32px */
-  --spacing-xxl: 3rem;    /* 48px */
+  --spacing-xxs: 0.25rem;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
 
-  /* Border Radii */
-  --border-radius-sm: 4px;
-  --border-radius-md: 8px;
-  --border-radius-lg: 12px;
+  /* Radii */
+  --border-radius-sm: 6px;
+  --border-radius-md: 10px;
+  --border-radius-lg: 14px;
   --border-radius-full: 9999px;
 
-  /* Shadows (Material-like) */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  
+  /* Shadows */
+  --shadow-sm: 0 6px 18px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 12px 28px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.5);
+
   /* Transitions */
-  --transition-ease-in-out: all 0.2s ease-in-out;
+  --transition-short: 0.16s ease-out;
+  --transition-medium: 0.26s ease-out;
+  --transition-long: 0.4s ease-out;
+
+  /* Typography */
+  --font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-xxl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+
+  /* Status */
+  --color-error: #ff4d6d;
+  --color-error-bg: #3a1f2d;
+  --color-success: #5ad67d;
+  --color-success-bg: #1f2e23;
+  --color-warning: #f2c94c;
+  --color-warning-bg: #3a2e12;
+
+  /* Legacy aliases to avoid breaking existing usage */
+  --background-color-light: var(--bg-muted);
+  --color-background: var(--bg-color);
+  --color-on-surface: var(--text-primary);
 }

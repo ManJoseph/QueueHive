@@ -11,6 +11,8 @@ public class CreateServiceTypeRequest {
     @NotBlank(message = "Service name cannot be blank")
     private String name;
 
+    private String description;
+
     @NotNull(message = "Average service time cannot be null")
     @Positive(message = "Average service time must be positive")
     private Integer averageServiceTime;
@@ -20,6 +22,8 @@ public class CreateServiceTypeRequest {
     public void setCompanyId(Long companyId) { this.companyId = companyId; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
     public Integer getAverageServiceTime() { return averageServiceTime; }
     public void setAverageServiceTime(Integer averageServiceTime) { this.averageServiceTime = averageServiceTime; }
 }

@@ -16,4 +16,8 @@ public interface TokenService {
     // New methods for Company Admin
     List<TokenDto> getActiveTokensByServiceId(Long serviceId);
     TokenDto updateTokenStatus(Long tokenId, String status);
+    TokenDto callNextToken(Long serviceId);
+    TokenDto markTokenServed(Long tokenId);
+    TokenDto skipToken(Long tokenId);
+    TokenDto cancelToken(Long tokenId);
 }

@@ -12,7 +12,7 @@ const CompanyDetails = () => {
   const navigate = useNavigate();
 
   const [services, setServices] = useState([]);
-  const [company, setCompany] = useState(null); // To store company info like name
+  const [company, setCompany] = useState(null); // To store company info like name, description, category
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -27,25 +27,24 @@ const CompanyDetails = () => {
   };
 
   useEffect(() => {
-    const fetchServices = async () => {
+    const fetchData = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        // You might need an endpoint to get company details along with services
-        // For now, we fetch services and assume we can get company name from another source if needed
+        const companyResponse = await companyService.getCompanyById(id);
+        setCompany(companyResponse.data);
+
         const serviceResponse = await companyService.getServicesForCompany(id);
         setServices(serviceResponse.data);
-        // If you had a getCompanyById endpoint, you'd call it here
-        // For now, we'll just show services.
       } catch (err) {
-        setError('Failed to load services for this company.');
-        console.error('Error fetching services:', err);
+        setError(err.message || 'Failed to load company details or services.');
+        console.error('Error fetching data:', err);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchServices();
+    fetchData();
   }, [id]);
 
   const handleBookToken = async (service) => {
@@ -62,36 +61,48 @@ const CompanyDetails = () => {
         navigate('/user/book-token', { state: {
             tokenNumber: newToken.tokenNumber,
             serviceName: service.name,
-            companyName: "the Company", // This is a limitation of not having a getCompanyById
+            companyName: company?.name || 'Selected Company', // Use fetched company name
             tokenId: newToken.id,
             serviceId: service.id
         }});
     } catch (err) {
-        setError('There was a problem creating your token.');
+        setError(err.message || 'There was a problem creating your token.');
         console.error('Error creating token:', err);
     }
   };
 
   if (isLoading) {
-    return <Loader text="Loading services..." />;
+    return <Loader text="Loading company details..." />;
   }
 
   if (error) {
-    return <EmptyState title="Error" message={error} />;
+    return <EmptyState message={error} />;
+  }
+
+  if (!company) {
+    return <EmptyState message="Company not found." />;
   }
 
   return (
     <main className={styles.mainContent}>
-      {/* A proper implementation would get the company name from the API */}
-      <h1 className={styles.companyName}>Services</h1>
+      <div className={styles.headerContainer}>
+        <h1 className={styles.companyName}>{company.name}</h1>
+        {company.description && <p className={styles.companyDescription}>{company.description}</p>}
+        {company.category && <p className={styles.companyDescription}>Category: {company.category}</p>}
+        {company.location && <p className={styles.companyDescription}>Location: {company.location}</p>}
+      </div>
+
+      <h2 className={styles.sectionTitle}>Available Services</h2>
       <hr className={styles.divider} />
+      
       {services.length > 0 ? (
         <div className={styles.serviceList}>
           {services.map(service => (
             <div key={service.id} className={styles.serviceItem}>
-              <div>
+              <div className={styles.serviceDetails}>
                 <h3 className={styles.serviceName}>{service.name}</h3>
                 <p className={styles.serviceDescription}>{service.description || 'No description available.'}</p>
+                {service.averageServiceTime && <p className={styles.serviceTime}>Avg. {service.averageServiceTime} min</p>}
               </div>
               <button onClick={() => handleBookToken(service)} className={styles.bookButton}>
                 Book Token
@@ -100,7 +111,7 @@ const CompanyDetails = () => {
           ))}
         </div>
       ) : (
-        <EmptyState title="No Services" message="This company has no services available at the moment." />
+        <EmptyState message="This company has no services available at the moment." />
       )}
     </main>
   );

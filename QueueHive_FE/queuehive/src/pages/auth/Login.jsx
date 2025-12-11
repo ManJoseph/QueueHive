@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import authService from '../../api/authService'; // Updated path
 import styles from './Auth.module.css'; // Shared CSS module for auth pages
 import Loader from '../../components/Loader';
-// import { jwtDecode } from 'jwt-decode'; // No longer needed here as AuthProvider handles decoding
 import { useAuth } from '../../context/AuthContext'; // Import useAuth hook
+import { useToast } from '../../components/toast/useToast'; // Import useToast
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -12,10 +12,10 @@ const Login = () => {
     password: '',
   });
   const [formErrors, setFormErrors] = useState({}); // For field-specific errors
-  const [error, setError] = useState(null); // For server-side generic errors
   const [isLoading, setIsLoading] = useState(false);
   const { login: authLogin } = useAuth(); // Rename login to avoid conflict with local var
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const validateField = (name, value) => {
     let error = null;
@@ -63,25 +63,26 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Clear server error on new submission attempt
 
     if (!validateFormOnSubmit()) {
+      showToast('Please correct the form errors.', 'error');
       return;
     }
 
     setIsLoading(true);
     try {
-      const { token, role, userId, companyId } = await authService.login(formData); // Receive full LoginResponse
+      const { token, role, userId, companyId, fullName } = await authService.login(formData); // Receive full LoginResponse including fullName
 
       // Validate token
       if (!token || typeof token !== "string") {
-        setError('Login successful, but received an invalid token format.');
+        showToast('Login successful, but received an invalid token format.', 'error');
         setIsLoading(false);
         return;
       }
 
       // Use AuthContext's login method to set global state and local storage
-      authLogin(token, role, userId, companyId);
+      authLogin(token, role, userId, companyId, fullName);
+      showToast(`Welcome back, ${fullName}!`, 'success');
 
       // Redirect based on role
       switch (role) { // Use role directly from response
@@ -99,8 +100,8 @@ const Login = () => {
       }
     } catch (err) {
       // 'err' now contains the standardized error object from http.js interceptor
-      const errorMessage = err.message || 'Login failed. Please check your credentials and try again.';
-      setError(errorMessage);
+      const errorMessage = err.response?.data?.message || err.message || 'Login failed. Please check your credentials and try again.';
+      showToast(errorMessage, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -112,8 +113,6 @@ const Login = () => {
         <h2 className={styles.title}>Welcome Back</h2>
         <p className={styles.subtitle}>Please sign in to continue.</p>
         
-        {error && <div className={styles.errorBanner}>{error}</div>}
-
         <form onSubmit={handleSubmit} noValidate>
           <div className={styles.inputGroup}>
             <label htmlFor="email">Email</label>

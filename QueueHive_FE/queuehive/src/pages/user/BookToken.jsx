@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import websocketService from '../../api/websocketService';
 import tokenService from '../../api/tokenService';
 import styles from './BookToken.module.css';
+import EmptyState from '../../components/EmptyState';
 
 const BookToken = () => {
   const location = useLocation();
@@ -69,13 +70,7 @@ const BookToken = () => {
   if (!tokenData) {
     return (
       <main className={styles.mainContent}>
-        <div className={styles.container}>
-          <h1 className={styles.title}>No Token Information</h1>
-          <p>You haven't booked a token yet.</p>
-          <button className={styles.confirmButton} onClick={() => navigate('/user/dashboard')}>
-            Back to Dashboard
-          </button>
-        </div>
+        <EmptyState message="You haven't booked a token yet." />
       </main>
     );
   }

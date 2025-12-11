@@ -21,6 +21,7 @@ const ServiceModal = ({ show, onClose, services, companyName, onSelectService })
                 <li key={service.id} className={styles.serviceItem}>
                   <div className={styles.serviceDetails}>
                     <span className={styles.serviceName}>{service.name}</span>
+                    {service.description && <p className={styles.serviceDescription}>{service.description}</p>}
                     <span className={styles.serviceTime}>Avg. {service.averageServiceTime} min</span>
                   </div>
                   <button 

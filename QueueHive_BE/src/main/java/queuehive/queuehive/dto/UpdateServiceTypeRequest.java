@@ -8,6 +8,8 @@ public class UpdateServiceTypeRequest {
     @NotBlank(message = "Service name cannot be blank")
     private String name;
 
+    private String description;
+
     @NotNull(message = "Average service time cannot be null")
     @Min(value = 1, message = "Average service time must be at least 1 minute")
     private Integer averageServiceTime;
@@ -19,6 +21,14 @@ public class UpdateServiceTypeRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getAverageServiceTime() {

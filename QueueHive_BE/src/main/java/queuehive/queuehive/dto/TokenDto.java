@@ -9,14 +9,16 @@ public class TokenDto {
     private Integer tokenNumber;
     private String status;
     private LocalDateTime createdAt;
+    private ServiceTypeDto serviceType;
 
-    public TokenDto(Long id, Long userId, Long serviceId, Integer tokenNumber, String status, LocalDateTime createdAt) {
+    public TokenDto(Long id, Long userId, Long serviceId, Integer tokenNumber, String status, LocalDateTime createdAt, ServiceTypeDto serviceType) {
         this.id = id;
         this.userId = userId;
         this.serviceId = serviceId;
         this.tokenNumber = tokenNumber;
         this.status = status;
         this.createdAt = createdAt;
+        this.serviceType = serviceType;
     }
 
     // Getters and Setters
@@ -66,5 +68,13 @@ public class TokenDto {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public ServiceTypeDto getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(ServiceTypeDto serviceType) {
+        this.serviceType = serviceType;
     }
 }

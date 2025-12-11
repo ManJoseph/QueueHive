@@ -57,4 +57,28 @@ public class TokenController {
         TokenDto updatedToken = tokenService.updateTokenStatus(tokenId, status);
         return ResponseEntity.ok(updatedToken);
     }
+
+    @PostMapping("/service/{serviceId}/call-next")
+    public ResponseEntity<TokenDto> callNextToken(@PathVariable Long serviceId) {
+        TokenDto calledToken = tokenService.callNextToken(serviceId);
+        return ResponseEntity.ok(calledToken);
+    }
+
+    @PutMapping("/{tokenId}/mark-served")
+    public ResponseEntity<TokenDto> markTokenServed(@PathVariable Long tokenId) {
+        TokenDto servedToken = tokenService.markTokenServed(tokenId);
+        return ResponseEntity.ok(servedToken);
+    }
+
+    @PutMapping("/{tokenId}/skip")
+    public ResponseEntity<TokenDto> skipToken(@PathVariable Long tokenId) {
+        TokenDto skippedToken = tokenService.skipToken(tokenId);
+        return ResponseEntity.ok(skippedToken);
+    }
+
+    @PutMapping("/{tokenId}/cancel")
+    public ResponseEntity<TokenDto> cancelToken(@PathVariable Long tokenId) {
+        TokenDto cancelledToken = tokenService.cancelToken(tokenId);
+        return ResponseEntity.ok(cancelledToken);
+    }
 }

@@ -3,51 +3,51 @@
 .addServiceContainer {
     display: flex;
     flex-direction: column;
-    padding: var(--spacing-md) var(--spacing-xl);
-    background-color: var(--bg-color);
-    min-height: 100vh;
+    /* Removed min-height and padding, as AppLayout handles overall layout */
+    /* background-color: var(--bg-color); implicitly inherited from AppLayout */
 }
 
 .header {
-    padding: var(--spacing-md) 0;
-    border-bottom: 1px solid var(--border-color);
+    padding: var(--spacing-lg) 0;
     margin-bottom: var(--spacing-xl);
     text-align: center;
+    border-bottom: 1px solid var(--divider-color); /* Subtle divider */
 }
 
 .mainTitle {
-    font-size: 2rem;
+    font-size: var(--font-size-xxl); /* Consistent with other main titles */
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
 }
 
 .errorBanner, .successBanner {
-    padding: var(--spacing-md);
-    border-radius: var(--border-radius-md);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
     margin-bottom: var(--spacing-lg);
-    text-align: left;
-    font-size: 0.9rem;
+    text-align: center; /* Center banners */
+    font-size: var(--font-size-sm);
     box-shadow: var(--shadow-sm);
 }
 
 .errorBanner {
-    background-color: #f8d7da; /* Specific for error */
-    color: #721c24; /* Specific for error */
+    background-color: var(--color-error-bg);
+    color: var(--color-error);
 }
 
 .successBanner {
-    background-color: #d4edda; /* Specific for success */
-    color: #155724; /* Specific for success */
+    background-color: var(--color-success-bg);
+    color: var(--color-success);
 }
 
 .form {
     background-color: var(--surface);
     padding: var(--spacing-xl);
     border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-lg);
-    max-width: 600px;
-    margin: 0 auto;
+    box-shadow: var(--shadow-md); /* Use consistent shadow */
+    border: 1px solid var(--border-color); /* Subtle border */
+    max-width: 500px; /* Slightly narrower form */
+    margin: var(--spacing-md) auto; /* Add margin-top for spacing from header */
 }
 
 .inputGroup {
@@ -57,67 +57,93 @@
 
 .inputGroup label {
     display: block;
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
     margin-bottom: var(--spacing-xs);
     color: var(--text-secondary);
 }
 
-.inputGroup input {
+.inputGroup input,
+.inputGroup textarea {
     width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-sm);
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md);
-    font-size: 1rem;
-    background-color: var(--background-color-light);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-md);
+    background-color: var(--bg-color);
     color: var(--text-primary);
-    transition: var(--transition-ease-in-out);
+    transition: all var(--transition-short);
+    font-family: inherit;
 }
 
-.inputGroup input:focus {
+.inputGroup input:focus,
+.inputGroup textarea:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--primary-color-light);
+    box-shadow: 0 0 0 1px var(--primary-color);
 }
 
 .errorText {
-    color: #dc3545;
-    font-size: 0.85rem;
-    margin-top: var(--spacing-xs);
+    color: var(--color-error);
+    font-size: var(--font-size-xs);
+    margin-top: var(--spacing-xxs);
     text-align: left;
+}
+
+.backButton {
+    background-color: #f0f2f5;
+    color: #333;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.backButton:hover {
+    background-color: #e9ecef;
+    border-color: #bbb;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .submitButton {
     width: 100%;
-    padding: var(--spacing-md) var(--spacing-lg);
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
     border: none;
     background-color: var(--primary-color);
-    color: white;
-    font-size: 1rem;
+    color: var(--text-primary); /* White text for contrast */
+    font-size: var(--font-size-md);
     font-weight: 600;
-    border-radius: var(--border-radius-md);
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
-    transition: var(--transition-ease-in-out);
-    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-short);
+    box-shadow: none; /* No shadow by default */
 }
 
 .submitButton:hover:not(:disabled) {
     background-color: var(--primary-color-dark);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
 }
 
 .submitButton:disabled {
     background-color: var(--primary-color-light);
+    opacity: 0.7;
     cursor: not-allowed;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .addServiceContainer {
-        padding: var(--spacing-sm);
+    .header {
+        padding: var(--spacing-md) 0;
     }
     .mainTitle {
-        font-size: 1.8rem;
+        font-size: var(--font-size-xl);
+    }
+    .form {
+      padding: var(--spacing-lg);
     }
 }

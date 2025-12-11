@@ -31,6 +31,7 @@ Never recreate project folders, node_modules, pom.xml, or overwrite unrelated fi
   - Card-based components
   - Accessible typography
 - Never recreate the project; only add/update files inside `src`.
+- use an inspiration of building something looking like instagram
 
 ## 🧪 Testing
 - Use JUnit 5 + Mockito.
@@ -55,7 +56,7 @@ Generate a React component following my UI/UX blueprint and MD3 rules.
 Generate JUnit + Mockito service-layer tests.
 
 ## `improve ui`
-Apply UI/UX improvements using my design system (spacing, typography, layout, shadows).
+Apply UI/UX improvements using my design system (spacing, typography, layout, shadows). inspired by instagram
 
 ## `explain architecture`
 Explain decisions based on clean architecture, Google style, and project patterns.

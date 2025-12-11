@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional; // Import Transactional
 import queuehive.queuehive.domain.Company; // Import Company
 import queuehive.queuehive.domain.User;
-import queuehive.queuehive.dto.CreateUserRequest;
-import queuehive.queuehive.dto.LoginResponse;
-import queuehive.queuehive.dto.RegisterCompanyRequest; // Import RegisterCompanyRequest
-import queuehive.queuehive.dto.UserDto;
+import queuehive.queuehive.dto.*;
 import queuehive.queuehive.repository.CompanyRepository; // Import CompanyRepository
 import queuehive.queuehive.repository.UserRepository;
 import queuehive.queuehive.service.JwtService;
@@ -70,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
         // 3. Generate JWT and return LoginResponse
         String jwtToken = jwtService.generateToken(savedUser);
-        return Optional.of(new LoginResponse(jwtToken, savedUser.getRole(), savedUser.getId(), savedCompany.getId()));
+        return Optional.of(new LoginResponse(jwtToken, savedUser.getRole(), savedUser.getId(), savedCompany.getId(), savedUser.getFullName()));
     }
 
 
@@ -92,14 +89,23 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+                
+                if ("COMPANY_ADMIN".equals(user.getRole())) {
+                    Company company = companyRepository.findByOwnerId(user.getId())
+                                               .orElseThrow(() -> new RuntimeException("Company admin has no associated company."));
+                    if (!company.getApproved()) {
+                        throw new RuntimeException("Company is not approved yet. Please wait for admin approval.");
+                    }
+                }
+
                 String jwtToken = jwtService.generateToken(user);
                 Long companyId = null;
                 if ("COMPANY_ADMIN".equals(user.getRole())) {
                     companyId = companyRepository.findByOwnerId(user.getId())
                                                .map(Company::getId)
-                                               .orElse(null); // Or throw an exception if a company admin must have a company
+                                               .orElse(null); // Should not be null here due to the check above
                 }
-                return Optional.of(new LoginResponse(jwtToken, user.getRole(), user.getId(), companyId));
+                return Optional.of(new LoginResponse(jwtToken, user.getRole(), user.getId(), companyId, user.getFullName()));
             }
         }
         return Optional.empty();
@@ -128,17 +134,27 @@ public class UserServiceImpl implements UserService {
             user.setPhone(request.getPhoneNumber());
         }
 
-        // Handle Password Change
-        if (request.getNewPassword() != null && !request.getNewPassword().isBlank()) {
-            if (request.getCurrentPassword() == null || request.getCurrentPassword().isBlank()) {
-                throw new RuntimeException("Current password is required to change password.");
-            }
-            if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
-                throw new RuntimeException("Current password does not match.");
-            }
-            user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
-        }
+        User updatedUser = userRepository.save(user);
+        return new UserDto(updatedUser.getId(), updatedUser.getFullName(), updatedUser.getPhone(), updatedUser.getEmail(), updatedUser.getRole());
+    }
 
+    @Override
+    @Transactional
+    public UserDto updateUserPassword(Long userId, UpdatePasswordRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+        if (request.getCurrentPassword() == null || request.getCurrentPassword().isBlank()) {
+            throw new RuntimeException("Current password is required to change password.");
+        }
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPasswordHash())) {
+            throw new RuntimeException("Current password does not match.");
+        }
+        if (request.getNewPassword() == null || request.getNewPassword().isBlank()) {
+            throw new RuntimeException("New password cannot be blank.");
+        }
+        
+        user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
         User updatedUser = userRepository.save(user);
         return new UserDto(updatedUser.getId(), updatedUser.getFullName(), updatedUser.getPhone(), updatedUser.getEmail(), updatedUser.getRole());
     }

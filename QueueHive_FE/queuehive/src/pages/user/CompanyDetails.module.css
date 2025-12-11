@@ -1,42 +1,143 @@
-@import '../../theme.css';
-
-.page {
-  background-color: var(--color-surface);
-  min-height: 100vh;
-}
+/* src/pages/user/CompanyDetails.module.css */
 
 .mainContent {
-  padding: calc(var(--spacing-unit) * 4);
-  max-width: 800px;
-  margin: 0 auto;
+  /* AppLayout handles max-width and horizontal padding, so just vertical margin/padding */
+  margin: var(--spacing-lg) auto; 
+  padding: var(--spacing-lg) 0;
+  max-width: 935px; /* Consistent with AppLayout content width */
+}
+
+.headerContainer {
+  background-color: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
 }
 
 .companyName {
-  font-size: 36px;
-  color: var(--color-on-surface);
-  margin-bottom: var(--spacing-unit);
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-xs) 0;
 }
 
-.companyCategory {
-  font-size: 18px;
-  color: #757575;
-  margin-bottom: calc(var(--spacing-unit) * 2);
+.companyDescription {
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-lg) 0;
+  line-height: 1.5;
 }
 
 .divider {
-  border: 0;
-  border-top: 1px solid #e0e0e0;
-  margin: calc(var(--spacing-unit) * 3) 0;
+  border: none;
+  border-top: 1px solid var(--divider-color);
+  margin: var(--spacing-xl) 0;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
 }
 
 .serviceList {
-  margin-top: calc(var(--spacing-unit) * 2);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid for services */
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
 }
 
 .serviceItem {
-  background-color: var(--color-background);
-  padding: calc(var(--spacing-unit) * 2);
-  border-radius: calc(var(--border-radius) / 2);
-  margin-bottom: var(--spacing-unit);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  background-color: var(--background-color-light); /* Use slightly lighter surface */
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-short), box-shadow var(--transition-short);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.serviceItem:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.serviceDetails {
+  margin-bottom: var(--spacing-md);
+}
+
+.serviceName {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-xxs) 0;
+}
+
+.serviceDescription {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit description to 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.serviceTime {
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+  margin-top: var(--spacing-xs);
+}
+
+.bookButton {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color var(--transition-short), transform var(--transition-short);
+  width: 100%;
+  margin-top: var(--spacing-sm);
+}
+
+.bookButton:hover {
+  background-color: var(--primary-color-dark);
+  transform: translateY(-1px);
+}
+
+.bookButton:active {
+  transform: translateY(0);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mainContent {
+    padding: var(--spacing-md);
+  }
+
+  .companyName {
+    font-size: var(--font-size-xxl);
+  }
+
+  .sectionTitle {
+    font-size: var(--font-size-lg);
+  }
+
+  .serviceList {
+    grid-template-columns: 1fr; /* Single column on smaller screens */
+  }
 }

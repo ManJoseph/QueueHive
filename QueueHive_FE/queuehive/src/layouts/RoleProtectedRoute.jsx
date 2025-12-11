@@ -1,27 +1,25 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '../context/AuthContext';
+import Loader from '../components/Loader'; // Optional: for a better UX
 
 const RoleProtectedRoute = ({ requiredRoles }) => {
-  const token = localStorage.getItem('token');
+  const { isAuthenticated, role, isLoading } = useAuth();
 
-  if (!token) {
-    // No token found, redirect to login
+  if (isLoading) {
+    // Show a loader while authentication state is being determined
+    return <Loader />;
+  }
+
+  if (!isAuthenticated) {
+    // User is not authenticated, redirect to login
     return <Navigate to="/login" replace />;
   }
 
-  try {
-    const decodedToken = jwtDecode(token);
-    const userRole = decodedToken.role; // Assuming 'role' is a claim in the JWT
-
-    if (requiredRoles && requiredRoles.length > 0 && !requiredRoles.includes(userRole)) {
-      // User does not have the required role, redirect to an appropriate page (e.g., unauthorized or login)
-      // For now, let's redirect to login, but a dedicated unauthorized page would be better.
-      return <Navigate to="/login" replace />;
-    }
-  } catch (error) {
-    console.error("Invalid token:", error);
-    // Token is invalid, redirect to login
+  if (requiredRoles && requiredRoles.length > 0 && !requiredRoles.includes(role)) {
+    // User does not have the required role, redirect to an appropriate page
+    // (e.g., unauthorized page or back to their own dashboard)
+    // For now, redirecting to login is a safe fallback.
     return <Navigate to="/login" replace />;
   }
 

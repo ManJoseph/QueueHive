@@ -1,0 +1,248 @@
+/* Company Profile Styles */
+.profileContainer {
+  /* AppLayout handles max-width and horizontal padding, so just vertical margin/padding */
+  margin: var(--spacing-lg) auto;
+  padding: var(--spacing-lg) 0;
+  max-width: 700px; /* Adjust max-width for profile content */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--divider-color); /* Subtle divider */
+}
+
+.title {
+  font-size: var(--font-size-xxl); /* Consistent with other main titles */
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.editButton {
+  background-color: var(--secondary-color); /* Secondary color for edit button */
+  color: var(--text-primary); /* Light text for contrast */
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-short);
+  box-shadow: none; /* No shadow by default */
+}
+
+.editButton:hover {
+  background-color: var(--secondary-color-dark);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.successBanner, .errorBanner { /* Reusing consistent banner styles */
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.successBanner {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.errorBanner {
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+/* Removed .error as EmptyState will be used */
+
+/* Form Styles */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  background-color: var(--surface);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  margin-top: var(--spacing-lg); /* Space from header */
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+}
+
+.formGroup input,
+.formGroup textarea,
+.formGroup select {
+  padding: var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-md);
+  transition: all var(--transition-short);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+/* Custom select arrow */
+.formGroup select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23a0a0a0%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.2L146.2%20202.7%2018.8%2074.6a17.6%2017.6%200%200%200-25.2%200%2017.6%2017.6%200%200%200%200%2025.2l130.6%20129.8a17.6%2017.6%200%200%200%2025.2%200l130.6-129.8a17.6%2017.6%200%200%200%200-25.2z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: right 0.7em top 50%, 0 0;
+  background-size: 0.65em auto, 100%;
+}
+
+.formActions {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+  justify-content: flex-end; /* Align actions to the right */
+}
+
+.saveButton {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--primary-color);
+  color: var(--text-primary);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-short);
+  box-shadow: none;
+}
+
+.saveButton:hover {
+  background-color: var(--primary-color-dark);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.saveButton:disabled {
+  background-color: var(--primary-color-light);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--secondary-color); /* Neutral secondary for cancel */
+  color: var(--text-primary);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-short);
+  box-shadow: none;
+}
+
+.cancelButton:hover {
+  background-color: var(--secondary-color-dark);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+/* Profile Details View */
+.profileDetails {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  background-color: var(--surface);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  margin-top: var(--spacing-lg);
+}
+
+.detailItem {
+  display: flex;
+  align-items: center; /* Align items vertically */
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--background-color-light); /* Lighter surface for details */
+  border-radius: var(--border-radius-md);
+  border-left: 4px solid var(--primary-color); /* Accent border */
+  gap: var(--spacing-md);
+}
+
+.label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 120px; /* Adjust min-width */
+  font-size: var(--font-size-md);
+}
+
+.value {
+  color: var(--text-primary);
+  flex: 1;
+  font-size: var(--font-size-md);
+}
+
+.approved {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+.pending {
+  color: var(--color-warning);
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profileContainer {
+    padding: var(--spacing-md);
+  }
+
+  .header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: center;
+  }
+
+  .editButton {
+    width: 100%;
+  }
+
+  .formActions {
+    flex-direction: column;
+  }
+
+  .detailItem {
+    flex-direction: column;
+    align-items: flex-start; /* Stack and align left */
+    gap: var(--spacing-xs);
+  }
+
+  .label {
+    min-width: auto;
+    width: 100%;
+  }
+}

@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './auth/Auth.module.css';
+import styles from './Auth.module.css';
 import Loader from '../../components/Loader';
+import { useToast } from '../../components/toast/useToast'; // Import useToast
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { showToast } = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setMessage('');
 
     if (!email) {
-      setError('Please enter your email address.');
+      showToast('Please enter your email address.', 'error');
       return;
     }
 
@@ -27,7 +25,7 @@ const ForgotPassword = () => {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      setMessage('If an account with that email exists, a password reset link has been sent.');
+      showToast('If an account with that email exists, a password reset link has been sent.', 'success');
     }, 1500);
   };
 
@@ -39,11 +37,7 @@ const ForgotPassword = () => {
           Enter your email and we'll send you a link to reset your password.
         </p>
         
-        {error && <div className={styles.errorBanner}>{error}</div>}
-        {message && <div className={`${styles.errorBanner} ${styles.successBanner}`}>{message}</div>}
-
-        {!message && (
-          <form onSubmit={handleSubmit} noValidate>
+        <form onSubmit={handleSubmit} noValidate>
             <div className={styles.inputGroup}>
               <label htmlFor="email">Email</label>
               <input
@@ -60,7 +54,6 @@ const ForgotPassword = () => {
               {isLoading ? <Loader text="" size="small" /> : 'Send Reset Link'}
             </button>
           </form>
-        )}
 
         <div className={styles.footer}>
           <p>

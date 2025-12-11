@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     List<Company> findByApproved(boolean approved);
+    long countByApproved(boolean approved);
     Optional<Company> findByOwnerId(Long ownerId); // New method
 }

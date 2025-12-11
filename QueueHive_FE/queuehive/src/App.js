@@ -29,6 +29,7 @@ import ManageServices from './pages/company/ManageServices';
 import AddService from './pages/company/AddService';
 import CompanyAnalytics from './pages/company/CompanyAnalytics';
 import QueueCustomers from './pages/company/QueueCustomers';
+import CompanyProfile from './pages/company/CompanyProfile';
 
 // Pages (Super Admin Role)
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -40,6 +41,10 @@ import ErrorBoundary from './pages/error/ErrorBoundary';
 // Context Provider
 import AuthProvider from './components/AuthProvider';
 
+// Confirm Modal
+import ConfirmModal from './components/confirmModal/ConfirmModal';
+import { useConfirmModal } from './components/confirmModal/useConfirmModal';
+
 
 const router = createBrowserRouter([
   {
@@ -50,7 +55,7 @@ const router = createBrowserRouter([
       { path: 'login', element: <Login /> },
       { path: 'signup', element: <Signup /> },
       { path: 'forgot-password', element: <ForgotPassword /> },
-      { path: 'company-admin-signup', element: <CompanyAdminSignup /> },
+      { path: 'signup/company-admin', element: <CompanyAdminSignup /> },
     ],
   },
   {
@@ -85,7 +90,7 @@ const router = createBrowserRouter([
                 { path: 'edit-service/:serviceId', element: <AddService /> },
                 { path: 'analytics', element: <CompanyAnalytics /> },
                 { path: 'queue/:serviceId', element: <QueueCustomers /> },
-                { path: 'profile-settings', element: <p>Company Profile Settings (TODO)</p> },
+                { path: 'profile-settings', element: <CompanyProfile /> },
             ]
         }
     ]
@@ -111,10 +116,13 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const { ConfirmModalProps } = useConfirmModal();
+
   return (
     <ErrorBoundary>
       <AuthProvider>
         <RouterProvider router={router} />
+        <ConfirmModal {...ConfirmModalProps} />
       </AuthProvider>
     </ErrorBoundary>
   );
