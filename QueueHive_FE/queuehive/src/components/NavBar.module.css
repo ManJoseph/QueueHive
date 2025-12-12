@@ -61,7 +61,7 @@
 
 .logoutButton {
   background: linear-gradient(120deg, rgba(245, 96, 64, 0.9), rgba(193, 53, 132, 0.9));
-  color: #ffffff;
+  color: var(--text-primary);
   border: none;
   padding: var(--spacing-xs) var(--spacing-lg);
   border-radius: var(--border-radius-full);

@@ -2,21 +2,23 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #f0f2f5; /* Light grey background */
+    background: radial-gradient(circle at 20% 20%, rgba(245, 96, 64, 0.08), transparent 25%),
+                radial-gradient(circle at 80% 0%, rgba(193, 53, 132, 0.08), transparent 20%),
+                var(--bg-color);
 }
 
 .authHeader {
-    background-color: #007bff; /* Primary blue */
-    color: white;
-    padding: 15px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(120deg, rgba(245, 96, 64, 0.9), rgba(193, 53, 132, 0.9));
+    color: var(--text-primary);
+    padding: var(--spacing-md) var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
     display: flex;
-    justify-content: center; /* Center content horizontally */
+    justify-content: center;
     align-items: center;
 }
 
 .headerContent {
-    max-width: 1200px; /* Match app layout width */
+    max-width: 1200px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -24,22 +26,22 @@
 }
 
 .appName {
-    font-size: 1.8rem;
+    font-size: var(--font-size-xxl);
     font-weight: 700;
-    margin: 0 auto; /* Center app name */
+    margin: 0 auto;
     text-align: center;
 }
 
 .backButton {
     background: none;
     border: none;
-    color: white;
-    font-size: 1rem;
+    color: var(--text-primary);
+    font-size: var(--font-size-md);
     cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 5px;
-    transition: background-color 0.2s ease;
-    position: absolute; /* Position absolutely to keep app name centered */
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    transition: background-color var(--transition-short);
+    position: absolute;
     left: 0;
 }
 
@@ -48,9 +50,9 @@
 }
 
 .authLayoutContainer {
-    flex-grow: 1; /* Allows main content to take up remaining space */
+    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: var(--spacing-lg);
 }

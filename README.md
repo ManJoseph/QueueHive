@@ -1,3 +1,4 @@
+
 # QueueHive: A Smart Queue Token Management System
 
 QueueHive is a modern, full-stack application designed to eliminate physical queues by providing a seamless digital token generation system. Customers can view companies, select services, and receive a queue token, all from a clean, real-time web interface.

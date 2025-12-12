@@ -1,0 +1,336 @@
+/* Shared Admin Management Pages Styles */
+
+.managementContainer {
+  padding: 0;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-xxl);
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+}
+
+.title {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.subtitle {
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Stats Cards */
+.stats {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.statCard {
+  background: linear-gradient(145deg, rgba(22, 22, 31, 0.92), rgba(28, 28, 38, 0.92));
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  min-width: 120px;
+  text-align: center;
+}
+
+.statValue {
+  font-size: var(--font-size-xxl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xxs);
+}
+
+.statLabel {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.searchBar {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  transition: all var(--transition-short);
+}
+
+.searchBar:focus-within {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px rgba(245, 96, 64, 0.35);
+}
+
+.searchIcon {
+  color: var(--text-secondary);
+  margin-right: var(--spacing-sm);
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: none;
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: var(--text-tertiary);
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.filterIcon {
+  color: var(--text-secondary);
+}
+
+.filterSelect,
+.dateInput {
+  border: none;
+  background: none;
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  outline: none;
+  cursor: pointer;
+}
+
+.filterSelect option {
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+/* Table */
+.tableContainer {
+  background: linear-gradient(145deg, rgba(22, 22, 31, 0.92), rgba(28, 28, 38, 0.92));
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  background: rgba(245, 96, 64, 0.08);
+  border-bottom: 1px solid var(--divider-color);
+}
+
+.table th {
+  padding: var(--spacing-md) var(--spacing-lg);
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  transition: background var(--transition-short);
+}
+
+.table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.table td {
+  padding: var(--spacing-md) var(--spacing-lg);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.nameCell {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.tokenNumber {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* Badges */
+.roleBadge,
+.statusBadge {
+  display: inline-block;
+  padding: var(--spacing-xxs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Role Badges */
+.roleUser {
+  background: rgba(100, 150, 255, 0.15);
+  color: #6496ff;
+}
+
+.roleCompanyAdmin {
+  background: rgba(242, 201, 76, 0.15);
+  color: var(--color-warning);
+}
+
+.roleSuperAdmin {
+  background: rgba(245, 96, 64, 0.15);
+  color: var(--primary-color);
+}
+
+/* Status Badges */
+.statusApproved,
+.statusServed {
+  background: rgba(90, 214, 125, 0.15);
+  color: var(--color-success);
+}
+
+.statusPending,
+.statusCalling {
+  background: rgba(242, 201, 76, 0.15);
+  color: var(--color-warning);
+}
+
+.statusRejected,
+.statusCancelled {
+  background: rgba(255, 77, 109, 0.15);
+  color: var(--color-error);
+}
+
+.statusSkipped {
+  background: rgba(140, 150, 170, 0.15);
+  color: var(--text-secondary);
+}
+
+/* Action Buttons */
+.actionButtons {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.deleteButton,
+.approveButton,
+.rejectButton {
+  background: none;
+  border: none;
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: var(--font-size-md);
+  transition: all var(--transition-short);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteButton {
+  color: var(--color-error);
+}
+
+.deleteButton:hover {
+  background: rgba(255, 77, 109, 0.15);
+  transform: scale(1.1);
+}
+
+.approveButton {
+  color: var(--color-success);
+}
+
+.approveButton:hover {
+  background: rgba(90, 214, 125, 0.15);
+  transform: scale(1.1);
+}
+
+.rejectButton {
+  color: var(--color-warning);
+}
+
+.rejectButton:hover {
+  background: rgba(242, 201, 76, 0.15);
+  transform: scale(1.1);
+}
+
+/* Empty State */
+.emptyState {
+  padding: var(--spacing-xxl);
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.emptyState p {
+  font-size: var(--font-size-lg);
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .stats {
+    width: 100%;
+  }
+
+  .statCard {
+    flex: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+  }
+
+  .searchBar {
+    min-width: 100%;
+  }
+
+  .filterGroup {
+    width: 100%;
+  }
+
+  .tableContainer {
+    overflow-x: auto;
+  }
+
+  .table {
+    min-width: 800px;
+  }
+
+  .title {
+    font-size: var(--font-size-xxl);
+  }
+}

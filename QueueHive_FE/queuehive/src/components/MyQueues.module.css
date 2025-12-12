@@ -1,38 +1,39 @@
 .myQueuesContainer {
-    padding: 20px;
+    padding: var(--spacing-lg);
     max-width: 900px;
     margin: 0 auto;
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--font-family);
 }
 
 .title {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 25px;
+    font-size: var(--font-size-xxl);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xl);
     text-align: center;
     font-weight: 700;
 }
 
 .queueItem {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    background: linear-gradient(145deg, rgba(22, 22, 31, 0.92), rgba(28, 28, 38, 0.92));
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--spacing-xs);
+    backdrop-filter: blur(8px);
 }
 
 .queueItem p {
     margin: 0;
-    font-size: 1rem;
-    color: #555;
+    font-size: var(--font-size-md);
+    color: var(--text-secondary);
 }
 
 .queueItem strong {
-    color: #333;
+    color: var(--text-primary);
 }
 
 .companyName, .serviceName, .tokenNumber, .status, .position, .time {
@@ -41,31 +42,31 @@
 }
 
 .status span {
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 0.85rem;
+    padding: var(--spacing-xxs) var(--spacing-xs);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-xs);
     font-weight: 600;
-    margin-left: 10px;
+    margin-left: var(--spacing-sm);
 }
 
 .status.pending {
-    background-color: #fff3cd; /* Yellow */
-    color: #856404;
+    background-color: rgba(242, 201, 76, 0.15);
+    color: var(--color-warning);
 }
 
 .status.calling {
-    background-color: #d1ecf1; /* Light Blue */
-    color: #0c5460;
+    background-color: rgba(245, 96, 64, 0.15);
+    color: var(--primary-color);
 }
 
 .status.served, .status.completed {
-    background-color: #d4edda; /* Green */
-    color: #155724;
+    background-color: rgba(90, 214, 125, 0.15);
+    color: var(--color-success);
 }
 
 .status.skipped, .status.cancelled {
-    background-color: #f8d7da; /* Red */
-    color: #721c24;
+    background-color: rgba(255, 77, 109, 0.15);
+    color: var(--color-error);
 }
 
 /* Responsive adjustments */

@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 
 // Global Styles
 import './theme.css';
@@ -8,6 +8,7 @@ import './index.css';
 // Layouts
 import AuthLayout from './layouts/AuthLayout';
 import AppLayout from './layouts/AppLayout';
+import AdminLayout from './layouts/AdminLayout';
 import RoleProtectedRoute from './layouts/RoleProtectedRoute';
 
 // Pages (Public)
@@ -33,6 +34,10 @@ import CompanyProfile from './pages/company/CompanyProfile';
 
 // Pages (Super Admin Role)
 import AdminDashboard from './pages/admin/AdminDashboard';
+import UsersManagement from './pages/admin/UsersManagement';
+import CompaniesManagement from './pages/admin/CompaniesManagement';
+import TokensManagement from './pages/admin/TokensManagement';
+import SystemSettings from './pages/admin/SystemSettings';
 
 // Error Pages
 import NotFound from './pages/error/NotFound';
@@ -45,19 +50,26 @@ import AuthProvider from './components/AuthProvider';
 import ConfirmModal from './components/confirmModal/ConfirmModal';
 import { useConfirmModal } from './components/confirmModal/useConfirmModal';
 
-
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <Home />, // Standalone, no layout wrapper
+  },
+  {
+    path: '/auth',
     element: <AuthLayout />,
     children: [
-      { index: true, element: <Home /> },
       { path: 'login', element: <Login /> },
       { path: 'signup', element: <Signup /> },
       { path: 'forgot-password', element: <ForgotPassword /> },
       { path: 'signup/company-admin', element: <CompanyAdminSignup /> },
     ],
   },
+  // Redirect old auth routes to new paths
+  { path: '/login', element: <Navigate to="/auth/login" replace /> },
+  { path: '/signup', element: <Navigate to="/auth/signup" replace /> },
+  { path: '/forgot-password', element: <Navigate to="/auth/forgot-password" replace /> },
+  { path: '/signup/company-admin', element: <Navigate to="/auth/signup/company-admin" replace /> },
   {
     path: '/user',
     element: <RoleProtectedRoute requiredRoles={['USER']} />,
@@ -68,7 +80,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <UserDashboard /> },
           { path: 'dashboard', element: <UserDashboard /> },
-          { path: 'company/:id', element: <CompanyDetails /> },
+          { path: 'company/:companyId', element: <CompanyDetails /> },
           { path: 'book-token', element: <BookToken /> },
           { path: 'profile', element: <Profile /> },
         ]
@@ -79,38 +91,42 @@ const router = createBrowserRouter([
     path: '/company',
     element: <RoleProtectedRoute requiredRoles={['COMPANY_ADMIN']} />,
     children: [
-        {
-            path: '',
-            element: <AppLayout />,
-            children: [
-                { index: true, element: <CompanyDashboard /> },
-                { path: 'dashboard', element: <CompanyDashboard /> },
-                { path: 'manage-services', element: <ManageServices /> },
-                { path: 'add-service', element: <AddService /> },
-                { path: 'edit-service/:serviceId', element: <AddService /> },
-                { path: 'analytics', element: <CompanyAnalytics /> },
-                { path: 'queue/:serviceId', element: <QueueCustomers /> },
-                { path: 'profile-settings', element: <CompanyProfile /> },
-            ]
-        }
+      {
+        path: '',
+        element: <AppLayout />,
+        children: [
+          { index: true, element: <CompanyDashboard /> },
+          { path: 'dashboard', element: <CompanyDashboard /> },
+          { path: 'manage-services', element: <ManageServices /> },
+          { path: 'add-service', element: <AddService /> },
+          { path: 'edit-service/:serviceId', element: <AddService /> },
+          { path: 'analytics', element: <CompanyAnalytics /> },
+          { path: 'queue/:serviceId', element: <QueueCustomers /> },
+          { path: 'profile-settings', element: <CompanyProfile /> },
+        ]
+      }
     ]
   },
   {
     path: '/admin',
     element: <RoleProtectedRoute requiredRoles={['SUPER_ADMIN']} />,
     children: [
-        {
-            path: '',
-            element: <AppLayout />,
-            children: [
-                { index: true, element: <AdminDashboard /> },
-                { path: 'dashboard', element: <AdminDashboard /> },
-            ]
-        }
+      {
+        path: '',
+        element: <AdminLayout />,
+        children: [
+          { index: true, element: <AdminDashboard /> },
+          { path: 'dashboard', element: <AdminDashboard /> },
+          { path: 'users', element: <UsersManagement /> },
+          { path: 'companies', element: <CompaniesManagement /> },
+          { path: 'tokens', element: <TokensManagement /> },
+          { path: 'settings', element: <SystemSettings /> },
+        ]
+      }
     ]
   },
   {
-    path: '*', // Wildcard route for 404
+    path: '*',
     element: <NotFound />
   }
 ]);

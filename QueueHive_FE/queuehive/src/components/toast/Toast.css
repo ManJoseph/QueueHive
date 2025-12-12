@@ -33,7 +33,7 @@
 }
 
 .toast-info {
-    background-color: #2196f3; /* Blue */
+    background: var(--accent-gradient);
 }
 
 .toast-success {

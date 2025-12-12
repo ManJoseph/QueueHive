@@ -4,7 +4,8 @@ import Loader from '../../components/Loader';
 import EmptyState from '../../components/EmptyState';
 import { useConfirmModal } from '../../components/confirmModal/useConfirmModal';
 import { useToast } from '../../components/toast/useToast';
-import DashboardOverview from './DashboardOverview'; // Import DashboardOverview
+import { FaMapMarkerAlt, FaTag, FaInfoCircle } from 'react-icons/fa';
+import DashboardOverview from './DashboardOverview';
 import styles from './AdminDashboard.module.css';
 
 const AdminDashboard = () => {
@@ -74,31 +75,70 @@ const AdminDashboard = () => {
 
   return (
     <div className={styles.dashboardContainer}>
-      <header className={styles.header}>
-        <h1 className={styles.mainTitle}>Super Admin Dashboard</h1>
-      </header>
-
       <DashboardOverview />
 
       <hr className={styles.divider} />
 
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Companies Awaiting Approval</h2>
+      <section className={styles.pendingSection}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>
+            Companies Awaiting Approval
+            {pendingCompanies.length > 0 && (
+              <span className={styles.badge}>{pendingCompanies.length}</span>
+            )}
+          </h2>
+        </div>
+        
         {pendingCompanies.length > 0 ? (
-          <ul className={styles.companyList}>
+          <div className={styles.companyGrid}>
             {pendingCompanies.map(company => (
-              <li key={company.id} className={styles.companyItem}>
-                <h3>{company.name}</h3>
-                <p>{company.description || 'No description provided.'}</p>
-                <p><strong>Location:</strong> {company.location || 'N/A'}</p>
-                <p><strong>Category:</strong> {company.category || 'N/A'}</p>
-                <div className={styles.actions}>
-                  <button onClick={() => handleApprove(company.id, company.name)} className={styles.approveButton}>Approve</button>
-                  <button onClick={() => handleReject(company.id, company.name)} className={styles.rejectButton}>Reject</button>
+              <div key={company.id} className={styles.companyCard}>
+                <div className={styles.companyHeader}>
+                  <h3 className={styles.companyName}>{company.name}</h3>
+                  <span className={styles.pendingBadge}>Pending</span>
                 </div>
-              </li>
+                
+                <div className={styles.companyDetails}>
+                  {company.description && (
+                    <div className={styles.companyDescription}>
+                      <FaInfoCircle className={styles.detailIcon} />
+                      <span>{company.description}</span>
+                    </div>
+                  )}
+                  
+                  <div className={styles.companyMeta}>
+                    {company.location && (
+                      <div className={styles.metaItem}>
+                        <FaMapMarkerAlt className={styles.metaIcon} />
+                        <span>{company.location}</span>
+                      </div>
+                    )}
+                    {company.category && (
+                      <div className={styles.metaItem}>
+                        <FaTag className={styles.metaIcon} />
+                        <span>{company.category}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className={styles.companyActions}>
+                  <button 
+                    onClick={() => handleApprove(company.id, company.name)} 
+                    className={styles.approveButton}
+                  >
+                    Approve
+                  </button>
+                  <button 
+                    onClick={() => handleReject(company.id, company.name)} 
+                    className={styles.rejectButton}
+                  >
+                    Reject
+                  </button>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         ) : (
           <EmptyState message="No companies are awaiting approval at the moment." />
         )}
