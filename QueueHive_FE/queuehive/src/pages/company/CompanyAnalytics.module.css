@@ -1,0 +1,106 @@
+/* src/pages/company/CompanyAnalytics.module.css */
+
+.analyticsContainer {
+    display: flex;
+    flex-direction: column;
+    /* Removed min-height and padding, as AppLayout handles overall layout */
+    /* background-color: var(--bg-color); implicitly inherited from AppLayout */
+}
+
+.header {
+    padding: var(--spacing-lg) 0;
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+    border-bottom: 1px solid var(--divider-color); /* Subtle divider */
+}
+
+.mainTitle {
+    font-size: var(--font-size-xxl); /* Consistent with other main titles */
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.section {
+    margin-bottom: var(--spacing-xl); /* Consistent spacing */
+    background-color: var(--surface);
+    padding: var(--spacing-xl); /* Generous padding */
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm); /* Subtle shadow */
+    border: 1px solid var(--border-color); /* Subtle border */
+}
+
+.sectionTitle {
+    font-size: var(--font-size-xl); /* Consistent with other section titles */
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.metricCard {
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-color-dark)); /* Gradient for visual appeal */
+    color: var(--text-primary); /* Light text on dark background */
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-lg); /* Space below card */
+}
+
+.metricValue {
+    font-size: var(--font-size-3xl); /* Larger value */
+    font-weight: 700;
+    margin-bottom: var(--spacing-xs);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Subtle text shadow */
+}
+
+.metricLabel {
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    color: var(--text-secondary); /* Use secondary text color for label */
+}
+
+.statsList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg); /* Space from title */
+}
+
+.statItem {
+    background-color: var(--background-color-light); /* Slightly lighter surface */
+    border: 1px solid var(--divider-color); /* Subtle border */
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-md);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-xs); /* Very subtle shadow */
+    transition: transform var(--transition-short), box-shadow var(--transition-short);
+}
+
+.statItem:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Removed .error as it will be replaced by the EmptyState component in JSX */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header {
+        padding: var(--spacing-md) 0;
+    }
+    .mainTitle {
+        font-size: var(--font-size-xl);
+    }
+    .sectionTitle {
+        font-size: var(--font-size-lg);
+    }
+    .metricValue {
+        font-size: var(--font-size-xxl);
+    }
+    .section {
+      padding: var(--spacing-lg);
+    }
+}

@@ -1,0 +1,121 @@
+/* src/pages/company/CompanyDashboard.module.css */
+
+.dashboardContainer {
+    display: flex;
+    flex-direction: column;
+    /* Removed min-height and padding, as AppLayout now handles overall layout */
+    /* background-color: var(--bg-color); implicitly inherited from AppLayout */
+}
+
+.header {
+    display: flex;
+    justify-content: center; /* Center the welcome message */
+    align-items: center;
+    padding: var(--spacing-lg) 0;
+    margin-bottom: var(--spacing-md);
+}
+
+.mainTitle {
+    font-size: var(--font-size-xxl); /* Consistent with other main titles */
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* Removed .logoutButton as it's now handled by the main NavBar */
+
+.section {
+    background-color: var(--surface);
+    padding: var(--spacing-xl); /* Generous padding */
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm); /* Subtle shadow */
+    border: 1px solid var(--border-color); /* Subtle border */
+    margin-bottom: var(--spacing-xl); /* Consistent spacing */
+}
+
+.sectionTitle {
+    font-size: var(--font-size-xl); /* Consistent with other section titles */
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.overviewCard {
+    background-color: var(--background-color-light); /* Slightly lighter surface for card content */
+    padding: var(--spacing-md);
+    border: 1px solid var(--divider-color); /* Even subtler border */
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-xs); /* Very subtle shadow */
+    margin-bottom: var(--spacing-lg);
+}
+
+.overviewCard p {
+    margin: var(--spacing-xs) 0;
+    color: var(--text-secondary);
+    font-size: var(--font-size-md);
+}
+
+.overviewCard strong {
+    color: var(--text-primary);
+}
+
+.adminNav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-top: var(--spacing-lg);
+}
+
+.navLink {
+    display: flex; /* Use flex to center content */
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: var(--background-color-light); /* Lighter surface for links */
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    transition: all var(--transition-short);
+    min-width: 180px;
+    box-shadow: var(--shadow-sm);
+}
+
+.navLink:hover {
+    background-color: var(--surface); /* Highlight background on hover */
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    color: var(--primary-color); /* Highlight text with primary color */
+}
+
+/* Removed .error, .emptyState as they will be replaced by the EmptyState component in JSX */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header {
+        padding: var(--spacing-md) 0;
+    }
+
+    .mainTitle {
+        font-size: var(--font-size-xl);
+    }
+
+    .sectionTitle {
+        font-size: var(--font-size-lg);
+    }
+
+    .section {
+      padding: var(--spacing-lg);
+    }
+
+    .adminNav {
+      flex-direction: column;
+    }
+    .navLink {
+      width: 100%;
+    }
+}

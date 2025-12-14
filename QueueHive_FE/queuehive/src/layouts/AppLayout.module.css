@@ -1,0 +1,63 @@
+/* src/layouts/AppLayout.module.css */
+
+.appLayoutContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg-color);
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  animation: fadeIn var(--transition-medium) ease-out forwards;
+  position: relative;
+}
+
+.appLayoutContainer::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 18% 20%, rgba(245, 96, 64, 0.05), transparent 35%),
+              radial-gradient(circle at 80% 10%, rgba(193, 53, 132, 0.06), transparent 30%),
+              linear-gradient(180deg, rgba(22, 22, 31, 0.85), rgba(13, 13, 15, 0.95));
+  z-index: 0;
+}
+
+.appContent {
+  flex-grow: 1; /* Allows content to take up available space */
+  padding: var(--spacing-md) var(--spacing-lg); /* Adjust padding for a cleaner look */
+  max-width: 935px; /* Instagram-like content width */
+  margin: 0 auto; /* Center content */
+  width: 100%;
+  padding-top: calc(var(--spacing-md) + 72px); /* Adjust for fixed NavBar height */
+  padding-bottom: var(--spacing-lg);
+  position: relative;
+  z-index: 1;
+}
+
+/* Keyframe animation moved here from theme.css for clarity related to layout */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .appContent {
+    padding: var(--spacing-sm) var(--spacing-md);
+    padding-top: calc(var(--spacing-sm) + 50px); /* Adjust for smaller NavBar height on mobile */
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .appContent {
+    padding: var(--spacing-xs);
+    padding-top: calc(var(--spacing-xs) + 50px);
+  }
+}

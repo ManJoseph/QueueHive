@@ -1,0 +1,35 @@
+/* src/components/EmptyState.module.css */
+
+.emptyStateContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-xxl);
+  text-align: center;
+  min-height: 250px;
+  background: linear-gradient(160deg, rgba(22, 22, 31, 0.9), rgba(28, 28, 38, 0.92));
+  border-radius: var(--border-radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: var(--shadow-sm);
+  gap: var(--spacing-lg);
+  color: var(--text-secondary);
+  backdrop-filter: blur(8px);
+}
+
+.emptyStateIcon {
+  font-size: 4rem;
+  color: var(--text-tertiary);
+}
+
+.emptyStateMessage {
+  color: var(--text-secondary);
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  margin: 0;
+}
+
+.emptyStateAction { /* Style for potential action buttons within empty state */
+  margin-top: var(--spacing-md);
+}
+
