@@ -1,7 +1,7 @@
 /* Shared Admin Management Pages Styles */
 
 .managementContainer {
-  padding: 0;
+  padding: var(--spacing-xl);
 }
 
 /* Header */

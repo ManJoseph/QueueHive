@@ -1,7 +1,7 @@
 /* System Settings Styles */
 
 .settingsContainer {
-  padding: 0;
+  padding: var(--spacing-xl);
 }
 
 .header {

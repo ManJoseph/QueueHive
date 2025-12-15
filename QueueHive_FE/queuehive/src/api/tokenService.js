@@ -16,11 +16,16 @@ const getTokensByUserId = (userId) => {
   return http.get(`/tokens/user/${userId}`);
 };
 
+const getAllTokensByUserId = (userId) => {
+  return http.get(`/tokens/user/${userId}/all`);
+};
+
 const tokenService = {
   createToken,
   getTokenStatus,
   getQueuePosition,
   getTokensByUserId,
+  getAllTokensByUserId,
 };
 
 export default tokenService;

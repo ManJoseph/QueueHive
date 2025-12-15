@@ -76,11 +76,11 @@ const MyQueues = () => {
       <h2 className={styles.title}>My Active Queues</h2>
       {activeTokens.map((token) => (
         <div key={token.id} className={styles.queueItem}>
-          <p className={styles.companyName}><strong>Company:</strong> {token.serviceType?.company?.name || 'N/A'}</p> 
+          <p className={styles.companyName}><strong>Company:</strong> {token.serviceType?.companyName || 'N/A'}</p> 
           <p className={styles.serviceName}><strong>Service:</strong> {token.serviceType?.name || 'Unknown Service'}</p>
           <p className={styles.tokenNumber}><strong>Token:</strong> #{token.tokenNumber}</p>
           <p className={styles.status}><strong>Status:</strong> <span className={styles[token.status.toLowerCase()]}>{token.status}</span></p>
-          <p className={styles.position}><strong>Your Position:</strong> {token.queuePosition}</p>
+          <p className={styles.position}><strong>Your Position:</strong> {typeof token.queuePosition === 'number' ? token.queuePosition + 1 : token.queuePosition}</p>
           <p className={styles.time}><strong>Joined:</strong> {new Date(token.createdAt).toLocaleTimeString()}</p>
         </div>
       ))}

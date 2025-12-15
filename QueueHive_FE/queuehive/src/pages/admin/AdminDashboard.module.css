@@ -1,7 +1,7 @@
 /* Modern Admin Dashboard Styles */
 
 .dashboardContainer {
-    padding: 0;
+    padding: var(--spacing-xl);
     max-width: 100%;
     font-family: var(--font-family);
 }
@@ -10,7 +10,7 @@
 .dashboardHeader {
     background: linear-gradient(135deg, rgba(245, 96, 64, 0.15), rgba(193, 53, 132, 0.15));
     border-bottom: 1px solid var(--divider-color);
-    padding: var(--spacing-xxl) var(--spacing-xl);
+    padding: var(--spacing-xxl) 0;
     margin-bottom: var(--spacing-xl);
 }
 
@@ -34,7 +34,7 @@
 
 /* Stats Overview Section */
 .overviewSection {
-    padding: 0 var(--spacing-xl) var(--spacing-xl);
+    padding: 0 0 var(--spacing-xl);
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -171,7 +171,7 @@
 
 /* Pending Companies Section */
 .pendingSection {
-    padding: 0 var(--spacing-xl) var(--spacing-xl);
+    padding: 0 0 var(--spacing-xl);
     max-width: 1400px;
     margin: 0 auto;
 }

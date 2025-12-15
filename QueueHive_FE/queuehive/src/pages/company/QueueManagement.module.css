@@ -238,6 +238,7 @@
 /* Buttons */
 .serveButton,
 .skipButton,
+.callButton,
 .cancelButton {
   flex: 1;
   display: flex;
@@ -274,6 +275,17 @@
   color: var(--text-primary);
 }
 
+.callButton {
+  background: linear-gradient(135deg, var(--primary-color), #e85d3a);
+  color: white;
+  box-shadow: 0 2px 8px rgba(245, 96, 64, 0.2);
+}
+
+.callButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 96, 64, 0.3);
+}
+
 .cancelButton {
   background: rgba(239, 68, 68, 0.1);
   color: #ef4444;
@@ -287,6 +299,7 @@
 
 .serveButton:disabled,
 .skipButton:disabled,
+.callButton:disabled,
 .cancelButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;

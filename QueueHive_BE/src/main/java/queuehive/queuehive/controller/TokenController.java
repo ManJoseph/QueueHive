@@ -47,6 +47,12 @@ public class TokenController {
         return ResponseEntity.ok(tokens);
     }
 
+    @GetMapping("/user/{userId}/all")
+    public ResponseEntity<List<TokenDto>> getAllTokensByUserId(@PathVariable Long userId) {
+        List<TokenDto> tokens = tokenService.getAllTokensByUserId(userId);
+        return ResponseEntity.ok(tokens);
+    }
+
     @GetMapping("/service/{serviceId}/active")
     public ResponseEntity<List<TokenDto>> getActiveTokensByServiceId(@PathVariable Long serviceId) {
         List<TokenDto> tokens = tokenService.getActiveTokensByServiceId(serviceId);

@@ -144,6 +144,26 @@ const QueueManagement = () => {
     }
   };
 
+  const handleCallSpecific = async (tokenId, tokenNumber) => {
+    const isConfirmed = await confirm(
+      'Call Token',
+      `Call token #${tokenNumber}?`
+    );
+
+    if (!isConfirmed) return;
+
+    try {
+      setIsProcessing(true);
+      await tokenManagementService.updateTokenStatus(tokenId, 'CALLING');
+      showToast(`Token #${tokenNumber} is now being called!`, 'success');
+      await fetchTokens();
+    } catch (error) {
+      showToast('Failed to call token', 'error');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   const getStatusBadgeClass = (status) => {
     switch (status) {
       case 'PENDING':
@@ -270,6 +290,13 @@ const QueueManagement = () => {
                   </span>
                 </div>
                 <div className={styles.tokenActions}>
+                  <button
+                    onClick={() => handleCallSpecific(token.id, token.tokenNumber)}
+                    className={styles.callButton}
+                    disabled={isProcessing}
+                  >
+                    <FaPhone /> Call
+                  </button>
                   <button
                     onClick={() => handleCancel(token.id, token.tokenNumber)}
                     className={styles.cancelButton}

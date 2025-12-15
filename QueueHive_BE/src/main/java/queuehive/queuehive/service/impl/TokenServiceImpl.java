@@ -111,6 +111,14 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
+    public List<TokenDto> getAllTokensByUserId(Long userId) {
+        return tokenRepository.findByUserIdOrderByCreatedAtDesc(userId)
+                .stream()
+                .map(this::toDto)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
     public List<TokenDto> getActiveTokensByServiceId(Long serviceId) {
         List<String> activeStatuses = List.of("PENDING", "CALLING"); // Tokens that are considered active in a queue
         return tokenRepository.findByServiceTypeIdAndStatusInOrderByCreatedAtAsc(serviceId, activeStatuses)

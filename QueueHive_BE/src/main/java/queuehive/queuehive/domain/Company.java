@@ -34,6 +34,9 @@ public class Company {
     @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
     private CompanyStatus status;
 
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean approved = false;
+
     @Column
     private String location;
 
@@ -120,6 +123,14 @@ public class Company {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public Boolean getApproved() {
+        return approved;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
     }
 
     @Override

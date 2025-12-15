@@ -46,7 +46,7 @@ const TokensManagement = () => {
 
     if (searchQuery) {
       filtered = filtered.filter(token =>
-        token.serviceTypeDto?.companyName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        token.serviceType?.companyName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         token.tokenNumber.toString().toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
@@ -179,8 +179,8 @@ const TokensManagement = () => {
                 <tr key={token.id}>
                   <td className={styles.tokenNumber}>{token.tokenNumber}</td>
                   <td>{token.userId}</td>
-                  <td>{token.serviceTypeDto?.companyName || 'N/A'}</td>
-                  <td>{token.serviceTypeDto?.name || 'N/A'}</td>
+                  <td>{token.serviceType?.companyName || 'N/A'}</td>
+                  <td>{token.serviceType?.name || 'N/A'}</td>
                   <td>
                     <span className={`${styles.statusBadge} ${getStatusBadgeClass(token.status)}`}>
                       {token.status}

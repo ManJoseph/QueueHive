@@ -23,6 +23,7 @@ import UserDashboard from './pages/user/UserDashboard';
 import CompanyDetails from './pages/user/CompanyDetails';
 import BookToken from './pages/user/BookToken';
 import Profile from './pages/user/Profile';
+import Notifications from './pages/user/Notifications';
 
 // Pages (Company Admin Role)
 import CompanyDashboard from './pages/company/CompanyDashboard';
@@ -83,6 +84,7 @@ const router = createBrowserRouter([
           { path: 'dashboard', element: <UserDashboard /> },
           { path: 'company/:companyId', element: <CompanyDetails /> },
           { path: 'book-token', element: <BookToken /> },
+          { path: 'notifications', element: <Notifications /> },
           { path: 'profile', element: <Profile /> },
         ]
       }

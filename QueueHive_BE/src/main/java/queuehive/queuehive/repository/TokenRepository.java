@@ -13,6 +13,7 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
         ServiceType serviceType, List<String> statuses, LocalDateTime createdAt);
 
     List<Token> findByUserIdAndStatusIn(Long userId, List<String> statuses);
+    List<Token> findByUserIdOrderByCreatedAtDesc(Long userId); // Get all tokens for a user
 
     List<Token> findByServiceTypeIdAndStatusInOrderByCreatedAtAsc(Long serviceTypeId, List<String> statuses);
 

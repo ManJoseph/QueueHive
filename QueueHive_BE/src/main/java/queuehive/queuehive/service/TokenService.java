@@ -12,6 +12,7 @@ public interface TokenService {
     QueuePositionDto getQueuePosition(Long tokenId);
     Optional<TokenDto> getTokenById(Long tokenId);
     List<TokenDto> getActiveTokensByUserId(Long userId);
+    List<TokenDto> getAllTokensByUserId(Long userId); // Get ALL tokens for notifications
     
     // New methods for Company Admin
     List<TokenDto> getActiveTokensByServiceId(Long serviceId);

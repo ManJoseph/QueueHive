@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import authService from '../../api/authService'; // Updated path
 import styles from '../Auth.module.css';
 import Loader from '../../components/Loader';
-import { useAuth } from '../../context/AuthContext'; // Import useAuth hook
 
 const CompanyAdminSignup = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +19,6 @@ const CompanyAdminSignup = () => {
   const [error, setError] = useState(null); // For server-side errors
   const [successMessage, setSuccessMessage] = useState(null); // For success messages
   const [isLoading, setIsLoading] = useState(false);
-  const { login: authLogin } = useAuth(); // Rename login to avoid conflict
   const navigate = useNavigate();
 
   const validateField = (name, value, currentFormData) => {
@@ -95,14 +93,17 @@ const CompanyAdminSignup = () => {
         fullName, email, password, phone, companyName, companyDescription, companyLocation, companyCategory
       });
       
-      setSuccessMessage('Company Admin registration successful! Redirecting to dashboard...');
-      // Use AuthContext's login method to set global state and local storage
-      // Access data from response.data since axios wraps the response
-      authLogin(response.data.token, response.data.role, response.data.userId, response.data.companyId);
-
+      // Show success message and redirect to login
+      setSuccessMessage('Company registration successful! Please wait for admin approval before you can log in.');
+      
+      // Redirect to login page after 3 seconds
       setTimeout(() => {
-        navigate('/company/dashboard'); // Redirect on success
-      }, 1500);
+        navigate('/auth/login', { 
+          state: { 
+            message: 'Your company registration is pending approval. You will be notified once approved.' 
+          } 
+        });
+      }, 3000);
 
     } catch (err) {
       const errorMessage = err.message || 'Registration failed. Please try again.';
