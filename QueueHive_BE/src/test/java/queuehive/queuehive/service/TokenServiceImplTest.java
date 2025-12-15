@@ -9,6 +9,7 @@ import queuehive.queuehive.domain.QueueSequence;
 import queuehive.queuehive.domain.ServiceType;
 import queuehive.queuehive.domain.Token;
 import queuehive.queuehive.domain.User;
+import queuehive.queuehive.domain.Company;
 import queuehive.queuehive.dto.CreateTokenRequest;
 import queuehive.queuehive.dto.TokenDto;
 import queuehive.queuehive.repository.QueueSequenceRepository;
@@ -16,6 +17,7 @@ import queuehive.queuehive.repository.ServiceTypeRepository;
 import queuehive.queuehive.repository.TokenRepository;
 import queuehive.queuehive.repository.UserRepository;
 import queuehive.queuehive.service.impl.TokenServiceImpl;
+import queuehive.queuehive.websocket.TokenEventPublisher;
 
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
@@ -34,6 +36,7 @@ class TokenServiceImplTest {
     @Mock private UserRepository userRepository;
     @Mock private ServiceTypeRepository serviceTypeRepository;
     @Mock private QueueSequenceRepository queueSequenceRepository;
+    @Mock private TokenEventPublisher tokenEventPublisher;
 
     @InjectMocks private TokenServiceImpl tokenService;
 
@@ -46,8 +49,11 @@ class TokenServiceImplTest {
 
         User user = new User();
         user.setId(1L);
+        Company company = new Company();
+        company.setId(1L);
         ServiceType serviceType = new ServiceType();
         serviceType.setId(1L);
+        serviceType.setCompany(company);
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(serviceTypeRepository.findById(1L)).thenReturn(Optional.of(serviceType));
@@ -76,8 +82,11 @@ class TokenServiceImplTest {
 
         User user = new User();
         user.setId(1L);
+        Company company = new Company();
+        company.setId(1L);
         ServiceType serviceType = new ServiceType();
         serviceType.setId(1L);
+        serviceType.setCompany(company);
         
         QueueSequence existingSequence = new QueueSequence(serviceType, 5);
 

@@ -1,5 +1,6 @@
 package queuehive.queuehive.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 
 public class CompanyDto {
@@ -10,9 +11,12 @@ public class CompanyDto {
     private String category;
     private Long ownerId;
     private Boolean approved;
+    private String adminEmail;
+    
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
 
-    public CompanyDto(Long id, String name, String description, String location, String category, Long ownerId, Boolean approved, LocalDateTime createdAt) {
+    public CompanyDto(Long id, String name, String description, String location, String category, Long ownerId, Boolean approved, String adminEmail, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -20,6 +24,7 @@ public class CompanyDto {
         this.category = category;
         this.ownerId = ownerId;
         this.approved = approved;
+        this.adminEmail = adminEmail;
         this.createdAt = createdAt;
     }
 
@@ -79,6 +84,14 @@ public class CompanyDto {
 
     public void setApproved(Boolean approved) {
         this.approved = approved;
+    }
+
+    public String getAdminEmail() {
+        return adminEmail;
+    }
+
+    public void setAdminEmail(String adminEmail) {
+        this.adminEmail = adminEmail;
     }
 
     public LocalDateTime getCreatedAt() {

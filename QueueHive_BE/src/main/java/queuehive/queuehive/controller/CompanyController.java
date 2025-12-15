@@ -11,6 +11,7 @@ import queuehive.queuehive.service.CompanyService;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/companies")
 public class CompanyController {
 
@@ -32,15 +33,27 @@ public class CompanyController {
         return ResponseEntity.ok(approvedCompany);
     }
 
-    @DeleteMapping("/{id}/reject")
-    public ResponseEntity<Void> rejectCompany(@PathVariable Long id) {
-        companyService.rejectCompany(id);
+    @PutMapping("/{id}/reject")
+    public ResponseEntity<CompanyDto> rejectCompany(@PathVariable Long id) {
+        CompanyDto rejectedCompany = companyService.rejectCompany(id);
+        return ResponseEntity.ok(rejectedCompany);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
+        companyService.deleteCompany(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
     public ResponseEntity<List<CompanyDto>> listApprovedCompanies() {
         List<CompanyDto> companies = companyService.listApprovedCompanies();
+        return ResponseEntity.ok(companies);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<CompanyDto>> listAllCompanies() {
+        List<CompanyDto> companies = companyService.listAllCompanies();
         return ResponseEntity.ok(companies);
     }
 
@@ -53,6 +66,12 @@ public class CompanyController {
     @GetMapping("/{id}")
     public ResponseEntity<CompanyDto> getCompanyById(@PathVariable Long id) {
         CompanyDto company = companyService.getCompanyById(id);
+        return ResponseEntity.ok(company);
+    }
+
+    @GetMapping("/owner/{ownerId}")
+    public ResponseEntity<CompanyDto> getCompanyByOwnerId(@PathVariable Long ownerId) {
+        CompanyDto company = companyService.getCompanyByOwnerId(ownerId);
         return ResponseEntity.ok(company);
     }
 

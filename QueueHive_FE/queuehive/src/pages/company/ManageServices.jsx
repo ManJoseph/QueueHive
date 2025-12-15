@@ -3,15 +3,16 @@ import { useNavigate, Link } from 'react-router-dom';
 import companyAdminService from '../../api/companyAdminService';
 import Loader from '../../components/Loader';
 import EmptyState from '../../components/EmptyState';
-import { useConfirmModal } from '../../components/confirmModal/useConfirmModal'; // Import useConfirmModal
-import { useToast } from '../../components/toast/useToast'; // Import useToast
+import ConfirmModal from '../../components/confirmModal/ConfirmModal';
+import { useConfirmModal } from '../../components/confirmModal/useConfirmModal';
+import { useToast } from '../../components/toast/useToast';
 import styles from './ManageServices.module.css';
 
 const ManageServices = () => {
   const [services, setServices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const { confirm } = useConfirmModal(); // Get the confirm function
+  const { confirm, ConfirmModalProps } = useConfirmModal();
   const { showToast } = useToast();
 
   const companyId = localStorage.getItem('companyId');
@@ -33,7 +34,7 @@ const ManageServices = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [companyId, showToast]);
+  }, [companyId]); // Removed showToast from dependencies
 
   useEffect(() => {
     fetchServices();
@@ -103,6 +104,8 @@ const ManageServices = () => {
           ))}
         </div>
       )}
+      
+      <ConfirmModal {...ConfirmModalProps} />
     </div>
   );
 };

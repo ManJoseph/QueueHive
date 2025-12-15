@@ -25,21 +25,31 @@ const approveCompany = (companyId) => {
 };
 
 const rejectCompany = (companyId) => {
-  return http.delete(`/companies/${companyId}/reject`);
+  return http.put(`/companies/${companyId}/reject`);
+};
+
+const deleteCompany = (companyId) => {
+  return http.delete(`/companies/${companyId}`);
 };
 
 const getCompanyById = (companyId) => {
   return http.get(`/companies/${companyId}`);
 };
 
+const getAllCompanies = () => {
+  return http.get('/companies/all');
+};
+
 const companyService = {
   getApprovedCompanies,
+  getAllCompanies,
   getServicesForCompany,
   registerCompany,
   getCompanyByOwnerId,
   getPendingCompanies,
   approveCompany,
   rejectCompany,
+  deleteCompany,
   getCompanyById,
 };
 

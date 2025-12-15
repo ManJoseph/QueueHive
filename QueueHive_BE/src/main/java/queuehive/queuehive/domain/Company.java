@@ -2,11 +2,14 @@ package queuehive.queuehive.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
+import queuehive.queuehive.domain.CompanyStatus;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -27,8 +30,9 @@ public class Company {
     @Column(nullable = false)
     private Long ownerId; // Foreign key to User id
 
-    @Column(nullable = false)
-    private Boolean approved;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
+    private CompanyStatus status;
 
     @Column
     private String location;
@@ -43,11 +47,11 @@ public class Company {
     public Company() {
     }
 
-    public Company(String name, String description, Long ownerId, Boolean approved, String location, String category) {
+    public Company(String name, String description, Long ownerId, CompanyStatus status, String location, String category) {
         this.name = name;
         this.description = description;
         this.ownerId = ownerId;
-        this.approved = approved;
+        this.status = status;
         this.location = location;
         this.category = category;
     }
@@ -69,8 +73,8 @@ public class Company {
         return ownerId;
     }
 
-    public Boolean getApproved() {
-        return approved;
+    public CompanyStatus getStatus() {
+        return status;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -102,8 +106,8 @@ public class Company {
         this.ownerId = ownerId;
     }
 
-    public void setApproved(Boolean approved) {
-        this.approved = approved;
+    public void setStatus(CompanyStatus status) {
+        this.status = status;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
@@ -138,10 +142,10 @@ public class Company {
                + "name='" + name + "'" + ", "
                + "description='" + description + "'" + ", "
                + "ownerId=" + ownerId + ", "
-               + "approved=" + approved + ", "
+               + "status=" + status + ", "
                + "location='" + location + "'" + ", "
                + "category='" + category + "'" + ", "
-               + "createdAt=" + createdAt + 
+               + "createdAt=" + createdAt +
                '}';
     }
 }

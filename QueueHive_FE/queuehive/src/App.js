@@ -31,6 +31,7 @@ import AddService from './pages/company/AddService';
 import CompanyAnalytics from './pages/company/CompanyAnalytics';
 import QueueCustomers from './pages/company/QueueCustomers';
 import CompanyProfile from './pages/company/CompanyProfile';
+import QueueManagement from './pages/company/QueueManagement';
 
 // Pages (Super Admin Role)
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -102,6 +103,7 @@ const router = createBrowserRouter([
           { path: 'edit-service/:serviceId', element: <AddService /> },
           { path: 'analytics', element: <CompanyAnalytics /> },
           { path: 'queue/:serviceId', element: <QueueCustomers /> },
+          { path: 'queue-management', element: <QueueManagement /> },
           { path: 'profile-settings', element: <CompanyProfile /> },
         ]
       }

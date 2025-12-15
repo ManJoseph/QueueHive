@@ -10,9 +10,12 @@ public interface CompanyService {
     CompanyDto registerCompany(CreateCompanyRequest request);
     CompanyDto approveCompany(Long companyId);
     CompanyDto rejectCompany(Long companyId); // New method
+    void deleteCompany(Long companyId);
     List<CompanyDto> listApprovedCompanies();
+    List<CompanyDto> listAllCompanies(); // Get all companies regardless of status
     List<CompanyDto> listPendingCompanies(); // New method
     CompanyDto getCompanyById(Long companyId); // New method
+    CompanyDto getCompanyByOwnerId(Long ownerId); // Get company by owner ID
     CompanyDto updateCompany(Long companyId, UpdateCompanyRequest request);
     
     // New methods for analytics

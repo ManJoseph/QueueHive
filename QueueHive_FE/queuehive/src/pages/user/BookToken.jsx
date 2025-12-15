@@ -89,7 +89,7 @@ const BookToken = () => {
         
         {currentPosition !== null ? (
             <p className={styles.queuePosition}>
-                Your position in the queue: <strong>{currentPosition}</strong>
+                Your position in the queue: <strong>{currentPosition + 1}</strong>
             </p>
         ) : (
             <p className={styles.queuePosition}>Loading your position...</p>

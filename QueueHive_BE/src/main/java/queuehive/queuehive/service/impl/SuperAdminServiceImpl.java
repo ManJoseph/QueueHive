@@ -1,7 +1,10 @@
 package queuehive.queuehive.service.impl;
 
 import org.springframework.stereotype.Service;
+import queuehive.queuehive.domain.CompanyStatus;
 import queuehive.queuehive.dto.DashboardOverviewDto;
+import queuehive.queuehive.dto.TokenDto;
+import queuehive.queuehive.dto.UserDto;
 import queuehive.queuehive.repository.CompanyRepository;
 import queuehive.queuehive.repository.TokenRepository;
 import queuehive.queuehive.repository.UserRepository;
@@ -11,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -29,8 +33,8 @@ public class SuperAdminServiceImpl implements SuperAdminService {
     @Override
     public DashboardOverviewDto getDashboardOverview() {
         long totalCompanies = companyRepository.count();
-        long approvedCompanies = companyRepository.countByApproved(true);
-        long pendingCompanies = companyRepository.countByApproved(false);
+        long approvedCompanies = companyRepository.countByStatus(CompanyStatus.APPROVED);
+        long pendingCompanies = companyRepository.countByStatus(CompanyStatus.PENDING);
         long totalUsers = userRepository.count();
 
         LocalDate today = LocalDate.now();
@@ -63,5 +67,39 @@ public class SuperAdminServiceImpl implements SuperAdminService {
                 monthlyTraffic,
                 systemHealth
         );
+    }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(user -> new UserDto(user.getId(), user.getFullName(), user.getPhone(), user.getEmail(), user.getRole(), user.getCreatedAt()))
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+    @Override
+    public List<TokenDto> getAllTokens() {
+        return tokenRepository.findAll().stream()
+                .map(token -> new TokenDto(
+                        token.getId(),
+                        token.getUser().getId(),
+                        token.getServiceType().getId(),
+                        token.getTokenNumber(),
+                        token.getStatus(),
+                        token.getCreatedAt(),
+                        new queuehive.queuehive.dto.ServiceTypeDto(
+                                token.getServiceType().getId(),
+                                token.getServiceType().getCompany().getId(),
+                                token.getServiceType().getCompany().getName(),
+                                token.getServiceType().getName(),
+                                token.getServiceType().getDescription(),
+                                token.getServiceType().getAverageServiceTime()
+                        )
+                ))
+                .collect(java.util.stream.Collectors.toList());
     }
 }

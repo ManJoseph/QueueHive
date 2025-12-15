@@ -11,6 +11,7 @@ import queuehive.queuehive.dto.UserDto;
 import queuehive.queuehive.service.UserService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/users")
 public class UserController {
 
@@ -71,9 +72,18 @@ public class UserController {
     public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UpdateUserRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
+        System.out.println("=== UPDATE USER DEBUG ===");
+        System.out.println("Authenticated email: " + userEmail);
+        System.out.println("Authentication object: " + authentication);
+        System.out.println("Request body: " + request);
+        
         UserDto existingUser = userService.findUserByEmail(userEmail)
-                                           .orElseThrow(() -> new RuntimeException("Authenticated user not found."));
+                                           .orElseThrow(() -> {
+                                               System.out.println("User not found for email: " + userEmail);
+                                               return new RuntimeException("Authenticated user not found.");
+                                           });
 
+        System.out.println("Found user: " + existingUser.getEmail());
         UserDto updatedUser = userService.updateUser(existingUser.getId(), request);
         return ResponseEntity.ok(updatedUser);
     }

@@ -11,6 +11,7 @@ import queuehive.queuehive.service.TokenService;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/tokens")
 public class TokenController {
 

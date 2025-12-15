@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { 
   FaChartLine, 
   FaUsers, 
@@ -7,17 +7,24 @@ import {
   FaTicketAlt, 
   FaCog,
   FaBars,
-  FaTimes
+  FaTimes,
+  FaSignOutAlt
 } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import styles from './AdminLayout.module.css';
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/auth/login');
   };
 
   const navItems = [
@@ -52,6 +59,15 @@ const AdminLayout = () => {
               {sidebarOpen && <span className={styles.navLabel}>{item.label}</span>}
             </NavLink>
           ))}
+          
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className={`${styles.navItem} ${styles.logoutButton}`}
+          >
+            <span className={styles.navIcon}><FaSignOutAlt /></span>
+            {sidebarOpen && <span className={styles.navLabel}>Logout</span>}
+          </button>
         </nav>
       </aside>
 

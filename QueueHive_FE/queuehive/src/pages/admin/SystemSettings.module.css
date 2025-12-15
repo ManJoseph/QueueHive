@@ -73,6 +73,14 @@
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.inputIcon {
+  font-size: var(--font-size-sm);
+  color: var(--primary-color);
 }
 
 .settingItem input,
@@ -93,9 +101,17 @@
   box-shadow: 0 0 0 2px rgba(245, 96, 64, 0.35);
 }
 
-.settingItem input:disabled {
+.settingItem input:disabled,
+.disabledInput {
   opacity: 0.5;
   cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.helpText {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-top: -4px;
 }
 
 .settingItem select option {
@@ -118,6 +134,10 @@
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition-short);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  justify-content: center;
 }
 
 .saveButton {
@@ -126,9 +146,15 @@
   box-shadow: var(--shadow-sm);
 }
 
-.saveButton:hover {
+.saveButton:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .resetButton {
@@ -156,3 +182,4 @@
     width: 100%;
   }
 }
+

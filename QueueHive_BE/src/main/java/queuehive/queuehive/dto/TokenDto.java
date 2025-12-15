@@ -1,5 +1,6 @@
 package queuehive.queuehive.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 
 public class TokenDto {
@@ -8,6 +9,8 @@ public class TokenDto {
     private Long serviceId;
     private Integer tokenNumber;
     private String status;
+    
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
     private ServiceTypeDto serviceType;
 

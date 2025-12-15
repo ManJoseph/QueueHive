@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional; // Import Transactional
 import queuehive.queuehive.domain.Company; // Import Company
+import queuehive.queuehive.domain.CompanyStatus;
 import queuehive.queuehive.domain.User;
 import queuehive.queuehive.dto.*;
 import queuehive.queuehive.repository.CompanyRepository; // Import CompanyRepository
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
                 request.getRole()
         );
         User savedUser = userRepository.save(user);
-        return new UserDto(savedUser.getId(), savedUser.getFullName(), savedUser.getPhone(), savedUser.getEmail(), savedUser.getRole());
+        return new UserDto(savedUser.getId(), savedUser.getFullName(), savedUser.getPhone(), savedUser.getEmail(), savedUser.getRole(), savedUser.getCreatedAt());
     }
 
     @Override
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService {
                 request.getCompanyName(),
                 request.getCompanyDescription(),
                 savedUser.getId(), // Link company to the owner's ID
-                false, // New company is not yet approved
+                CompanyStatus.PENDING, // New company is not yet approved
                 request.getCompanyLocation(),
                 request.getCompanyCategory()
         );
@@ -74,13 +75,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserDto> findUserById(Long id) {
         return userRepository.findById(id)
-                .map(user -> new UserDto(user.getId(), user.getFullName(), user.getPhone(), user.getEmail(), user.getRole()));
+                .map(user -> new UserDto(user.getId(), user.getFullName(), user.getPhone(), user.getEmail(), user.getRole(), user.getCreatedAt()));
     }
 
     @Override
     public Optional<UserDto> findUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .map(user -> new UserDto(user.getId(), user.getFullName(), user.getPhone(), user.getEmail(), user.getRole()));
+                .map(user -> new UserDto(user.getId(), user.getFullName(), user.getPhone(), user.getEmail(), user.getRole(), user.getCreatedAt()));
     }
 
     @Override
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
                 if ("COMPANY_ADMIN".equals(user.getRole())) {
                     Company company = companyRepository.findByOwnerId(user.getId())
                                                .orElseThrow(() -> new RuntimeException("Company admin has no associated company."));
-                    if (!company.getApproved()) {
+                    if (company.getStatus() != CompanyStatus.APPROVED) {
                         throw new RuntimeException("Company is not approved yet. Please wait for admin approval.");
                     }
                 }
@@ -114,7 +115,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getCurrentUser(Long userId) {
         return userRepository.findById(userId)
-                .map(user -> new UserDto(user.getId(), user.getFullName(), user.getPhone(), user.getEmail(), user.getRole()))
+                .map(user -> new UserDto(user.getId(), user.getFullName(), user.getPhone(), user.getEmail(), user.getRole(), user.getCreatedAt()))
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
     }
 
@@ -135,7 +136,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User updatedUser = userRepository.save(user);
-        return new UserDto(updatedUser.getId(), updatedUser.getFullName(), updatedUser.getPhone(), updatedUser.getEmail(), updatedUser.getRole());
+        return new UserDto(updatedUser.getId(), updatedUser.getFullName(), updatedUser.getPhone(), updatedUser.getEmail(), updatedUser.getRole(), updatedUser.getCreatedAt());
     }
 
     @Override
@@ -156,6 +157,6 @@ public class UserServiceImpl implements UserService {
         
         user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
         User updatedUser = userRepository.save(user);
-        return new UserDto(updatedUser.getId(), updatedUser.getFullName(), updatedUser.getPhone(), updatedUser.getEmail(), updatedUser.getRole());
+        return new UserDto(updatedUser.getId(), updatedUser.getFullName(), updatedUser.getPhone(), updatedUser.getEmail(), updatedUser.getRole(), updatedUser.getCreatedAt());
     }
 }

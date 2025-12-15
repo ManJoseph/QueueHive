@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaTrash, FaFilter } from 'react-icons/fa';
 import { useConfirmModal } from '../../components/confirmModal/useConfirmModal';
+import ConfirmModal from '../../components/confirmModal/ConfirmModal';
 import { useToast } from '../../components/toast/useToast';
 import Loader from '../../components/Loader';
 import styles from './AdminManagement.module.css';
+import adminService from '../../api/adminService';
 
 const UsersManagement = () => {
   const [users, setUsers] = useState([]);
@@ -11,7 +13,7 @@ const UsersManagement = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState('ALL');
-  const { confirm } = useConfirmModal();
+  const { confirm, ConfirmModalProps } = useConfirmModal();
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -25,18 +27,8 @@ const UsersManagement = () => {
   const fetchUsers = async () => {
     try {
       setIsLoading(true);
-      // TODO: Replace with actual API call
-      // const response = await adminService.getAllUsers();
-      // setUsers(response.data);
-      
-      // Mock data for now
-      const mockUsers = [
-        { id: 1, fullName: 'John Doe', email: 'john@example.com', phone: '+1234567890', role: 'USER', createdAt: '2024-01-15' },
-        { id: 2, fullName: 'Jane Smith', email: 'jane@example.com', phone: '+1234567891', role: 'COMPANY_ADMIN', createdAt: '2024-02-20' },
-        { id: 3, fullName: 'Bob Johnson', email: 'bob@example.com', phone: '+1234567892', role: 'USER', createdAt: '2024-03-10' },
-        { id: 4, fullName: 'Alice Williams', email: 'alice@example.com', phone: '+1234567893', role: 'SUPER_ADMIN', createdAt: '2024-01-05' },
-      ];
-      setUsers(mockUsers);
+      const response = await adminService.getAllUsers();
+      setUsers(response.data);
     } catch (error) {
       showToast('Failed to load users', 'error');
     } finally {
@@ -72,9 +64,7 @@ const UsersManagement = () => {
     if (!isConfirmed) return;
 
     try {
-      // TODO: Replace with actual API call
-      // await adminService.deleteUser(userId);
-      
+      await adminService.deleteUser(userId);
       setUsers(users.filter(user => user.id !== userId));
       showToast(`User "${userName}" deleted successfully`, 'success');
     } catch (error) {
@@ -166,7 +156,7 @@ const UsersManagement = () => {
                       {user.role.replace('_', ' ')}
                     </span>
                   </td>
-                  <td>{new Date(user.createdAt).toLocaleDateString()}</td>
+                  <td>{new Date(user.createdAt).toLocaleString()}</td>
                   <td>
                     <button
                       className={styles.deleteButton}
@@ -186,6 +176,7 @@ const UsersManagement = () => {
           </div>
         )}
       </div>
+      <ConfirmModal {...ConfirmModalProps} />
     </div>
   );
 };

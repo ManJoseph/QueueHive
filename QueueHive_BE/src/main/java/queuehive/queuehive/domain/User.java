@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.CreationTimestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -29,6 +31,10 @@ public class User {
 
     @Column(nullable = false)
     private String role; // e.g., "CUSTOMER", "COMPANY_ADMIN"
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     public User() {
     }
@@ -64,6 +70,10 @@ public class User {
 
     public String getRole() {
         return role;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     // Setters (for JPA/Hibernate proxy initialization, or if mutable fields are desired)
@@ -106,12 +116,13 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{"
-               + "id=" + id + 
-               ", fullName='" + fullName + '\'' +
-               ", phone='" + phone + '\'' +
-               ", email='" + email + '\'' +
-               ", role='" + role + '\'' +
+        return "User{" +
+               "id=" + id + 
+               ", fullName='" + fullName + "'" + 
+               ", phone='" + phone + "'" + 
+               ", email='" + email + "'" + 
+               ", role='" + role + "'" + 
+               ", createdAt=" + createdAt +
                '}';
     }
 }

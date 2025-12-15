@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaTrash, FaCheckCircle, FaTimesCircle, FaFilter } from 'react-icons/fa';
 import { useConfirmModal } from '../../components/confirmModal/useConfirmModal';
+import ConfirmModal from '../../components/confirmModal/ConfirmModal';
 import { useToast } from '../../components/toast/useToast';
 import Loader from '../../components/Loader';
 import styles from './AdminManagement.module.css';
+import companyService from '../../api/companyService';
 
 const CompaniesManagement = () => {
   const [companies, setCompanies] = useState([]);
   const [filteredCompanies, setFilteredCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('ALL');
-  const { confirm } = useConfirmModal();
+  const [statusFilter, setStatusFilter] = useState('PENDING');
+  const { confirm, ConfirmModalProps } = useConfirmModal();
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -25,18 +27,9 @@ const CompaniesManagement = () => {
   const fetchCompanies = async () => {
     try {
       setIsLoading(true);
-      // TODO: Replace with actual API call
-      // const response = await adminService.getAllCompanies();
-      // setCompanies(response.data);
-      
-      // Mock data
-      const mockCompanies = [
-        { id: 1, name: 'Tech Solutions Inc', status: 'APPROVED', location: 'New York', category: 'Technology', adminEmail: 'admin@techsolutions.com', createdAt: '2024-01-10' },
-        { id: 2, name: 'Health Care Plus', status: 'PENDING', location: 'Los Angeles', category: 'Healthcare', adminEmail: 'admin@healthcare.com', createdAt: '2024-02-15' },
-        { id: 3, name: 'Food Delight', status: 'APPROVED', location: 'Chicago', category: 'Restaurant', adminEmail: 'admin@fooddelight.com', createdAt: '2024-01-20' },
-        { id: 4, name: 'Auto Service Pro', status: 'REJECTED', location: 'Houston', category: 'Automotive', adminEmail: 'admin@autoservice.com', createdAt: '2024-03-01' },
-      ];
-      setCompanies(mockCompanies);
+      // Fetch ALL companies, not just pending
+      const response = await companyService.getAllCompanies();
+      setCompanies(response.data);
     } catch (error) {
       showToast('Failed to load companies', 'error');
     } finally {
@@ -56,50 +49,59 @@ const CompaniesManagement = () => {
     }
 
     if (statusFilter !== 'ALL') {
-      filtered = filtered.filter(company => company.status === statusFilter);
+      // Filter by approved status
+      if (statusFilter === 'APPROVED') {
+        filtered = filtered.filter(company => company.approved === true);
+      } else if (statusFilter === 'PENDING') {
+        filtered = filtered.filter(company => company.approved === false);
+      }
     }
 
     setFilteredCompanies(filtered);
   };
 
   const handleApprove = async (companyId, companyName) => {
+    console.log('Approve button clicked for:', companyId, companyName);
     const isConfirmed = await confirm(
       'Approve Company',
       `Are you sure you want to approve "${companyName}"?`
     );
 
+    console.log('Confirmation result:', isConfirmed);
     if (!isConfirmed) return;
 
     try {
-      // TODO: Replace with actual API call
-      // await adminService.approveCompany(companyId);
-      
-      setCompanies(companies.map(c => 
-        c.id === companyId ? { ...c, status: 'APPROVED' } : c
-      ));
+      console.log('Calling approveCompany API...');
+      await companyService.approveCompany(companyId);
+      console.log('Company approved successfully, refetching...');
+      // Refetch companies to get updated data
+      await fetchCompanies();
       showToast(`Company "${companyName}" approved successfully`, 'success');
     } catch (error) {
+      console.error('Error approving company:', error);
       showToast('Failed to approve company', 'error');
     }
   };
 
   const handleReject = async (companyId, companyName) => {
+    console.log('Reject button clicked for:', companyId, companyName);
     const isConfirmed = await confirm(
       'Reject Company',
       `Are you sure you want to reject "${companyName}"?`
     );
 
+    console.log('Confirmation result:', isConfirmed);
     if (!isConfirmed) return;
 
     try {
-      // TODO: Replace with actual API call
-      // await adminService.rejectCompany(companyId);
-      
-      setCompanies(companies.map(c => 
-        c.id === companyId ? { ...c, status: 'REJECTED' } : c
-      ));
+      console.log('Calling rejectCompany API...');
+      await companyService.rejectCompany(companyId);
+      console.log('Company rejected successfully, refetching...');
+      // Refetch companies to get updated data
+      await fetchCompanies();
       showToast(`Company "${companyName}" rejected`, 'warning');
     } catch (error) {
+      console.error('Error rejecting company:', error);
       showToast('Failed to reject company', 'error');
     }
   };
@@ -113,9 +115,7 @@ const CompaniesManagement = () => {
     if (!isConfirmed) return;
 
     try {
-      // TODO: Replace with actual API call
-      // await adminService.deleteCompany(companyId);
-      
+      await companyService.deleteCompany(companyId);
       setCompanies(companies.filter(c => c.id !== companyId));
       showToast(`Company "${companyName}" deleted successfully`, 'success');
     } catch (error) {
@@ -149,11 +149,11 @@ const CompaniesManagement = () => {
         </div>
         <div className={styles.stats}>
           <div className={styles.statCard}>
-            <div className={styles.statValue}>{companies.filter(c => c.status === 'APPROVED').length}</div>
+            <div className={styles.statValue}>{companies.filter(c => c.approved).length}</div>
             <div className={styles.statLabel}>Approved</div>
           </div>
           <div className={styles.statCard}>
-            <div className={styles.statValue}>{companies.filter(c => c.status === 'PENDING').length}</div>
+            <div className={styles.statValue}>{companies.filter(c => !c.approved).length}</div>
             <div className={styles.statLabel}>Pending</div>
           </div>
         </div>
@@ -210,14 +210,14 @@ const CompaniesManagement = () => {
                   <td>{company.category}</td>
                   <td>{company.adminEmail}</td>
                   <td>
-                    <span className={`${styles.statusBadge} ${getStatusBadgeClass(company.status)}`}>
-                      {company.status}
+                    <span className={`${styles.statusBadge} ${getStatusBadgeClass(company.approved ? 'APPROVED' : 'PENDING')}`}>
+                      {company.approved ? 'APPROVED' : 'PENDING'}
                     </span>
                   </td>
-                  <td>{new Date(company.createdAt).toLocaleDateString()}</td>
+                  <td>{new Date(company.createdAt).toLocaleString()}</td>
                   <td>
                     <div className={styles.actionButtons}>
-                      {company.status === 'PENDING' && (
+                      {!company.approved && (
                         <>
                           <button
                             className={styles.approveButton}
@@ -254,6 +254,7 @@ const CompaniesManagement = () => {
           </div>
         )}
       </div>
+      <ConfirmModal {...ConfirmModalProps} />
     </div>
   );
 };

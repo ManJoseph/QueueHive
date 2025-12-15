@@ -123,6 +123,24 @@
   padding: var(--spacing-md);
 }
 
+/* Logout Button */
+.logoutButton {
+  margin-top: auto;
+  border: none;
+  background: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.logoutButton:hover {
+  color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+  border-left-color: #ff4444;
+}
+
 /* Main Content */
 .mainContent {
   flex: 1;

@@ -96,11 +96,11 @@ const Profile = () => {
 
     setIsLoading(true);
     try {
-      const updatedUser = await userService.updateUserProfile(userId, {
+      await userService.updateProfile({
         fullName: formData.fullName,
-        phoneNumber: formData.phoneNumber
+        phone: formData.phoneNumber
       });
-      updateAuthUser({ fullName: updatedUser.fullName, phone: updatedUser.phoneNumber }); // Update AuthContext
+      updateAuthUser({ fullName: formData.fullName, phone: formData.phoneNumber }); // Update AuthContext
       showToast('Profile updated successfully!', 'success');
     } catch (err) {
       const msg = err.response?.data?.message || err.message || 'Failed to update profile.';
@@ -146,7 +146,7 @@ const Profile = () => {
 
     setIsLoading(true);
     try {
-      await userService.updateUserPassword(userId, {
+      await userService.updatePassword(userId, {
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword
       });

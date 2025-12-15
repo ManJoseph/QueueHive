@@ -3,11 +3,13 @@ package queuehive.queuehive.service.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import queuehive.queuehive.domain.Company;
+import queuehive.queuehive.domain.CompanyStatus;
 import queuehive.queuehive.dto.CompanyDto;
 import queuehive.queuehive.dto.CreateCompanyRequest;
 import queuehive.queuehive.dto.UpdateCompanyRequest;
 import queuehive.queuehive.repository.CompanyRepository;
-import queuehive.queuehive.repository.TokenRepository; // Import TokenRepository
+import queuehive.queuehive.repository.TokenRepository;
+import queuehive.queuehive.repository.UserRepository;
 import queuehive.queuehive.service.CompanyService;
 
 import java.time.LocalDate;
@@ -21,10 +23,12 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository companyRepository;
     private final TokenRepository tokenRepository; // Inject TokenRepository
+    private final UserRepository userRepository;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository, TokenRepository tokenRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, TokenRepository tokenRepository, UserRepository userRepository) {
         this.companyRepository = companyRepository;
         this.tokenRepository = tokenRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -33,7 +37,7 @@ public class CompanyServiceImpl implements CompanyService {
                 request.getName(),
                 request.getDescription(),
                 request.getOwnerId(),
-                false, // Initially not approved
+                CompanyStatus.PENDING, // Initially pending
                 request.getLocation(),
                 request.getCategory()
         );
@@ -46,7 +50,7 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDto approveCompany(Long companyId) {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new RuntimeException("Company not found"));
-        company.setApproved(true);
+        company.setStatus(CompanyStatus.APPROVED);
         Company updatedCompany = companyRepository.save(company);
         return toDto(updatedCompany);
     }
@@ -56,22 +60,34 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDto rejectCompany(Long companyId) {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new RuntimeException("Company not found with ID: " + companyId));
+        company.setStatus(CompanyStatus.REJECTED);
+        Company updatedCompany = companyRepository.save(company);
+        return toDto(updatedCompany);
+    }
+
+    public void deleteCompany(Long companyId) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new RuntimeException("Company not found with ID: " + companyId));
         companyRepository.delete(company);
-        // If we want to return a DTO for the rejected company, we can create one before deleting
-        // For now, let's return the DTO of the company that was just deleted.
-        return toDto(company);
     }
 
     @Override
     public List<CompanyDto> listApprovedCompanies() {
-        return companyRepository.findByApproved(true).stream()
+        return companyRepository.findByStatus(CompanyStatus.APPROVED).stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CompanyDto> listAllCompanies() {
+        return companyRepository.findAll().stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<CompanyDto> listPendingCompanies() {
-        return companyRepository.findByApproved(false).stream()
+        return companyRepository.findByStatus(CompanyStatus.PENDING).stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
@@ -80,6 +96,13 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDto getCompanyById(Long companyId) {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new RuntimeException("Company not found with ID: " + companyId));
+        return toDto(company);
+    }
+
+    @Override
+    public CompanyDto getCompanyByOwnerId(Long ownerId) {
+        Company company = companyRepository.findByOwnerId(ownerId)
+                .orElseThrow(() -> new RuntimeException("Company not found for owner ID: " + ownerId));
         return toDto(company);
     }
 
@@ -101,6 +124,10 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     private CompanyDto toDto(Company company) {
+        String adminEmail = userRepository.findById(company.getOwnerId())
+                .map(queuehive.queuehive.domain.User::getEmail)
+                .orElse(null);
+
         return new CompanyDto(
                 company.getId(),
                 company.getName(),
@@ -108,7 +135,8 @@ public class CompanyServiceImpl implements CompanyService {
                 company.getLocation(),
                 company.getCategory(),
                 company.getOwnerId(),
-                company.getApproved(),
+                company.getStatus() == CompanyStatus.APPROVED,
+                adminEmail,
                 company.getCreatedAt()
         );
     }

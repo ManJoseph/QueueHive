@@ -1,21 +1,21 @@
 import http from './http';
 
-const getUserProfile = () => {
+const getProfile = () => {
   return http.get('/users/me');
 };
 
-const updateUserProfile = (userId, userData) => {
-  return http.put(`/users/${userId}/update`, userData); // Assuming backend endpoint is /users/{userId}/update
+const updateProfile = (userData) => {
+  return http.put('/users/update', userData);
 };
 
-const updateUserPassword = (userId, passwordData) => {
-    return http.put(`/users/${userId}/update-password`, passwordData); // Assuming backend endpoint is /users/{userId}/update-password
+const updatePassword = (userId, passwordData) => {
+  return http.put(`/users/${userId}/update-password`, passwordData);
 };
 
 const userService = {
-  getUserProfile,
-  updateUserProfile,
-  updateUserPassword,
+  getProfile,
+  updateProfile,
+  updatePassword,
 };
 
 export default userService;
