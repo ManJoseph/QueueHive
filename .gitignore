@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+QueueHive_FE/queuehive/node_modules/
+**/node_modules/
+
+# Build outputs
+target/
+build/
+dist/
+*.class
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large files
+*.pack
+*.pack_
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
