@@ -1,0 +1,53 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Node modules
+node_modules/
+**/node_modules/
+QueueHive_FE/queuehive/node_modules/
+
+# Build outputs
+target/
+build/
+dist/
+QueueHive_FE/queuehive/build/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Test files
+*.test.js
+*.spec.js
+
+# Documentation
+README.md
+*.md
+!README-DOCKER.md
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Environment files (will be set at runtime)
+.env
+.env.local
+.env.*.local
