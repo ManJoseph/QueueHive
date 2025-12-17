@@ -5,7 +5,7 @@
 
 **Eliminate physical queues with intelligent digital token management**
 
-[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-manjoseph%2Fqueuehive-blue?logo=docker)](https://hub.docker.com/r/manjoseph/queuehive)
+[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-manjoseph7%2Fqueuehive-blue?logo=docker)](https://hub.docker.com/r/manjoseph7/queuehive)
 [![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.0-brightgreen?logo=springboot)](https://spring.io/projects/spring-boot)
 [![React](https://img.shields.io/badge/React-18-61dafb?logo=react)](https://reactjs.org/)
@@ -90,7 +90,7 @@ docker-compose up -d
 
 ```bash
 # Pull the latest image from Docker Hub
-docker pull manjoseph/queuehive:latest
+docker pull manjoseph7/queuehive:latest
 
 # Run with Docker Compose (recommended)
 # See README-DOCKER.md for detailed instructions
@@ -175,7 +175,7 @@ docker-compose up --build
 
 ### Docker Hub
 Pre-built images are available on Docker Hub:
-- **Repository**: [manjoseph/queuehive](https://hub.docker.com/r/manjoseph/queuehive)
+- **Repository**: [manjoseph7/queuehive](https://hub.docker.com/r/manjoseph7/queuehive)
 - **Tags**: `latest`, version-specific tags
 
 ### Production Considerations
@@ -206,7 +206,7 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 - **GitHub Repository**: [ManJoseph/QueueHive](https://github.com/ManJoseph/QueueHive)
 - **Issues & Bug Reports**: [GitHub Issues](https://github.com/ManJoseph/QueueHive/issues)
-- **Docker Hub**: [manjoseph/queuehive](https://hub.docker.com/r/manjoseph/queuehive)
+- **Docker Hub**: [manjoseph7/queuehive](https://hub.docker.com/r/manjoseph7/queuehive)
 
 ---
 

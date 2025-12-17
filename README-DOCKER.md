@@ -81,7 +81,7 @@ You can also pull and run the backend image from Docker Hub:
 
 ```bash
 # Pull the latest image
-docker pull manjoseph/queuehive:latest
+docker pull manjoseph7/queuehive:latest
 
 # Run with external PostgreSQL (recommended)
 docker run -d \
@@ -90,7 +90,7 @@ docker run -d \
   -e SPRING_DATASOURCE_URL=jdbc:postgresql://your-db-host:5432/queuehive_db \
   -e SPRING_DATASOURCE_USERNAME=postgres \
   -e SPRING_DATASOURCE_PASSWORD=yourpassword \
-  manjoseph/queuehive:latest
+  manjoseph7/queuehive:latest
 ```
 
 > **Note**: The Docker image contains only the Spring Boot application with the React build. You need a separate PostgreSQL instance. Use Docker Compose for the complete setup.
@@ -102,15 +102,15 @@ docker run -d \
 docker build -t queuehive:latest .
 
 # Tag for Docker Hub
-docker tag queuehive:latest manjoseph/queuehive:latest
-docker tag queuehive:latest manjoseph/queuehive:v1.0.0
+docker tag queuehive:latest manjoseph7/queuehive:latest
+docker tag queuehive:latest manjoseph7/queuehive:v1.0.0
 
 # Login to Docker Hub
 docker login
 
 # Push to Docker Hub
-docker push manjoseph/queuehive:latest
-docker push manjoseph/queuehive:v1.0.0
+docker push manjoseph7/queuehive:latest
+docker push manjoseph7/queuehive:v1.0.0
 ```
 
 ## Configuration
@@ -277,7 +277,7 @@ This results in a smaller final image (~400MB vs 1GB+).
 
 ## Support
 
-- **Docker Hub**: https://hub.docker.com/r/manjoseph/queuehive
+- **Docker Hub**: https://hub.docker.com/r/manjoseph7/queuehive
 - **GitHub**: https://github.com/ManJoseph/QueueHive
 - **Issues**: https://github.com/ManJoseph/QueueHive/issues
 - **Documentation**: See `/docs` directory for API docs and UML diagrams
