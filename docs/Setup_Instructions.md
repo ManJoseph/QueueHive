@@ -1,41 +1,39 @@
 # Setup and Installation Guide
 
-This guide provides instructions for setting up and running the QueueHive project. The recommended method is using Docker, as it simplifies the setup process.
+This guide provides instructions for setting up and running the QueueHive project. The recommended method is using Docker Compose, as it simplifies the setup process.
 
 ---
 
-## 1. Running with Docker (Recommended)
+## 1. Running with Docker Compose (Recommended)
 
-This method runs the backend, database, and database admin tool in containers.
+This method runs the backend, frontend, database, and database admin tool using Docker Compose.
 
 ### Prerequisites
 
--   [Docker](https://www.docker.com/get-started)
--   [Docker Compose](https://docs.docker.com/compose/install/) (usually included with Docker Desktop)
+-   [Docker Desktop](https://www.docker.com/get-started) (includes Docker Compose)
 
 ### Steps
 
-1.  **Navigate to the Backend Directory:**
-    Open a terminal and navigate to the backend project folder.
+1.  **Navigate to the Project Root:**
+    Open a terminal and navigate to the QueueHive project folder.
     ```sh
-    cd QueueHive_BE
+    cd QueueHive
     ```
 
 2.  **Build and Start Services:**
-    Run the following command to build the Java application and start all services. The `-d` flag runs the containers in detached mode.
+    Run the following command to build the application and start all services. The `-d` flag runs the containers in detached mode.
     ```sh
     docker-compose up --build -d
     ```
 
 3.  **Access Services:**
-    -   **Backend API:** `http://localhost:8080`
+    -   **Frontend & Backend API:** `http://localhost:8080`
     -   **pgAdmin (Database GUI):** `http://localhost:5050`
         -   **Login:** `admin@queuehive.com`
         -   **Password:** `admin`
     -   **PostgreSQL Port:** `5432`
 
-4.  **Run the Frontend:**
-    Follow the instructions in the "Running the Frontend Manually" section below to start the React development server. The frontend is pre-configured to connect to the backend at `localhost:8080`.
+For detailed Docker instructions, deployment options, and troubleshooting, see **[README-DOCKER.md](../README-DOCKER.md)**.
 
 ---
 

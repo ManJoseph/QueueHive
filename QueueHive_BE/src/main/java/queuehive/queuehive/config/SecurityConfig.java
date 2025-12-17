@@ -55,8 +55,13 @@ public class SecurityConfig {
                 .requestMatchers("/api/companies").permitAll() // Public company list
                 .requestMatchers("/api/services/company/**").permitAll() // Public services
                 .requestMatchers("/ws/**").permitAll() // WebSocket
-                // All other endpoints require authentication
-                .anyRequest().authenticated()
+                .requestMatchers("/actuator/health").permitAll() // Health check
+                // Static resources (React frontend)
+                .requestMatchers("/", "/index.html", "/static/**", "/*.js", "/*.css", "/*.ico", "/*.json", "/*.png", "/*.svg").permitAll()
+                // All other API endpoints require authentication
+                .requestMatchers("/api/**").authenticated()
+                // Allow all other requests (for React routing)
+                .anyRequest().permitAll()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // Add JWT filter before UsernamePasswordAuthenticationFilter
