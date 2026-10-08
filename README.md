@@ -212,7 +212,7 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ## 👨‍💻 Author
 
-**Joseph MANIRAGUHA**
+**Joseph MANIZABAYO**
 - GitHub: [@ManJoseph](https://github.com/ManJoseph)
 
 ---
