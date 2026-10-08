@@ -219,8 +219,6 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 <div align="center">
 
-**Built with ❤️ using Spring Boot and React**
-
 ⭐ Star this repository if you find it helpful!
 
 </div>
